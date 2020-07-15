@@ -131,6 +131,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Filters\AuthorizeUser.cs" />
     <Compile Include="Filters\SessionVerification.cs" />
     <Compile Include="Global.asax.cs">
@@ -189,6 +190,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\main.css" />
     <Content Include="fonts\4769308501582800513.svg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -246,6 +248,7 @@
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\Error\UnauthorizedOperation.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Ticket\Ticket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

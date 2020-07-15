@@ -1,11 +1,12 @@
-﻿@{
+﻿@model S.I.A.C.Models.LoginDataModel
+@{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
-@model S.I.A.C.Models.LoginDataModel
 
-<link href="~/Content/bootstrap.css" rel="stylesheet"/>
 <link href="~/Content/Style.css" rel="stylesheet">
+<link href="~/Content/main.css" rel="stylesheet"/>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 <div class="row-no-gutters">
 
@@ -13,25 +14,26 @@
     {
         @Html.AntiForgeryToken()
         <div class="col-md-offset-5 col-md-3">
-            <br/>
-            @Html.LabelFor(x => x.email)
-            @Html.TextBoxFor(x => x.email, new {@class = "form-control", autofocus = "autofocus"})
-            @Html.ValidationMessageFor(x => x.email, null, new {@class = "text-danger"})
-            <br/>
 
-            @Html.LabelFor(x => x.password)
-            @Html.PasswordFor(x => x.password, new {@class = "form-control"})
-            @Html.ValidationMessageFor(x => x.password, null, new {@class = "text-danger"})
-            <br/>
-            <div class="wrapper">
-                <button class="btn btn-primary" type="submit">
-                    Ingresar
-                </button>
+            
+                <br/>
+                @Html.LabelFor(x => x.email)
+                @Html.TextBoxFor(x => x.email, new {@class = "form-control", autofocus = "autofocus"})
+                @Html.ValidationMessageFor(x => x.email, null, new {@class = "text-danger"})
+                <br/>
+
+                @Html.LabelFor(x => x.password)
+                @Html.PasswordFor(x => x.password, new {@class = "form-control"})
+                @Html.ValidationMessageFor(x => x.password, null, new {@class = "text-danger"})
+                <br/>
+                <div class="input-group">
+                    <input type="submit" value="Ingresar" class="btn btn-primary btn-md">
+                    <i class="fa fa-sign-in"></i>
+                </div>
             </div>
             <div class="text-danger" align="center">
                 @ViewBag.Message
                 @TempData["ErrorMessage"]
             </div>
-        </div>
     }
 </div>

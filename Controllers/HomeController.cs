@@ -30,6 +30,13 @@ namespace S.I.A.C.Controllers
             return View();
         }
 
+        [AuthorizeUser(idOperation: 2)]
+        public ActionResult Ticket()
+        {
+            ViewBag.Message = "Crear nuevo ticket";
+            return RedirectToAction("Ticket", "Ticket");
+        }
+
         public ActionResult SingOut()
         {
             ViewBag.Message = "Sing Out.";

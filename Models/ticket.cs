@@ -7,6 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace S.I.A.C.Models
 {
     using System;
@@ -14,26 +17,48 @@ namespace S.I.A.C.Models
     
     public partial class ticket
     {
+        private const int ESTIMATEDFINISHDAYS = 7;//Por defecto se asigna solo 7 dias como fecha estimativa
+        private const int PENDIENTE = 1;//Se construye como pendiente
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ticket()
         {
             this.ticketHistory = new HashSet<ticketHistory>();
+            this.creationDate = DateTime.Now; 
+            this.estimatedFinishDate = DateTime.Now.AddDays(ESTIMATEDFINISHDAYS);  
+            this.idStatus = PENDIENTE; 
+            //prueba
         }
     
         public int id { get; set; }
         public int idCreatorPeople { get; set; }
         public Nullable<int> idAssignedTechnician { get; set; }
+
+        [Display(Name = "Descripción")]
+        [Required]
+        //[RegularExpression(@"^{0,500}$", ErrorMessage = "Excediste el maximo de 500 caracteres.")]
         public string description { get; set; }
+
+        [DataType(DataType.DateTime)]
         public System.DateTime creationDate { get; set; }
+        [DataType(DataType.DateTime)]
         public System.DateTime estimatedFinishDate { get; set; }
         public Nullable<System.DateTime> editionDate { get; set; }
         public int idStatus { get; set; }
+
+        [Required]
+        [Display(Name = "Prioridad")]
         public int idPriority { get; set; }
+
+        [Required]
+        [Display(Name = "Categoria")]
         public int idCategory { get; set; }
     
         public virtual category category { get; set; }
         public virtual people people { get; set; }
         public virtual people people1 { get; set; }
+
+        [ForeignKey("idPriority")]
         public virtual priority priority { get; set; }
         public virtual status status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
