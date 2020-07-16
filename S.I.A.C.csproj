@@ -137,6 +137,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CategorisViewModel.cs" />
     <Compile Include="Models\category.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -168,6 +169,7 @@
     <Compile Include="Models\priority.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PriorityViewModel.cs" />
     <Compile Include="Models\rol.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -191,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\main.css" />
+    <Content Include="Content\StyleSheet1.css" />
     <Content Include="fonts\4769308501582800513.svg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

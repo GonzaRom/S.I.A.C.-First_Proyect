@@ -2,38 +2,52 @@
 
 @{
     ViewBag.Title = "Ticket";
+    List<SelectListItem> priorities = ViewBag.priorities;
+    List<SelectListItem> categories = ViewBag.categories;
 }
+    <div class="contenedor">
+        <h2>Nuevo Ticket:</h2>
 
-<h2>Nuevo Ticket</h2>
+        @using (Html.BeginForm())
+        {
+            // @Html.AntiForgeryToken()
 
-@using (Html.BeginForm("Ticket", "Ticket", FormMethod.Post)) 
-{
-//    @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>ticket</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="text-danger" align="center">
-        @ViewBag.Error
-        @TempData["ErrorMessage"]
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
-</div>
-}
+                <div class="form-group">
+                    @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index","Home")
-</div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idPriority, "Urgencia", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("idPriority", priorities, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.idPriority, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idCategory, "Categoria", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("idCategory", categories, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.idCategory, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Crear" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Regresar", "Ticket")
+        </div></div>
