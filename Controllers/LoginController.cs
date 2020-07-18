@@ -9,6 +9,13 @@ namespace S.I.A.C.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly dbSIACEntities database;
+
+        public LoginController()
+        {
+            database = new dbSIACEntities();
+        }
+
         [HttpGet]
         public ActionResult Login()
         {
@@ -30,7 +37,7 @@ namespace S.I.A.C.Controllers
         {
             try
             {
-                using (Models.dbSIACEntities database = new Models.dbSIACEntities())
+                using (database)
                 {
                     var objPeople =
                         database.people.FirstOrDefault(e => e.email == email.Trim() && e.pass == password.Trim());

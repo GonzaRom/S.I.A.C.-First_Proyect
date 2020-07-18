@@ -13,10 +13,9 @@
     @using (Html.BeginForm("Login", "Login", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        <div class="col-md-offset-5 col-md-3">
 
-            
-                <br/>
+        <div class="col-md-offset-5 col-md-3">
+            <br/>
                 @Html.LabelFor(x => x.email)
                 @Html.TextBoxFor(x => x.email, new {@class = "form-control", autofocus = "autofocus"})
                 @Html.ValidationMessageFor(x => x.email, null, new {@class = "text-danger"})

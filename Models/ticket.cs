@@ -17,26 +17,17 @@ namespace S.I.A.C.Models
     
     public partial class ticket
     {
-        private const int ESTIMATEDFINISHDAYS = 7;//Por defecto se asigna solo 7 dias como fecha estimativa
-        private const int PENDIENTE = 1;//Se construye como pendiente
-
+       
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ticket()
         {
             this.ticketHistory = new HashSet<ticketHistory>();
-            this.creationDate = DateTime.Now; 
-            this.estimatedFinishDate = DateTime.Now.AddDays(ESTIMATEDFINISHDAYS);  
-            this.idStatus = PENDIENTE; 
-            //prueba
         }
     
         public int id { get; set; }
         public int idCreatorPeople { get; set; }
         public Nullable<int> idAssignedTechnician { get; set; }
 
-        [Display(Name = "Descripción")]
-        [Required]
-        //[RegularExpression(@"^{0,500}$", ErrorMessage = "Excediste el maximo de 500 caracteres.")]
         public string description { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -46,12 +37,8 @@ namespace S.I.A.C.Models
         public Nullable<System.DateTime> editionDate { get; set; }
         public int idStatus { get; set; }
 
-        [Required]
-        [Display(Name = "Prioridad")]
         public int idPriority { get; set; }
 
-        [Required]
-        [Display(Name = "Categoria")]
         public int idCategory { get; set; }
     
         public virtual category category { get; set; }
