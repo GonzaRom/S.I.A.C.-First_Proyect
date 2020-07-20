@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -7,14 +6,14 @@ using S.I.A.C.Models;
 
 namespace S.I.A.C.Filters
 {
-    ///Filtro para verificar si tiene permiso el usuario
+    /// Filtro para verificar si tiene permiso el usuario
     /// Verifica por metodo y no permite multiples
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method)]
     public class AuthorizeUser : AuthorizeAttribute
     {
+        private readonly dbSIACEntities database = new dbSIACEntities();
+        private readonly int idOperation;
         private people objPeople;
-        private dbSIACEntities database = new dbSIACEntities();
-        private int idOperation;
 
         public AuthorizeUser(int idOperation = 0)
         {
@@ -34,17 +33,21 @@ namespace S.I.A.C.Filters
                 if (userOperations.ToList().Count < 1)
                 {
                     var operation = database.operations.Find(idOperation);
-                    int idModule = operation.idModule;
+                    var idModule = operation.idModule;
                     nameOperation = getOperationName(idOperation);
                     nameModule = getModuleName(idModule);
-                    filterContext.Result = new RedirectResult("~/Error/UnauthorizedOperation?operation=" + nameOperation + "&modulo=" + nameModule + "&msjeErrorExcepcion=");
+                    filterContext.Result =
+                        new RedirectResult("~/Error/UnauthorizedOperation?operation=" + nameOperation + "&modulo=" +
+                                           nameModule + "&msjeErrorExcepcion=");
                 }
             }
             catch (Exception ex)
             {
-                filterContext.Result = new RedirectResult("~/Error/UnauthorizedOperation?operation=" + nameOperation + "&modulo=" + nameModule + "&msjeErrorExcepcion=");
+                filterContext.Result = new RedirectResult("~/Error/UnauthorizedOperation?operation=" + nameOperation +
+                                                          "&modulo=" + nameModule + "&msjeErrorExcepcion=");
             }
         }
+
         public string getOperationName(int idOperation)
         {
             var ope = from op in database.operations
@@ -59,6 +62,7 @@ namespace S.I.A.C.Filters
             {
                 nameOperation = "";
             }
+
             return nameOperation;
         }
 
@@ -77,6 +81,7 @@ namespace S.I.A.C.Filters
             {
                 nameModule = "";
             }
+
             return nameModule;
         }
     }

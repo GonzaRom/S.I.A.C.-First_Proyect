@@ -10,7 +10,7 @@ namespace S.I.A.C.Controllers
             return View();
         }
 
-        [AuthorizeUser(idOperation: 2)]
+        [AuthorizeUser(2)]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -18,15 +18,13 @@ namespace S.I.A.C.Controllers
             return View();
         }
 
-        [AuthorizeUser(idOperation: 6)]
-        public ActionResult Contact()
+        [AuthorizeUser(1)]
+        public ActionResult CurrentTicket()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return RedirectToAction("CurrentTickets", "Ticket");
         }
 
-        [AuthorizeUser(idOperation: 2)]
+        [AuthorizeUser(2)]
         public ActionResult Ticket()
         {
             ViewBag.Message = "Crear nuevo ticket";

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using S.I.A.C.Models;
 
@@ -9,22 +7,22 @@ namespace S.I.A.C.Service
 {
     public class ViewUtilityServices
     {
-        private  dbSIACEntities database;
+        private dbSIACEntities database;
 
         public List<SelectListItem> GetListOfCategories()
         {
             database = new dbSIACEntities();
             List<CategoriesViewModel> listOfCategories = null;
-            
-                listOfCategories = (from cat in database.category
-                        select new CategoriesViewModel()
-                        {
-                            keyCategories = cat.id,
-                            nameCategories = cat.name
-                        }
-                    ).ToList();
 
-                List<SelectListItem> categoriesList = listOfCategories.ConvertAll(data => new SelectListItem
+            listOfCategories = (from cat in database.category
+                    select new CategoriesViewModel
+                    {
+                        keyCategories = cat.id,
+                        nameCategories = cat.name
+                    }
+                ).ToList();
+
+            var categoriesList = listOfCategories.ConvertAll(data => new SelectListItem
             {
                 Text = data.nameCategories,
                 Value = data.keyCategories.ToString(),
@@ -49,7 +47,7 @@ namespace S.I.A.C.Service
                     ).ToList();
             }
 
-            List<SelectListItem> prioritiesList = listOfPriorities.ConvertAll(data => new SelectListItem
+            var prioritiesList = listOfPriorities.ConvertAll(data => new SelectListItem
             {
                 Text = data.valuePriority,
                 Value = data.keyPriority.ToString(),
@@ -70,7 +68,7 @@ namespace S.I.A.C.Service
             {
                 listOfTechnicians = (from technicians in database.people
                         where technicians.idRol == technicianIdRol
-                        select new TechniciansViewModel()
+                        select new TechniciansViewModel
                         {
                             keyTechnician = technicians.id,
                             nameTechnician = technicians.name
@@ -78,7 +76,7 @@ namespace S.I.A.C.Service
                     ).ToList();
             }
 
-            List<SelectListItem> techniciansList = listOfTechnicians.ConvertAll(data => new SelectListItem
+            var techniciansList = listOfTechnicians.ConvertAll(data => new SelectListItem
             {
                 Text = data.nameTechnician,
                 Value = data.keyTechnician.ToString(),

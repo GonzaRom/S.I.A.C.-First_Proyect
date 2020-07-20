@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using S.I.A.C.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -9,34 +10,40 @@
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/StyleSheet1.css" rel="stylesheet">
 
+
 </head>
 <body>
-    <div class="contenedor">
-        <header>
-            <div class="logo">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("S.I.A.C.", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <nav>
-                @Html.ActionLink("Inicio", "Index", "Home")
-                @Html.ActionLink("Nuevo Ticket", "Ticket", "Ticket")
-                @Html.ActionLink("Contacto", "Contact", "Home")
-                @Html.ActionLink("Cerrar sesión", "SingOut", "Home")
-            </nav>
-        </header>
+<div class="contenedor">
+    <header>
+        <div class="logo">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("S.I.A.C.", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
+            @Html.Display("Admin")
+            @{
+                var name = (people) Session["User"];
+                //todo "service usuario, buscar usuario por id"
+            }
+        </div>
+        <nav>
+            @Html.ActionLink("Inicio", "Index", "Home")
+            @Html.ActionLink("Nuevo Ticket", "Ticket", "Ticket")
+            @Html.ActionLink("Tickets", "CurrentTickets", "Ticket")
+            @Html.ActionLink("Cerrar sesión", "SingOut", "Home")
+        </nav>
+    </header>
 
-        
-            @RenderBody()
-            <footer>
-                <p>&copy; @DateTime.Now.Year - S.I.A.C.</p>
-            </footer>
-    </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+    @RenderBody()
+    <footer>
+        <p>&copy; @DateTime.Now.Year - S.I.A.C.</p>
+    </footer>
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", false)
 </body>
 </html>

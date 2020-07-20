@@ -7,9 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace S.I.A.C.Models
 {
     using System;
@@ -17,7 +14,6 @@ namespace S.I.A.C.Models
     
     public partial class ticket
     {
-       
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ticket()
         {
@@ -27,25 +23,18 @@ namespace S.I.A.C.Models
         public int id { get; set; }
         public int idCreatorPeople { get; set; }
         public Nullable<int> idAssignedTechnician { get; set; }
-
         public string description { get; set; }
-
-        [DataType(DataType.DateTime)]
         public System.DateTime creationDate { get; set; }
-        [DataType(DataType.DateTime)]
         public System.DateTime estimatedFinishDate { get; set; }
         public Nullable<System.DateTime> editionDate { get; set; }
         public int idStatus { get; set; }
-
         public int idPriority { get; set; }
-
         public int idCategory { get; set; }
+        public Nullable<int> idClient { get; set; }
     
         public virtual category category { get; set; }
         public virtual people people { get; set; }
         public virtual people people1 { get; set; }
-
-        [ForeignKey("idPriority")]
         public virtual priority priority { get; set; }
         public virtual status status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

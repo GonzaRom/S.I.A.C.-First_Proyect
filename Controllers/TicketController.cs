@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using S.I.A.C.Models;
 using S.I.A.C.Service;
@@ -9,8 +8,9 @@ namespace S.I.A.C.Controllers
 {
     public class TicketController : Controller
     {
-        private readonly ViewUtilityServices viewUtilityServices;
         private readonly dbSIACEntities database;
+        private readonly TicketService ticketService = new TicketService();
+        private readonly ViewUtilityServices viewUtilityServices;
 
         public TicketController()
         {
@@ -21,7 +21,6 @@ namespace S.I.A.C.Controllers
         [HttpGet]
         public ActionResult Ticket()
         {
-
             ViewBag.priorities = viewUtilityServices.GetListOfPriorities();
             ViewBag.categories = viewUtilityServices.GetListOfCategories();
             ViewBag.technician = viewUtilityServices.GetListOfTechnicians();
@@ -35,10 +34,17 @@ namespace S.I.A.C.Controllers
             if (ModelState.IsValid)
             {
                 var currentUser = (people) Session["User"];
-                var ticket = new ticket();
-                ticket.creationDate = baseTicket.creationDate;
-                ticket.idCreatorPeople = currentUser.id;
-                ticket.idAssignedTechnician = baseTicket.idAssignedTechnician;
+                var ticket = new ticket
+                {
+                    idStatus = baseTicket.idStatus,
+                    idCreatorPeople = currentUser.id,
+                    creationDate = baseTicket.creationDate,
+                    estimatedFinishDate = baseTicket.estimatedFinishDate,
+                    idPriority = baseTicket.idPriority,
+                    idAssignedTechnician = baseTicket.idAssignedTechnician,
+                    idCategory = baseTicket.idCategory,
+                    description = baseTicket.description
+                };
                 try
                 {
                     using (database)
@@ -54,11 +60,20 @@ namespace S.I.A.C.Controllers
                 catch (Exception ex)
                 {
                     ViewBag.Error = ex.InnerException;
-                    return View(ticket);
+                    return View(baseTicket);
                 }
             }
 
-            return View(ticket);
+            return View(baseTicket);
+        }
+
+        [HttpGet]
+        public ActionResult CurrentTickets()
+        {
+            var activeTickets = new List<TicketPrintableModel>();
+            activeTickets = ticketService.GetTickets();
+
+            return View(activeTickets);
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using S.I.A.C.Controllers;
@@ -16,23 +14,17 @@ namespace S.I.A.C.Filters
         {
             try
             {
-                 base.OnActionExecuted(filterContext);
+                base.OnActionExecuted(filterContext);
 
-                 objPeople = (people)HttpContext.Current.Session["User"];
-                 if (objPeople == null)
-                 {
-
-                     if (filterContext.Controller is LoginController == false)
-                     {
-                         filterContext.HttpContext.Response.Redirect("/Login/Login");
-                     }
-                 }
+                objPeople = (people) HttpContext.Current.Session["User"];
+                if (objPeople == null)
+                    if (filterContext.Controller is LoginController == false)
+                        filterContext.HttpContext.Response.Redirect("/Login/Login");
             }
             catch (Exception e)
             {
-                filterContext.Result =new RedirectResult("~/Login/Login");
+                filterContext.Result = new RedirectResult("~/Login/Login");
             }
-           
         }
     }
 }

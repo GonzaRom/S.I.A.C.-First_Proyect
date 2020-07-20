@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self"
+              xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
+              xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
+              xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="category">
           <Key>
             <PropertyRef Name="id" />
@@ -35,8 +39,8 @@
           <Property Name="dni" Type="varchar" MaxLength="50" />
           <Property Name="name" Type="varchar" MaxLength="50" />
           <Property Name="lastname" Type="varchar" MaxLength="50" />
-          <Property Name="email" Type="varchar" MaxLength="50" />
-          <Property Name="pass" Type="varchar(max)" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="pass" Type="varchar(max)" Nullable="false" />
           <Property Name="address" Type="varchar" MaxLength="200" />
           <Property Name="creationDate" Type="datetime" />
           <Property Name="idRol" Type="int" Nullable="false" />
@@ -95,6 +99,7 @@
           <Property Name="idStatus" Type="int" Nullable="false" />
           <Property Name="idPriority" Type="int" Nullable="false" />
           <Property Name="idCategory" Type="int" Nullable="false" />
+          <Property Name="idClient" Type="int" />
         </EntityType>
         <EntityType Name="ticketHistory">
           <Key>
@@ -152,66 +157,6 @@
             </Principal>
             <Dependent Role="rolOperations">
               <PropertyRef Name="idRol" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ticket_category">
-          <End Role="category" Type="Self.category" Multiplicity="1" />
-          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="category">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="ticket">
-              <PropertyRef Name="idCategory" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ticket_people">
-          <End Role="people" Type="Self.people" Multiplicity="1" />
-          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="people">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="ticket">
-              <PropertyRef Name="idCreatorPeople" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ticket_people1">
-          <End Role="people" Type="Self.people" Multiplicity="0..1" />
-          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="people">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="ticket">
-              <PropertyRef Name="idAssignedTechnician" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ticket_priority">
-          <End Role="priority" Type="Self.priority" Multiplicity="1" />
-          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="priority">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="ticket">
-              <PropertyRef Name="idPriority" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ticket_status">
-          <End Role="status" Type="Self.status" Multiplicity="1" />
-          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="status">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="ticket">
-              <PropertyRef Name="idStatus" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -279,26 +224,6 @@
             <End Role="rol" EntitySet="rol" />
             <End Role="rolOperations" EntitySet="rolOperations" />
           </AssociationSet>
-          <AssociationSet Name="FK_ticket_category" Association="Self.FK_ticket_category">
-            <End Role="category" EntitySet="category" />
-            <End Role="ticket" EntitySet="ticket" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ticket_people" Association="Self.FK_ticket_people">
-            <End Role="people" EntitySet="people" />
-            <End Role="ticket" EntitySet="ticket" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ticket_people1" Association="Self.FK_ticket_people1">
-            <End Role="people" EntitySet="people" />
-            <End Role="ticket" EntitySet="ticket" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ticket_priority" Association="Self.FK_ticket_priority">
-            <End Role="priority" EntitySet="priority" />
-            <End Role="ticket" EntitySet="ticket" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ticket_status" Association="Self.FK_ticket_status">
-            <End Role="status" EntitySet="status" />
-            <End Role="ticket" EntitySet="ticket" />
-          </AssociationSet>
           <AssociationSet Name="FK_ticketHistory_people" Association="Self.FK_ticketHistory_people">
             <End Role="people" EntitySet="people" />
             <End Role="ticketHistory" EntitySet="ticketHistory" />
@@ -316,7 +241,10 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="dbSIACModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="dbSIACModel" Alias="Self" annotation:UseStrongSpatialTypes="false"
+              xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
+              xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
+              xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="category">
           <Key>
             <PropertyRef Name="id" />
@@ -331,7 +259,8 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="operations" Relationship="Self.FK_operations_module" FromRole="module" ToRole="operations" />
+          <NavigationProperty Name="operations" Relationship="Self.FK_operations_module" FromRole="module"
+                              ToRole="operations" />
         </EntityType>
         <EntityType Name="operations">
           <Key>
@@ -340,8 +269,10 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="idModule" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="module" Relationship="Self.FK_operations_module" FromRole="operations" ToRole="module" />
-          <NavigationProperty Name="rolOperations" Relationship="Self.FK_rolOperations_operations" FromRole="operations" ToRole="rolOperations" />
+          <NavigationProperty Name="module" Relationship="Self.FK_operations_module" FromRole="operations"
+                              ToRole="module" />
+          <NavigationProperty Name="rolOperations" Relationship="Self.FK_rolOperations_operations"
+                              FromRole="operations" ToRole="rolOperations" />
         </EntityType>
         <EntityType Name="people">
           <Key>
@@ -351,15 +282,16 @@
           <Property Name="dni" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="pass" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pass" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="creationDate" Type="DateTime" Precision="3" />
           <Property Name="idRol" Type="Int32" Nullable="false" />
           <NavigationProperty Name="rol" Relationship="Self.FK_people_rol" FromRole="people" ToRole="rol" />
           <NavigationProperty Name="ticket" Relationship="Self.FK_ticket_people" FromRole="people" ToRole="ticket" />
           <NavigationProperty Name="ticket1" Relationship="Self.FK_ticket_people1" FromRole="people" ToRole="ticket" />
-          <NavigationProperty Name="ticketHistory" Relationship="Self.FK_ticketHistory_people" FromRole="people" ToRole="ticketHistory" />
+          <NavigationProperty Name="ticketHistory" Relationship="Self.FK_ticketHistory_people" FromRole="people"
+                              ToRole="ticketHistory" />
         </EntityType>
         <EntityType Name="priority">
           <Key>
@@ -376,7 +308,8 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="people" Relationship="Self.FK_people_rol" FromRole="rol" ToRole="people" />
-          <NavigationProperty Name="rolOperations" Relationship="Self.FK_rolOperations_rol" FromRole="rol" ToRole="rolOperations" />
+          <NavigationProperty Name="rolOperations" Relationship="Self.FK_rolOperations_rol" FromRole="rol"
+                              ToRole="rolOperations" />
         </EntityType>
         <EntityType Name="rolOperations">
           <Key>
@@ -385,7 +318,8 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idRol" Type="Int32" />
           <Property Name="idOperations" Type="Int32" />
-          <NavigationProperty Name="operations" Relationship="Self.FK_rolOperations_operations" FromRole="rolOperations" ToRole="operations" />
+          <NavigationProperty Name="operations" Relationship="Self.FK_rolOperations_operations"
+                              FromRole="rolOperations" ToRole="operations" />
           <NavigationProperty Name="rol" Relationship="Self.FK_rolOperations_rol" FromRole="rolOperations" ToRole="rol" />
         </EntityType>
         <EntityType Name="status">
@@ -396,7 +330,8 @@
           <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ticket" Relationship="Self.FK_ticket_status" FromRole="status" ToRole="ticket" />
-          <NavigationProperty Name="ticketHistory" Relationship="Self.FK_ticketHistory_status" FromRole="status" ToRole="ticketHistory" />
+          <NavigationProperty Name="ticketHistory" Relationship="Self.FK_ticketHistory_status" FromRole="status"
+                              ToRole="ticketHistory" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -415,19 +350,24 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idCreatorPeople" Type="Int32" Nullable="false" />
           <Property Name="idAssignedTechnician" Type="Int32" />
-          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false"
+                    Nullable="false" />
           <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="estimatedFinishDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="editionDate" Type="DateTime" Precision="3" />
           <Property Name="idStatus" Type="Int32" Nullable="false" />
           <Property Name="idPriority" Type="Int32" Nullable="false" />
           <Property Name="idCategory" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="category" Relationship="Self.FK_ticket_category" FromRole="ticket" ToRole="category" />
+          <NavigationProperty Name="category" Relationship="Self.FK_ticket_category" FromRole="ticket"
+                              ToRole="category" />
           <NavigationProperty Name="people" Relationship="Self.FK_ticket_people" FromRole="ticket" ToRole="people" />
           <NavigationProperty Name="people1" Relationship="Self.FK_ticket_people1" FromRole="ticket" ToRole="people" />
-          <NavigationProperty Name="priority" Relationship="Self.FK_ticket_priority" FromRole="ticket" ToRole="priority" />
+          <NavigationProperty Name="priority" Relationship="Self.FK_ticket_priority" FromRole="ticket"
+                              ToRole="priority" />
           <NavigationProperty Name="status" Relationship="Self.FK_ticket_status" FromRole="ticket" ToRole="status" />
-          <NavigationProperty Name="ticketHistory" Relationship="Self.FK_ticketHistory_ticket" FromRole="ticket" ToRole="ticketHistory" />
+          <NavigationProperty Name="ticketHistory" Relationship="Self.FK_ticketHistory_ticket" FromRole="ticket"
+                              ToRole="ticketHistory" />
+          <Property Name="idClient" Type="Int32" />
         </EntityType>
         <EntityType Name="ticketHistory">
           <Key>
@@ -439,9 +379,12 @@
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="idStatus" Type="Int32" />
           <Property Name="idPeople" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="people" Relationship="Self.FK_ticketHistory_people" FromRole="ticketHistory" ToRole="people" />
-          <NavigationProperty Name="status" Relationship="Self.FK_ticketHistory_status" FromRole="ticketHistory" ToRole="status" />
-          <NavigationProperty Name="ticket" Relationship="Self.FK_ticketHistory_ticket" FromRole="ticketHistory" ToRole="ticket" />
+          <NavigationProperty Name="people" Relationship="Self.FK_ticketHistory_people" FromRole="ticketHistory"
+                              ToRole="people" />
+          <NavigationProperty Name="status" Relationship="Self.FK_ticketHistory_status" FromRole="ticketHistory"
+                              ToRole="status" />
+          <NavigationProperty Name="ticket" Relationship="Self.FK_ticketHistory_ticket" FromRole="ticketHistory"
+                              ToRole="ticket" />
         </EntityType>
         <Association Name="FK_ticket_category">
           <End Role="category" Type="Self.category" Multiplicity="1" />
@@ -742,6 +685,7 @@
           <EntitySetMapping Name="ticket">
             <EntityTypeMapping TypeName="dbSIACModel.ticket">
               <MappingFragment StoreEntitySet="ticket">
+                <ScalarProperty Name="idClient" ColumnName="idClient" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="idCreatorPeople" ColumnName="idCreatorPeople" />
                 <ScalarProperty Name="idAssignedTechnician" ColumnName="idAssignedTechnician" />

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Web;
+using System.Text;
 
 namespace S.I.A.C.Models
 {
@@ -15,9 +11,9 @@ namespace S.I.A.C.Models
 
         public TicketBindingModel()
         {
-            this.creationDate = DateTime.Now;
-            this.estimatedFinishDate = DateTime.Now.AddDays(ESTIMATEDFINISHDAYS);
-            this.idStatus = PENDIENTE;
+            creationDate = DateTime.Now;
+            estimatedFinishDate = DateTime.Now.AddDays(ESTIMATEDFINISHDAYS);
+            idStatus = PENDIENTE;
         }
 
         [Display(Name = "Descripción:")]
@@ -29,11 +25,63 @@ namespace S.I.A.C.Models
 
         [DataType(DataType.DateTime)] public DateTime estimatedFinishDate { get; set; }
 
-        [Range(1, 4)] [Display(Name = "Prioridad:")] public int idPriority { get; set; }
+        [Display(Name = "Prioridad:")] public int idPriority { get; set; }
 
         [Display(Name = "Categoria:")] public int idCategory { get; set; }
 
-        [Display(Name = "Tecnico Asignado:")] public Nullable<int> idAssignedTechnician { get; set; }
+        [Display(Name = "Tecnico Asignado:")] public int? idAssignedTechnician { get; set; }
         public int idStatus { get; set; }
+    }
+
+    public class TicketPrintableModel
+    {
+        [Display(Name = "Fecha de carga:")] public DateTime CreationDateTime { get; set; }
+
+        [Display(Name = "Cliente:")] public string client { get; set; }
+
+        [Display(Name = "Cliente apellido:")] public string clientLastname { get; set; }
+
+        [Display(Name = "Direccion:")] public string address { get; set; }
+
+        [Display(Name = "Email:")] public string email { get; set; }
+
+        [Display(Name = "Tarea a realizar")] public string description { get; set; }
+
+        [Display(Name = "Estado")] public string status { get; set; }
+
+        [Display(Name = "Asignado a:")] public string assignedTechnician { get; set; }
+
+        [Display(Name = "Asignado apellido:")] public string assignedTechnicianLastname { get; set; }
+
+        [Display(Name = "Creador:")] public string creatorPeople { get; set; }
+
+        [Display(Name = "Creador apellido:")] public string creatorPeopleLastname { get; set; }
+
+        public string getClientFullName()
+        {
+            var clientFullName = new StringBuilder();
+            clientFullName.Append(client);
+            clientFullName.Append(" ");
+            clientFullName.Append(clientFullName);
+            return clientFullName.ToString();
+        }
+
+        public string getCreatorFullName()
+        {
+            var creatorFullName = new StringBuilder();
+            creatorFullName.Append(creatorPeople);
+            creatorFullName.Append(" ");
+            creatorFullName.Append(creatorPeopleLastname);
+            return creatorFullName.ToString();
+        }
+
+        public string getTecniFullName()
+        {
+            var tecniFullName = new StringBuilder();
+            tecniFullName.Append(assignedTechnician);
+            tecniFullName.Append(" ");
+            tecniFullName.Append(assignedTechnicianLastname);
+            return tecniFullName.ToString();
+        }
     }
 }

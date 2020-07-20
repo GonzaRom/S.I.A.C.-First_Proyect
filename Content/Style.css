@@ -1,9 +1,9 @@
 ﻿@import url(http://fonts.googleapis.com/css?family=Roboto:400);
 
 body {
-    background-color: #d9e1e2;
+    background-color: #fff;
     -webkit-font-smoothing: antialiased;
-    font: normal 14px Roboto, arial, sans-serif;
+    font: normal 14px Roboto,arial,sans-serif;
 }
 
 .container {
@@ -11,8 +11,8 @@ body {
     position: fixed;
 }
 
-.form-login {
-    background-color: #d9e1e2;
+.wrapper {
+    background-color: #EDEDED;
     padding-top: 10px;
     padding-bottom: 20px;
     padding-left: 20px;
@@ -30,24 +30,10 @@ h4 {
     text-align: center;
 }
 
-.form-control { border-radius: 10px; }
+.form-control {
+    border-radius: 10px;
+}
 
 .wrapper {
     text-align: center;
-}
-
-input {
-    border: none;
-    background-color: transparent;
-}
-
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-    outline: none;
-}
-
-.fa-user-circle-o {
-    color: gray;
 }

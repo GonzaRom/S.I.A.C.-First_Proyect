@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using S.I.A.C.Models;
 
@@ -26,11 +24,8 @@ namespace S.I.A.C.Controllers
         public ActionResult Login(LoginDataModel loginDataModel)
         {
             if (ModelState.IsValid)
-            {
                 return SearchUser(loginDataModel.email, loginDataModel.password);
-            }
-            else
-                return View(loginDataModel);
+            return View(loginDataModel);
         }
 
         public ActionResult SearchUser(string email, string password)
