@@ -21,11 +21,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @Html.ActionLink("S.I.A.C.", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
-            @Html.Display("Admin")
+            @Html.ActionLink("S.I.A.C.", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             @{
-                var name = (people) Session["User"];
-                //todo "service usuario, buscar usuario por id"
+                var user = (people)Session["User"];
+                if (user != null)
+                {
+                    var name = user.name;
+                    @Html.Label("name","Bienvenido: " + name)
+                }
             }
         </div>
         <nav>

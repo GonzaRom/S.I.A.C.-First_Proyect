@@ -8,7 +8,7 @@ namespace S.I.A.C.Service
     {
         private dbSIACEntities database;
 
-        public List<TicketPrintableModel> printableTickets = new List<TicketPrintableModel>();
+        private List<TicketPrintableModel> printableTickets = new List<TicketPrintableModel>();
 
         public List<TicketPrintableModel> GetTickets()
         {

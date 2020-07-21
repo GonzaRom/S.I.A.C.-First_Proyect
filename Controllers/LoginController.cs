@@ -2,16 +2,17 @@
 using System.Linq;
 using System.Web.Mvc;
 using S.I.A.C.Models;
+using S.I.A.C.Service;
 
 namespace S.I.A.C.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly dbSIACEntities database;
+        private readonly PeopleService _peopleService;
 
         public LoginController()
         {
-            database = new dbSIACEntities();
+            _peopleService = new PeopleService();
         }
 
         [HttpGet]
@@ -21,40 +22,25 @@ namespace S.I.A.C.Controllers
         }
 
         [HttpPost]
+        [HandleError]
         public ActionResult Login(LoginDataModel loginDataModel)
         {
             if (ModelState.IsValid)
-                return SearchUser(loginDataModel.email, loginDataModel.password);
-            return View(loginDataModel);
-        }
-
-        public ActionResult SearchUser(string email, string password)
-        {
-            try
             {
-                using (database)
+                var activeUser = _peopleService.SearchUser(loginDataModel.email, loginDataModel.password);
+                if (activeUser == null)
                 {
-                    var objPeople =
-                        database.people.FirstOrDefault(e => e.email == email.Trim() && e.pass == password.Trim());
-
-                    if (objPeople == null)
-                    {
-                        var msg = "Error, usuario o password incorrecto !";
-                        TempData["ErrorMessage"] = msg;
-                        return RedirectToAction("Login", "Login");
-                    }
-
-                    Session["User"] = objPeople;
+                    var msg = "Error, usuario o password incorrecto !";
+                    TempData["ErrorMessage"] = msg;
+                    return RedirectToAction("Login", "Login");
                 }
 
+                Session["User"] = activeUser;
                 //Acceso Correcto
                 return RedirectToAction("Index", "Home");
             }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-                return RedirectToAction("Login", "Login");
-            }
+
+            return View(loginDataModel);
         }
     }
 }

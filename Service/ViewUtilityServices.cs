@@ -7,14 +7,14 @@ namespace S.I.A.C.Service
 {
     public class ViewUtilityServices
     {
-        private dbSIACEntities database;
+        private dbSIACEntities _database;
 
         public List<SelectListItem> GetListOfCategories()
         {
-            database = new dbSIACEntities();
+            _database = new dbSIACEntities();
             List<CategoriesViewModel> listOfCategories = null;
 
-            listOfCategories = (from cat in database.category
+            listOfCategories = (from cat in _database.category
                     select new CategoriesViewModel
                     {
                         keyCategories = cat.id,
@@ -28,17 +28,17 @@ namespace S.I.A.C.Service
                 Value = data.keyCategories.ToString(),
                 Selected = false
             });
-            database.Dispose();
+            _database.Dispose();
             return categoriesList;
         }
 
         public List<SelectListItem> GetListOfPriorities()
         {
-            database = new dbSIACEntities();
+            _database = new dbSIACEntities();
             List<PriorityViewModel> listOfPriorities = null;
-            using (database)
+            using (_database)
             {
-                listOfPriorities = (from priority in database.priority
+                listOfPriorities = (from priority in _database.priority
                         select new PriorityViewModel
                         {
                             keyPriority = priority.id,
@@ -54,19 +54,19 @@ namespace S.I.A.C.Service
                 Selected = false
             });
 
-            database.Dispose();
+            _database.Dispose();
             return prioritiesList;
         }
 
         public List<SelectListItem> GetListOfTechnicians()
         {
-            database = new dbSIACEntities();
+            _database = new dbSIACEntities();
             var technicianIdRol = 2;
 
             List<TechniciansViewModel> listOfTechnicians = null;
-            using (database)
+            using (_database)
             {
-                listOfTechnicians = (from technicians in database.people
+                listOfTechnicians = (from technicians in _database.people
                         where technicians.idRol == technicianIdRol
                         select new TechniciansViewModel
                         {
@@ -82,7 +82,7 @@ namespace S.I.A.C.Service
                 Value = data.keyTechnician.ToString(),
                 Selected = false
             });
-            database.Dispose();
+            _database.Dispose();
             return techniciansList;
         }
     }
