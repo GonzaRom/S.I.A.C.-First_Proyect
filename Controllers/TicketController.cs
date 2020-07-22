@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web.Mvc;
+using System.Web.Security;
+using S.I.A.C.Filters;
 using S.I.A.C.Models;
 using S.I.A.C.Service;
 
@@ -75,6 +78,43 @@ namespace S.I.A.C.Controllers
             var activeTickets = _ticketService.GetTickets();
 
             return View(activeTickets);
+        }
+
+        [HandleError]
+        public ActionResult Edit(int? ticketId)
+        {
+            var ticket = _ticketService.GeTicketViewModel(ticketId);
+            if (ticket == null)
+            {
+                return RedirectToAction("UnauthorizedOperation", "Error");
+            }
+
+            ViewBag.priorities = _viewUtilityServices.GetListOfPriorities();
+            ViewBag.categories = _viewUtilityServices.GetListOfCategories();
+            ViewBag.technician = _viewUtilityServices.GetListOfTechnicians();
+            //encrypt the ticket id to the webpage//
+            var encryptedTicketId = Encrypt.GetSHA256(ticketId.ToString());
+            ViewBag.TicketIdEncrypt = encryptedTicketId;
+
+            return View(ticket);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeUser(11)]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }

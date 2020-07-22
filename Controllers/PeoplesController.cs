@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using System.Web.Mvc;
+using System.Web.Security;
 using S.I.A.C.Filters;
 using S.I.A.C.Models;
 using S.I.A.C.Service;
@@ -19,7 +21,6 @@ namespace S.I.A.C.Controllers
         {
             _peopleService = new PeopleService();
             _viewUtilityServices = new ViewUtilityServices();
-
         }
 
         // GET: Peoples
@@ -38,6 +39,7 @@ namespace S.I.A.C.Controllers
         [AuthorizeUser(1)]
         public ActionResult Create()
         {
+
             ViewBag.rols = _viewUtilityServices.GetListOfRols();
             return View();
         }
@@ -45,8 +47,9 @@ namespace S.I.A.C.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeUser(1)]
+        //remember to treat any data in an HTTP request as malicious until proven otherwise//
         public ActionResult Create(PeopleViewModel peopleViewModel)
-        {
+        { 
             var isNewPeople = false;
             try
             {
@@ -84,6 +87,7 @@ namespace S.I.A.C.Controllers
         {
             try
             {
+                
                 // TODO: Add update logic here
 
                 return RedirectToAction("Index");

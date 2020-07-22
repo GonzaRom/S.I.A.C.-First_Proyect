@@ -37,7 +37,7 @@ namespace S.I.A.C.Filters
                     nameOperation = getOperationName(_idOperation);
                     nameModule = getModuleName(idModule);
                     filterContext.Result =
-                        new RedirectResult("~/Error/UnauthorizedOperation?operation=" + nameOperation + "&modulo=" +
+                        new RedirectResult("~/Error/UnauthorizedOperation?operation=" + nameOperation +
                                            nameModule + "&msjeErrorExcepcion=");
                 }
             }

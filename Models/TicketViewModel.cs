@@ -21,9 +21,9 @@ namespace S.I.A.C.Models
         [MaxLength(900, ErrorMessage = "Maximo 900 caracteres")]
         public string description { get; set; }
 
-        [DataType(DataType.DateTime)] public DateTime creationDate { get; set; }
+        [DataType(DataType.DateTime)] [Display(Name = "Fecha creacion:")] public DateTime creationDate { get; set; }
 
-        [DataType(DataType.DateTime)] public DateTime estimatedFinishDate { get; set; }
+        [DataType(DataType.DateTime)] [Display(Name = "Fecha estimativa:")] public DateTime estimatedFinishDate { get; set; }
 
         [Display(Name = "Prioridad:")] public int idPriority { get; set; }
 
@@ -35,7 +35,8 @@ namespace S.I.A.C.Models
     }
 
     public class TicketPrintableModel
-    {
+    {   ///
+        public int idTicket { get; set; }//<----Buscar alernativa
         [Display(Name = "Fecha de carga:")] public DateTime CreationDateTime { get; set; }
 
         [Display(Name = "Cliente:")] public string client { get; set; }

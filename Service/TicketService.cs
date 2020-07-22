@@ -23,6 +23,7 @@ namespace S.I.A.C.Service
                     join tecnician in _database.people on tick.idAssignedTechnician equals tecnician.id
                     select new TicketPrintableModel
                     {
+                        idTicket = tick.id,
                         address = clientAddress.address,
                         assignedTechnician = tecnician.name,
                         assignedTechnicianLastname = tecnician.lastname,
@@ -35,7 +36,35 @@ namespace S.I.A.C.Service
                         email = clientAddress.email
                     }).ToList();
             }
+
             return printableTickets;
+        }
+
+        public TicketViewModel GeTicketViewModel(int? ticketId)
+        {
+            _database = new dbSIACEntities();
+            var ticketViewModel = new TicketViewModel();
+            using (_database)
+            {
+                var ticket = _database.ticket.Find(ticketId);
+                if (ticket == null)
+                {
+                    return null;
+                }
+
+                ticketViewModel.idAssignedTechnician = ticket.idAssignedTechnician;
+                ticketViewModel.creationDate = ticket.creationDate;
+                ticketViewModel.estimatedFinishDate = ticket.estimatedFinishDate;
+                ticketViewModel.idPriority = ticket.idPriority;
+                ticketViewModel.idCategory = ticket.idCategory;
+                ticketViewModel.idStatus = ticket.idStatus;
+                ticketViewModel.creationDate = ticket.creationDate;
+                ticketViewModel.description = ticket.description;
+
+                _database.Dispose();
+            }
+
+            return ticketViewModel;
         }
     }
 }
