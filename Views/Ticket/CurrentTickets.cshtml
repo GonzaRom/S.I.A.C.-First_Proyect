@@ -1,11 +1,12 @@
-﻿@model IEnumerable<S.I.A.C.Models.TicketPrintableModel>
+﻿@using S.I.A.C.Models
+@model IEnumerable<S.I.A.C.Models.TicketPrintableModel>
 
 @{
     ViewBag.Title = "CurrentTickets";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CurrentTickets</h2>
+<h2>Pendientes @Model.Count()</h2>
 
 <p>
     @Html.ActionLink("Crear Nuevo Ticket", "Ticket")

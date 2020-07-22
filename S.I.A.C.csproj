@@ -166,12 +166,14 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PeoplesController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Filters\AuthorizeUser.cs" />
     <Compile Include="Filters\SessionVerification.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ClientsViewModel.cs" />
     <Compile Include="Models\CategoriesViewModel.cs" />
     <Compile Include="Models\category.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -201,6 +203,7 @@
     <Compile Include="Models\people.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PeopleViewModel.cs" />
     <Compile Include="Models\priority.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -211,6 +214,7 @@
     <Compile Include="Models\rolOperations.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RolsViewModel.cs" />
     <Compile Include="Models\status.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -220,7 +224,7 @@
     <Compile Include="Models\ticket.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TicketBindingModel.cs" />
+    <Compile Include="Models\TicketViewModel.cs" />
     <Compile Include="Models\ticketHistory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -295,6 +299,7 @@
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Ticket\Ticket.cshtml" />
     <Content Include="Views\Ticket\CurrentTickets.cshtml" />
+    <Content Include="Views\Peoples\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Handelrs\" />

@@ -14,14 +14,6 @@
         <h2 class="headline text-red">Error</h2>
         <div class="error-content">
             <h3><i class="fa fa-warning text-red"></i>Sin autorización</h3>
-            @if (ViewBag.operation != "")
-            {
-                <p>Operación @ViewBag.operation </p>
-            }
-            @if (ViewBag.module != "")
-            {
-                <p>Modulo @ViewBag.module</p>
-            }
             @if (ViewBag.msjeErrorExcepcion != "")
             {
                 <p>@ViewBag.msjeErrorExcepcion</p>

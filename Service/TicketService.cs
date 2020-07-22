@@ -6,21 +6,21 @@ namespace S.I.A.C.Service
 {
     public class TicketService
     {
-        private dbSIACEntities database;
+        private dbSIACEntities _database;
 
         private List<TicketPrintableModel> printableTickets = new List<TicketPrintableModel>();
 
         public List<TicketPrintableModel> GetTickets()
         {
-            database = new dbSIACEntities();
+            _database = new dbSIACEntities();
 
-            using (database)
+            using (_database)
             {
                 //tickets=database.ticket.Where(active => active.idStatus == 1).ToList();  
-                printableTickets = (from tick in database.ticket
-                    join creator in database.people on tick.idCreatorPeople equals creator.id
-                    join clientAddress in database.people on tick.idClient equals clientAddress.id
-                    join tecnician in database.people on tick.idAssignedTechnician equals tecnician.id
+                printableTickets = (from tick in _database.ticket
+                    join creator in _database.people on tick.idCreatorPeople equals creator.id
+                    join clientAddress in _database.people on tick.idClient equals clientAddress.id
+                    join tecnician in _database.people on tick.idAssignedTechnician equals tecnician.id
                     select new TicketPrintableModel
                     {
                         address = clientAddress.address,
@@ -35,8 +35,6 @@ namespace S.I.A.C.Service
                         email = clientAddress.email
                     }).ToList();
             }
-
-            database.Dispose();
             return printableTickets;
         }
     }

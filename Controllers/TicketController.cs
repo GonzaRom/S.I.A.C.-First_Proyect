@@ -8,28 +8,30 @@ namespace S.I.A.C.Controllers
 {
     public class TicketController : Controller
     {
-        private readonly dbSIACEntities database;
-        private readonly TicketService ticketService = new TicketService();
-        private readonly ViewUtilityServices viewUtilityServices;
+        private readonly dbSIACEntities _database;
+        private readonly TicketService _ticketService = new TicketService();
+        private readonly ViewUtilityServices _viewUtilityServices;
 
         public TicketController()
         {
-            viewUtilityServices = new ViewUtilityServices();
-            database = new dbSIACEntities();
+            _viewUtilityServices = new ViewUtilityServices();
+            _database = new dbSIACEntities();
         }
 
         [HttpGet]
         public ActionResult Ticket()
         {
-            ViewBag.priorities = viewUtilityServices.GetListOfPriorities();
-            ViewBag.categories = viewUtilityServices.GetListOfCategories();
-            ViewBag.technician = viewUtilityServices.GetListOfTechnicians();
+            ViewBag.priorities = _viewUtilityServices.GetListOfPriorities();
+            ViewBag.categories = _viewUtilityServices.GetListOfCategories();
+            ViewBag.technician = _viewUtilityServices.GetListOfTechnicians();
+            ViewBag.clients = _viewUtilityServices.GetListOfClients();
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult Ticket(TicketBindingModel baseTicket)
+        [ValidateAntiForgeryToken]
+        public ActionResult Ticket(TicketViewModel baseTicket)
         {
             if (ModelState.IsValid)
             {
@@ -47,10 +49,10 @@ namespace S.I.A.C.Controllers
                 };
                 try
                 {
-                    using (database)
+                    using (_database)
                     {
-                        database.ticket.Add(ticket);
-                        database.SaveChanges();
+                        _database.ticket.Add(ticket);
+                        _database.SaveChanges();
                     }
 
                     var msg = "Ticket creado exitosamente";
@@ -70,8 +72,7 @@ namespace S.I.A.C.Controllers
         [HttpGet]
         public ActionResult CurrentTickets()
         {
-            var activeTickets = new List<TicketPrintableModel>();
-            activeTickets = ticketService.GetTickets();
+            var activeTickets = _ticketService.GetTickets();
 
             return View(activeTickets);
         }

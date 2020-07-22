@@ -27,7 +27,7 @@ namespace S.I.A.C.Controllers
         {
             if (ModelState.IsValid)
             {
-                var activeUser = _peopleService.SearchUser(loginDataModel.email, loginDataModel.password);
+                var activeUser = _peopleService.SearchPeople(loginDataModel.email, loginDataModel.password);
                 if (activeUser == null)
                 {
                     var msg = "Error, usuario o password incorrecto !";

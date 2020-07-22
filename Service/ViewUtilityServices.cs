@@ -85,5 +85,61 @@ namespace S.I.A.C.Service
             _database.Dispose();
             return techniciansList;
         }
+
+        public List<SelectListItem> GetListOfRols()
+        {
+            _database = new dbSIACEntities();
+            List<RolsViewModel> listOfRols = null;
+            using (_database)
+            {
+                listOfRols = (from rol in _database.rol
+                        select new RolsViewModel
+                        {
+                            keyRols = rol.id,
+                            valueRols = rol.name
+                        }
+                    ).ToList();
+            }
+
+            var rolList = listOfRols.ConvertAll(data => new SelectListItem
+            {
+                Text = data.valueRols,
+                Value = data.keyRols.ToString(),
+                Selected = false
+            });
+
+            _database.Dispose();
+            return rolList;
+        }
+
+        public List<SelectListItem> GetListOfClients()
+        {
+            _database = new dbSIACEntities();
+            var clientsIdRol = 3;
+
+            List<ClientsViewModel> listOfClients = null;
+            using (_database)
+            {
+                listOfClients = (from people in _database.people
+                        where people.idRol == clientsIdRol
+                        select new ClientsViewModel()
+                        {
+                            keyClient = people.id,
+                            nameClient = people.name,
+                            addressClient= people.address,
+                            lastNameClient = people.lastname
+                        }
+                    ).ToList();
+            }
+
+            var clientList = listOfClients.ConvertAll(data => new SelectListItem
+            {
+                Text = data.GetClientViewModel(),
+                Value = data.keyClient.ToString(),
+                Selected = false
+            });
+            
+            return clientList;
+        }
     }
 }

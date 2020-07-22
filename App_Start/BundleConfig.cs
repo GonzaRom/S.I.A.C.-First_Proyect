@@ -23,7 +23,7 @@ namespace S.I.A.C
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap.min.css",
                       "~/Content/site.css", "~/Content/StyleSheet1.css"));
         }
     }

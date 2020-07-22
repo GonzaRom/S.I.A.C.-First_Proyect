@@ -11,13 +11,13 @@ namespace S.I.A.C.Filters
     [AttributeUsage(AttributeTargets.Method)]
     public class AuthorizeUser : AuthorizeAttribute
     {
-        private readonly dbSIACEntities database = new dbSIACEntities();
-        private readonly int idOperation;
+        private readonly dbSIACEntities _database = new dbSIACEntities();
+        private readonly int _idOperation;
         private people objPeople;
 
         public AuthorizeUser(int idOperation = 0)
         {
-            this.idOperation = idOperation;
+            this._idOperation = idOperation;
         }
 
         public override void OnAuthorization(AuthorizationContext filterContext)
@@ -28,13 +28,13 @@ namespace S.I.A.C.Filters
             {
                 objPeople = (people) HttpContext.Current.Session["User"];
                 var userOperations =
-                    database.rolOperations.Where(m => m.idRol == objPeople.idRol && m.idOperations == idOperation);
+                    _database.rolOperations.Where(m => m.idRol == objPeople.idRol && m.idOperations == _idOperation);
 
                 if (userOperations.ToList().Count < 1)
                 {
-                    var operation = database.operations.Find(idOperation);
+                    var operation = _database.operations.Find(_idOperation);
                     var idModule = operation.idModule;
-                    nameOperation = getOperationName(idOperation);
+                    nameOperation = getOperationName(_idOperation);
                     nameModule = getModuleName(idModule);
                     filterContext.Result =
                         new RedirectResult("~/Error/UnauthorizedOperation?operation=" + nameOperation + "&modulo=" +
@@ -50,7 +50,7 @@ namespace S.I.A.C.Filters
 
         public string getOperationName(int idOperation)
         {
-            var ope = from op in database.operations
+            var ope = from op in _database.operations
                 where op.id == idOperation
                 select op.name;
             string nameOperation;
@@ -68,7 +68,7 @@ namespace S.I.A.C.Filters
 
         public string getModuleName(int? idModule)
         {
-            var modulo = from m in database.module
+            var modulo = from m in _database.module
                 where m.id == idModule
                 select m.name;
 

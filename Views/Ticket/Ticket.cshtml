@@ -1,18 +1,19 @@
-﻿@model S.I.A.C.Models.TicketBindingModel
+﻿@model S.I.A.C.Models.TicketViewModel
 
 @{
     ViewBag.Title = "Ticket";
     List<SelectListItem> priorities = ViewBag.priorities;
     List<SelectListItem> categories = ViewBag.categories;
     List<SelectListItem> technician = ViewBag.technician;
+    List<SelectListItem> clients = ViewBag.clients;
 }
 <div class="contenedor">
-    <h2>Nuevo Ticket:</h2>
+    
 
     @using (Html.BeginForm())
     {
-        /// @Html.AntiForgeryToken()
-
+        @Html.AntiForgeryToken()
+    <h2>Nuevo Ticket:</h2>
         <div class="form-horizontal">
             <hr/>
             @Html.ValidationSummary(true, "", new {@class = "text-danger"})
@@ -24,7 +25,13 @@
                     @Html.ValidationMessageFor(model => model.description, "", new {@class = "text-danger"})
                 </div>
             </div>
-
+            <div class="form-group">
+                @Html.LabelFor(model => model.idClient, "Cliente:", new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.DropDownList("idClient", clients, new {@class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.idClient, "", new {@class = "text-danger"})
+                </div>
+            </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.idPriority, "Urgencia:", new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
@@ -58,6 +65,6 @@
     }
 
     <div>
-        @Html.ActionLink("Regresar", "Ticket")
+        @Html.ActionLink("<-Regresar", "Index","Home")
     </div>
 </div>

@@ -4,12 +4,12 @@ using System.Text;
 
 namespace S.I.A.C.Models
 {
-    public class TicketBindingModel
+    public class TicketViewModel
     {
         private const int ESTIMATEDFINISHDAYS = 7; //Por defecto se asigna solo 7 dias como fecha estimativa
         private const int PENDIENTE = 1; //Se construye como pendiente
 
-        public TicketBindingModel()
+        public TicketViewModel()
         {
             creationDate = DateTime.Now;
             estimatedFinishDate = DateTime.Now.AddDays(ESTIMATEDFINISHDAYS);
@@ -28,9 +28,10 @@ namespace S.I.A.C.Models
         [Display(Name = "Prioridad:")] public int idPriority { get; set; }
 
         [Display(Name = "Categoria:")] public int idCategory { get; set; }
-
+        [Display(Name = "Cliente:")] public int idClient { get; set; }
         [Display(Name = "Tecnico Asignado:")] public int? idAssignedTechnician { get; set; }
         public int idStatus { get; set; }
+
     }
 
     public class TicketPrintableModel
