@@ -7,25 +7,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace S.I.A.C.Models
+namespace S.I.A.C.Models.DomainModels
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class operations
+    public partial class status
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public operations()
+        public status()
         {
-            this.rolOperations = new HashSet<rolOperations>();
+            this.ticket = new HashSet<ticket>();
+            this.ticketHistory = new HashSet<ticketHistory>();
         }
     
         public int id { get; set; }
         public string name { get; set; }
-        public int idModule { get; set; }
+        public bool active { get; set; }
     
-        public virtual module module { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<rolOperations> rolOperations { get; set; }
+        public virtual ICollection<ticket> ticket { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ticketHistory> ticketHistory { get; set; }
     }
 }

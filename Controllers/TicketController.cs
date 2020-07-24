@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.Mvc;
-using System.Web.Security;
-using S.I.A.C.Filters;
+﻿using S.I.A.C.Filters;
 using S.I.A.C.Models;
+using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Service;
+using System;
+using System.Web.Mvc;
 
 namespace S.I.A.C.Controllers
 {
     public class TicketController : Controller
     {
         private readonly dbSIACEntities _database;
-        private readonly TicketService _ticketService = new TicketService();
+        private readonly TicketQueriesService _ticketQueriesService;
         private readonly ViewUtilityServices _viewUtilityServices;
+        private readonly TicketCommandsService _ticketCommandsService;
 
         public TicketController()
         {
+            _ticketQueriesService = new TicketQueriesService();
             _viewUtilityServices = new ViewUtilityServices();
             _database = new dbSIACEntities();
+            _ticketCommandsService = new TicketCommandsService();
         }
 
         [HttpGet]
@@ -29,61 +30,51 @@ namespace S.I.A.C.Controllers
             ViewBag.technician = _viewUtilityServices.GetListOfTechnicians();
             ViewBag.clients = _viewUtilityServices.GetListOfClients();
 
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Ticket(TicketViewModel baseTicket)
-        {
-            if (ModelState.IsValid)
-            {
-                var currentUser = (people) Session["User"];
-                var ticket = new ticket
-                {
-                    idStatus = baseTicket.idStatus,
-                    idCreatorPeople = currentUser.id,
-                    creationDate = baseTicket.creationDate,
-                    estimatedFinishDate = baseTicket.estimatedFinishDate,
-                    idPriority = baseTicket.idPriority,
-                    idAssignedTechnician = baseTicket.idAssignedTechnician,
-                    idCategory = baseTicket.idCategory,
-                    description = baseTicket.description
-                };
-                try
-                {
-                    using (_database)
-                    {
-                        _database.ticket.Add(ticket);
-                        _database.SaveChanges();
-                    }
-
-                    var msg = "Ticket creado exitosamente";
-                    TempData["Successful"] = msg;
-                    return RedirectToAction("Index", "Home");
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Error = ex.InnerException;
-                    return View(baseTicket);
-                }
-            }
+            var baseTicket = new TicketViewModel();
+            var encryptedTicketId = Encrypt.GetSHA256(baseTicket.internalId.ToString());
+            ViewBag.TicketIdEncrypt = encryptedTicketId;
 
             return View(baseTicket);
         }
 
+        [HttpPost]
+        [HandleError]
+        [ValidateAntiForgeryToken]
+        public ActionResult Ticket(TicketViewModel baseTicket, string internalId)
+        {
+            if ((internalId != Encrypt.GetSHA256(baseTicket.internalId.ToString())) || (!ModelState.IsValid))
+            {
+                return View(baseTicket);
+            }
+
+            var msg = _ticketCommandsService.CreateTicket(baseTicket, (people)Session["User"]);
+            if (msg == null)
+            {
+                ViewBag.Error = msg;
+                return View(baseTicket);
+            }
+
+            TempData["Successful"] = msg;
+            return RedirectToAction("Index", "Home");
+        }
+
+
         [HttpGet]
         public ActionResult CurrentTickets()
         {
-            var activeTickets = _ticketService.GetTickets();
+            var activeTickets = _ticketQueriesService.GetTicketsList();
 
             return View(activeTickets);
         }
 
+        [HttpGet]
         [HandleError]
-        public ActionResult Edit(int? ticketId)
+        [AuthorizeUser(11)]
+        public ActionResult Edit(string internalId)
         {
-            var ticket = _ticketService.GeTicketViewModel(ticketId);
+            var ticketId = Encrypt.Unprotect(internalId);
+            var ticket = _ticketQueriesService.GeTicketViewModel(Int32.Parse(ticketId));
+
             if (ticket == null)
             {
                 return RedirectToAction("UnauthorizedOperation", "Error");

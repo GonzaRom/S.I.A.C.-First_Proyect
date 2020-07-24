@@ -1,8 +1,8 @@
-﻿using System;
+﻿using S.I.A.C.Models.DomainModels;
+using System;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using S.I.A.C.Models;
 
 namespace S.I.A.C.Filters
 {
@@ -26,7 +26,7 @@ namespace S.I.A.C.Filters
             var nameModule = "";
             try
             {
-                objPeople = (people) HttpContext.Current.Session["User"];
+                objPeople = (people)HttpContext.Current.Session["User"];
                 var userOperations =
                     _database.rolOperations.Where(m => m.idRol == objPeople.idRol && m.idOperations == _idOperation);
 
@@ -51,8 +51,8 @@ namespace S.I.A.C.Filters
         public string getOperationName(int idOperation)
         {
             var ope = from op in _database.operations
-                where op.id == idOperation
-                select op.name;
+                      where op.id == idOperation
+                      select op.name;
             string nameOperation;
             try
             {
@@ -69,8 +69,8 @@ namespace S.I.A.C.Filters
         public string getModuleName(int? idModule)
         {
             var modulo = from m in _database.module
-                where m.id == idModule
-                select m.name;
+                         where m.id == idModule
+                         select m.name;
 
             string nameModule;
             try

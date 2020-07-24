@@ -7,26 +7,37 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace S.I.A.C.Models
+namespace S.I.A.C.Models.DomainModels
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class rol
+    public partial class people
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public rol()
+        public people()
         {
-            this.people = new HashSet<people>();
-            this.rolOperations = new HashSet<rolOperations>();
+            this.ticket = new HashSet<ticket>();
+            this.ticket1 = new HashSet<ticket>();
+            this.ticketHistory = new HashSet<ticketHistory>();
         }
     
         public int id { get; set; }
+        public string dni { get; set; }
         public string name { get; set; }
+        public string lastname { get; set; }
+        public string email { get; set; }
+        public string pass { get; set; }
+        public string address { get; set; }
+        public Nullable<System.DateTime> creationDate { get; set; }
+        public int idRol { get; set; }
     
+        public virtual rol rol { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<people> people { get; set; }
+        public virtual ICollection<ticket> ticket { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<rolOperations> rolOperations { get; set; }
+        public virtual ICollection<ticket> ticket1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ticketHistory> ticketHistory { get; set; }
     }
 }

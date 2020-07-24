@@ -1,10 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Web.Mvc;
-using System.Web.Security;
-using S.I.A.C.Filters;
+﻿using S.I.A.C.Filters;
 using S.I.A.C.Models;
 using S.I.A.C.Service;
+using System;
+using System.Web.Mvc;
 
 namespace S.I.A.C.Controllers
 {
@@ -48,14 +46,14 @@ namespace S.I.A.C.Controllers
         [ValidateAntiForgeryToken]
         [AuthorizeUser(1)]
         //remember to treat any data in an HTTP request as malicious until proven otherwise//
-        public ActionResult Create(PeopleViewModel peopleViewModel)
-        { 
+        public ActionResult Create(RegistrationViewModel registrationViewModel)
+        {
             var isNewPeople = false;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    isNewPeople = _peopleService.CreatePeople(peopleViewModel);
+                    isNewPeople = _peopleService.CreatePeople(registrationViewModel);
                 }
 
                 if (isNewPeople)
@@ -68,10 +66,10 @@ namespace S.I.A.C.Controllers
             catch (Exception ex)
             {
                 ViewBag.Error = ex.InnerException;
-                return View(peopleViewModel);
+                return View(registrationViewModel);
             }
 
-            return View(peopleViewModel);
+            return View(registrationViewModel);
         }
         //**FINISH CREATE//
 
@@ -87,7 +85,7 @@ namespace S.I.A.C.Controllers
         {
             try
             {
-                
+
                 // TODO: Add update logic here
 
                 return RedirectToAction("Index");

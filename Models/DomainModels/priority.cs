@@ -7,18 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace S.I.A.C.Models
+namespace S.I.A.C.Models.DomainModels
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class rolOperations
+    public partial class priority
     {
-        public int id { get; set; }
-        public Nullable<int> idRol { get; set; }
-        public Nullable<int> idOperations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public priority()
+        {
+            this.ticket = new HashSet<ticket>();
+        }
     
-        public virtual operations operations { get; set; }
-        public virtual rol rol { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ticket> ticket { get; set; }
     }
 }

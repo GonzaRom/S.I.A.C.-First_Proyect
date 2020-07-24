@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace S.I.A.C.Models
 {
-    public class PeopleViewModel
+    public class RegistrationViewModel
     {
         [Required(ErrorMessage = "El DNI es obligatoria")]
         [DataType(DataType.Text)]

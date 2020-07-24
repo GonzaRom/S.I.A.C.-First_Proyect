@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using S.I.A.C.Models;
+using S.I.A.C.Models.DomainModels;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using S.I.A.C.Models;
 
 namespace S.I.A.C.Service
 {
@@ -15,11 +16,11 @@ namespace S.I.A.C.Service
             List<CategoriesViewModel> listOfCategories = null;
 
             listOfCategories = (from cat in _database.category
-                    select new CategoriesViewModel
-                    {
-                        keyCategories = cat.id,
-                        nameCategories = cat.name
-                    }
+                                select new CategoriesViewModel
+                                {
+                                    keyCategories = cat.id,
+                                    nameCategories = cat.name
+                                }
                 ).ToList();
 
             var categoriesList = listOfCategories.ConvertAll(data => new SelectListItem
@@ -39,11 +40,11 @@ namespace S.I.A.C.Service
             using (_database)
             {
                 listOfPriorities = (from priority in _database.priority
-                        select new PriorityViewModel
-                        {
-                            keyPriority = priority.id,
-                            valuePriority = priority.name
-                        }
+                                    select new PriorityViewModel
+                                    {
+                                        keyPriority = priority.id,
+                                        valuePriority = priority.name
+                                    }
                     ).ToList();
             }
 
@@ -67,12 +68,12 @@ namespace S.I.A.C.Service
             using (_database)
             {
                 listOfTechnicians = (from technicians in _database.people
-                        where technicians.idRol == technicianIdRol
-                        select new TechniciansViewModel
-                        {
-                            keyTechnician = technicians.id,
-                            nameTechnician = technicians.name
-                        }
+                                     where technicians.idRol == technicianIdRol
+                                     select new TechniciansViewModel
+                                     {
+                                         keyTechnician = technicians.id,
+                                         nameTechnician = technicians.name
+                                     }
                     ).ToList();
             }
 
@@ -93,11 +94,11 @@ namespace S.I.A.C.Service
             using (_database)
             {
                 listOfRols = (from rol in _database.rol
-                        select new RolsViewModel
-                        {
-                            keyRols = rol.id,
-                            valueRols = rol.name
-                        }
+                              select new RolsViewModel
+                              {
+                                  keyRols = rol.id,
+                                  valueRols = rol.name
+                              }
                     ).ToList();
             }
 
@@ -121,24 +122,24 @@ namespace S.I.A.C.Service
             using (_database)
             {
                 listOfClients = (from people in _database.people
-                        where people.idRol == clientsIdRol
-                        select new ClientsViewModel()
-                        {
-                            keyClient = people.id,
-                            nameClient = people.name,
-                            addressClient= people.address,
-                            lastNameClient = people.lastname
-                        }
+                                 where people.idRol == clientsIdRol
+                                 select new ClientsViewModel()
+                                 {
+                                     keyClient = people.id,
+                                     nameClient = people.name,
+                                     addressClient = people.address,
+                                     lastNameClient = people.lastname
+                                 }
                     ).ToList();
             }
 
             var clientList = listOfClients.ConvertAll(data => new SelectListItem
             {
-                Text = data.GetClientViewModel(),
+                Text = data.GetClientFullViewModel(),
                 Value = data.keyClient.ToString(),
                 Selected = false
             });
-            
+
             return clientList;
         }
     }

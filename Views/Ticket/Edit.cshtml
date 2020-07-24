@@ -13,9 +13,10 @@
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    @Html.Hidden("encryptedTicketId", (object)ViewBag.TicketIdEncrypt)
 
+
+    @Html.AntiForgeryToken()
+    @Html.Hidden("internalId", (string)ViewBag.TicketIdEncrypt)
     <div class="form-horizontal">
         <h2>Editar:</h2>
         <hr />

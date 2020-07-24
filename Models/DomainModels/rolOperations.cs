@@ -7,22 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace S.I.A.C.Models
+namespace S.I.A.C.Models.DomainModels
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ticketHistory
+    public partial class rolOperations
     {
         public int id { get; set; }
-        public int idTicket { get; set; }
-        public System.DateTime date { get; set; }
-        public string note { get; set; }
-        public Nullable<int> idStatus { get; set; }
-        public int idPeople { get; set; }
+        public Nullable<int> idRol { get; set; }
+        public Nullable<int> idOperations { get; set; }
     
-        public virtual people people { get; set; }
-        public virtual status status { get; set; }
-        public virtual ticket ticket { get; set; }
+        public virtual operations operations { get; set; }
+        public virtual rol rol { get; set; }
     }
 }

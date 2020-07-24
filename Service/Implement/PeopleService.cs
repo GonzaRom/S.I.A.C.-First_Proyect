@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using S.I.A.C.Models;
+using S.I.A.C.Models.DomainModels;
+using System;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using S.I.A.C.Models;
 
 namespace S.I.A.C.Service
 {
@@ -13,7 +12,7 @@ namespace S.I.A.C.Service
 
         public PeopleService()
         {
-            _database=new dbSIACEntities();
+            _database = new dbSIACEntities();
         }
 
         /// <summary>
@@ -47,24 +46,24 @@ namespace S.I.A.C.Service
         /// Include in the view model only the properties you want to update. After the MVC model linker is finished,
         /// copy the properties of the view model into the entity instance and use the tool as an automapper.
         /// </summary>
-        /// <param name="peopleViewModel"></param>
+        /// <param name="registrationViewModel"></param>
         /// <returns>True all good, False something goes wrong </returns>
         [HandleError]
-        public bool CreatePeople(PeopleViewModel peopleViewModel)
+        public bool CreatePeople(RegistrationViewModel registrationViewModel)
         {
             try
             {
                 using (_database)
                 {
                     var newPeople = new people();
-                    newPeople.creationDate=DateTime.Now;
-                    newPeople.address = peopleViewModel.address;
-                    newPeople.dni = peopleViewModel.dni;
-                    newPeople.name = peopleViewModel.name;
-                    newPeople.lastname = peopleViewModel.lastname;
-                    newPeople.email = peopleViewModel.email;
-                    newPeople.pass = peopleViewModel.pass;
-                    newPeople.idRol = peopleViewModel.idRol;
+                    newPeople.creationDate = DateTime.Now;
+                    newPeople.address = registrationViewModel.address;
+                    newPeople.dni = registrationViewModel.dni;
+                    newPeople.name = registrationViewModel.name;
+                    newPeople.lastname = registrationViewModel.lastname;
+                    newPeople.email = registrationViewModel.email;
+                    newPeople.pass = registrationViewModel.pass;
+                    newPeople.idRol = registrationViewModel.idRol;
                     _database.people.Add(newPeople);
                     _database.SaveChanges();
                 }

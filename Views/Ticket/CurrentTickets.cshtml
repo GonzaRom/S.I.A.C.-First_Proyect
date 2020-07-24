@@ -1,4 +1,5 @@
 ﻿@using S.I.A.C.Models
+@using S.I.A.C.Service
 @model IEnumerable<S.I.A.C.Models.TicketPrintableModel>
 
 @{
@@ -43,9 +44,9 @@
     </thead>
     @foreach (var item in Model)
     {
-        var client = item.getClientFullName();
-        var tec = item.getTecniFullName();
-        var creat = item.getCreatorFullName();
+        var client = item.getFullName(item.client, item.clientLastname);
+        var tec = item.getFullName(item.assignedTechnician, item.assignedTechnicianLastname);
+        var creat = item.getFullName(item.creatorPeople, item.assignedTechnicianLastname);
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CreationDateTime)
@@ -71,9 +72,11 @@
             <td>
                 @Html.DisplayFor(modelItem => creat)
             </td>
-
+            @{
+                var ticketId = Encrypt.Protect(item.idTicket.ToString());
+            }
             <td>
-                @Html.ActionLink("Edit", "Edit", new {ticketId = item.idTicket})
+                @Html.ActionLink("Edit", "Edit", new {internalId = ticketId})
                 @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */})
                 @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
             </td>
