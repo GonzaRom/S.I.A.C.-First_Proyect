@@ -2,7 +2,7 @@
 
 namespace S.I.A.C.Models
 {
-    public class ClientsViewModel
+    public class PeopleViewModel
     {
         public int keyClient { get; set; }
         public string nameClient { get; set; }

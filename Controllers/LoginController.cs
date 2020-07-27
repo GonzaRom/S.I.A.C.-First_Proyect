@@ -6,26 +6,29 @@ namespace S.I.A.C.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly PeopleService _peopleService;
-
-        public LoginController()
-        {
-            _peopleService = new PeopleService();
-        }
+        private PeopleQueriesService _peopleQueriesService;
 
         [HttpGet]
         public ActionResult Login()
         {
-            return View();
+            var loginDataModel = new LoginDataModel();
+            var encryptedLoginId = Encrypt.GetSHA256(loginDataModel.internalId.ToString());
+            ViewBag.LoginIdEncrypted = encryptedLoginId;
+            return View(loginDataModel);
         }
 
         [HttpPost]
         [HandleError]
-        public ActionResult Login(LoginDataModel loginDataModel)
+        public ActionResult Login(LoginDataModel loginDataModel,string internalId)
         {
-            if (ModelState.IsValid)
+            if ((internalId != Encrypt.GetSHA256(loginDataModel.internalId.ToString())) || (!ModelState.IsValid))
             {
-                var activeUser = _peopleService.SearchPeople(loginDataModel.email, loginDataModel.password);
+                return View(loginDataModel);
+            }
+            else
+            {
+                _peopleQueriesService = new PeopleQueriesService();
+                var activeUser = _peopleQueriesService.SearchPeople(loginDataModel.email, loginDataModel.password);
                 if (activeUser == null)
                 {
                     var msg = "Error, usuario o password incorrecto !";
@@ -37,8 +40,6 @@ namespace S.I.A.C.Controllers
                 //Acceso Correcto
                 return RedirectToAction("Index", "Home");
             }
-
-            return View(loginDataModel);
         }
     }
 }

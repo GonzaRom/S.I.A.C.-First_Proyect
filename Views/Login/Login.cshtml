@@ -10,35 +10,35 @@
 
 <div class="row-no-gutters">
 
-@using (Html.BeginForm("Login", "Login", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("internalId", (string)ViewBag.LoginIdEncrypted)
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-5 col-md-3">
+                    <div class="wrapper">
+                        <br />
+                        @Html.LabelFor(x => x.email)
+                        @Html.TextBoxFor(x => x.email, new { @class = "form-control", autofocus = "autofocus" })
+                        @Html.ValidationMessageFor(x => x.email, null, new { @class = "text-danger" })
+                        <br />
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-offset-5 col-md-3">
-                <div class="wrapper">
-                    <br/>
-                    @Html.LabelFor(x => x.email)
-                    @Html.TextBoxFor(x => x.email, new {@class = "form-control", autofocus = "autofocus"})
-                    @Html.ValidationMessageFor(x => x.email, null, new {@class = "text-danger"})
-                    <br/>
+                        @Html.LabelFor(x => x.password)
+                        @Html.PasswordFor(x => x.password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.password, null, new { @class = "text-danger" })
+                        <br />
 
-                    @Html.LabelFor(x => x.password)
-                    @Html.PasswordFor(x => x.password, new {@class = "form-control"})
-                    @Html.ValidationMessageFor(x => x.password, null, new {@class = "text-danger"})
-                    <br/>
+                        <span class="group-btn">
+                            <input type="submit" value="Ingresar" class="btn btn-primary btn-md">
+                        </span>
+                    </div>
+                    <div class="text-danger" align="center">
+                        @ViewBag.Message
+                        @TempData["ErrorMessage"]
+                    </div>
 
-                    <span class="group-btn">
-                        <input type="submit" value="Ingresar" class="btn btn-primary btn-md">
-                    </span>
                 </div>
-                <div class="text-danger" align="center">
-                    @ViewBag.Message
-                    @TempData["ErrorMessage"]
-                </div>
-
             </div>
         </div>
-    </div>
-}
+    }

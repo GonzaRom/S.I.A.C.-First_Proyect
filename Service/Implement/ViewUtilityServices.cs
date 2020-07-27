@@ -3,6 +3,7 @@ using S.I.A.C.Models.DomainModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using S.I.A.C.Models.ViewModels;
 
 namespace S.I.A.C.Service
 {
@@ -16,11 +17,11 @@ namespace S.I.A.C.Service
             List<CategoriesViewModel> listOfCategories = null;
 
             listOfCategories = (from cat in _database.category
-                                select new CategoriesViewModel
-                                {
-                                    keyCategories = cat.id,
-                                    nameCategories = cat.name
-                                }
+                    select new CategoriesViewModel
+                    {
+                        keyCategories = cat.id,
+                        nameCategories = cat.name
+                    }
                 ).ToList();
 
             var categoriesList = listOfCategories.ConvertAll(data => new SelectListItem
@@ -40,11 +41,11 @@ namespace S.I.A.C.Service
             using (_database)
             {
                 listOfPriorities = (from priority in _database.priority
-                                    select new PriorityViewModel
-                                    {
-                                        keyPriority = priority.id,
-                                        valuePriority = priority.name
-                                    }
+                        select new PriorityViewModel
+                        {
+                            keyPriority = priority.id,
+                            valuePriority = priority.name
+                        }
                     ).ToList();
             }
 
@@ -59,33 +60,6 @@ namespace S.I.A.C.Service
             return prioritiesList;
         }
 
-        public List<SelectListItem> GetListOfTechnicians()
-        {
-            _database = new dbSIACEntities();
-            var technicianIdRol = 2;
-
-            List<TechniciansViewModel> listOfTechnicians = null;
-            using (_database)
-            {
-                listOfTechnicians = (from technicians in _database.people
-                                     where technicians.idRol == technicianIdRol
-                                     select new TechniciansViewModel
-                                     {
-                                         keyTechnician = technicians.id,
-                                         nameTechnician = technicians.name
-                                     }
-                    ).ToList();
-            }
-
-            var techniciansList = listOfTechnicians.ConvertAll(data => new SelectListItem
-            {
-                Text = data.nameTechnician,
-                Value = data.keyTechnician.ToString(),
-                Selected = false
-            });
-            _database.Dispose();
-            return techniciansList;
-        }
 
         public List<SelectListItem> GetListOfRols()
         {
@@ -94,11 +68,11 @@ namespace S.I.A.C.Service
             using (_database)
             {
                 listOfRols = (from rol in _database.rol
-                              select new RolsViewModel
-                              {
-                                  keyRols = rol.id,
-                                  valueRols = rol.name
-                              }
+                        select new RolsViewModel
+                        {
+                            keyRols = rol.id,
+                            valueRols = rol.name
+                        }
                     ).ToList();
             }
 
@@ -113,25 +87,25 @@ namespace S.I.A.C.Service
             return rolList;
         }
 
+        public List<SelectListItem> GetListOfTechnicians()
+        {
+            var peopleQueriesService = new PeopleQueriesService();
+            var listOfTechnicians = peopleQueriesService.GetListTechnicians();
+
+            var techniciansList = listOfTechnicians.ConvertAll(data => new SelectListItem
+            {
+                Text = data.nameTechnician,
+                Value = data.keyTechnician.ToString(),
+                Selected = false
+            });
+
+            return techniciansList;
+        }
+
         public List<SelectListItem> GetListOfClients()
         {
-            _database = new dbSIACEntities();
-            var clientsIdRol = 3;
-
-            List<ClientsViewModel> listOfClients = null;
-            using (_database)
-            {
-                listOfClients = (from people in _database.people
-                                 where people.idRol == clientsIdRol
-                                 select new ClientsViewModel()
-                                 {
-                                     keyClient = people.id,
-                                     nameClient = people.name,
-                                     addressClient = people.address,
-                                     lastNameClient = people.lastname
-                                 }
-                    ).ToList();
-            }
+            var peopleQueriesService = new PeopleQueriesService();
+            var listOfClients = peopleQueriesService.GetListClients();
 
             var clientList = listOfClients.ConvertAll(data => new SelectListItem
             {
@@ -141,6 +115,32 @@ namespace S.I.A.C.Service
             });
 
             return clientList;
+        }
+
+        public List<SelectListItem> GetListOfStatus()
+        {
+            _database = new dbSIACEntities();
+            List<StatusViewModel> listOfStatus = null;
+            using (_database)
+            {
+                listOfStatus = (from status in _database.status
+                        select new StatusViewModel()
+                        {
+                            keyStatus = status.id,
+                            valueStatus = status.name
+                        }
+                    ).ToList();
+            }
+
+            var statusList = listOfStatus.ConvertAll(data => new SelectListItem
+            {
+                Text = data.valueStatus,
+                Value = data.keyStatus.ToString(),
+                Selected = false
+            });
+
+            _database.Dispose();
+            return statusList;
         }
     }
 }

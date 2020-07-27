@@ -6,8 +6,8 @@
 
 .contenedor {
     background: #ccc;
-    width: 90%;
-    max-width: 1000px;
+    width: 100%;
+    max-width: 1080px;
     margin: auto;
     /* Flexbox */
     display: flex;

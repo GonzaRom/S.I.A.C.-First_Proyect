@@ -13,7 +13,7 @@
     @Html.ActionLink("Crear Nuevo Ticket", "Ticket")
 </p>
 
-<table class="table table-striped">
+<table class="table table-striped table-responsive">
     <thead class="titulares">
     <tr>
         <th>
@@ -76,9 +76,10 @@
                 var ticketId = Encrypt.Protect(item.idTicket.ToString());
             }
             <td>
-                @Html.ActionLink("Edit", "Edit", new {internalId = ticketId})
-                @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */})
-                @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                @Html.ActionLink("Editar", "Edit", new {internalId = ticketId})
+                @Html.ActionLink("Actualizar", "Update", new {internalId = ticketId})
+                @Html.ActionLink("Detalle", "Details", new {/* id=item.PrimaryKey */})
+                @Html.ActionLink("Borrar", "Delete", new {/* id=item.PrimaryKey */})
             </td>
         </tr>
     }

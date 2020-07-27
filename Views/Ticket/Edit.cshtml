@@ -5,6 +5,7 @@
     List<SelectListItem> priorities = ViewBag.priorities;
     List<SelectListItem> categories = ViewBag.categories;
     List<SelectListItem> technician = ViewBag.technician;
+    List<SelectListItem> status = ViewBag.status;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -26,14 +27,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.estimatedFinishDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.estimatedFinishDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.estimatedFinishDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -62,9 +55,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.idStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.idStatus, "Estado:", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.idStatus, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownList("idStatus", status, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.idStatus, "", new { @class = "text-danger" })
             </div>
         </div>

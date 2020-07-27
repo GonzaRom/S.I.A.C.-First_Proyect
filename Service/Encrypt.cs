@@ -14,9 +14,8 @@ namespace S.I.A.C.Service
         {
             SHA256 sha256 = SHA256Managed.Create();
             ASCIIEncoding encoding = new ASCIIEncoding();
-            byte[] stream = null;
             StringBuilder sb = new StringBuilder();
-            stream = sha256.ComputeHash(encoding.GetBytes(str));
+            byte[] stream = sha256.ComputeHash(encoding.GetBytes(str));
             foreach (var t in stream)
             {
                 sb.AppendFormat("{0:x2}", t);

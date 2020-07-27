@@ -39,7 +39,9 @@ namespace S.I.A.C.Models
         [Display(Name = "Categoria:")] public int idCategory { get; set; }
         [Display(Name = "Cliente:")] public int idClient { get; set; }
         [Display(Name = "Tecnico Asignado:")] public int? idAssignedTechnician { get; set; }
+        [Display(Name = "Estado:")]
         public int idStatus { get; set; }
+       
     }
 
     public class TicketPrintableModel
@@ -77,5 +79,6 @@ namespace S.I.A.C.Models
             fullName.Append(lastName);
             return fullName.ToString();
         }
+
     }
 }

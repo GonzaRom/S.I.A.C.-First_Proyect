@@ -3,7 +3,10 @@ using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Service;
 using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Web.Mvc;
+using S.I.A.C.Models.ViewModels;
 
 namespace S.I.A.C.Controllers
 {
@@ -47,10 +50,10 @@ namespace S.I.A.C.Controllers
                 return View(baseTicket);
             }
 
-            var msg = _ticketCommandsService.CreateTicket(baseTicket, (people)Session["User"]);
+            var msg = _ticketCommandsService.CreateTicket(baseTicket, (people) Session["User"]);
             if (msg == null)
             {
-                ViewBag.Error = msg;
+                ViewBag.Error = "E R R O R al crear el ticket";
                 return View(baseTicket);
             }
 
@@ -83,8 +86,9 @@ namespace S.I.A.C.Controllers
             ViewBag.priorities = _viewUtilityServices.GetListOfPriorities();
             ViewBag.categories = _viewUtilityServices.GetListOfCategories();
             ViewBag.technician = _viewUtilityServices.GetListOfTechnicians();
+            ViewBag.status = _viewUtilityServices.GetListOfStatus();
             //encrypt the ticket id to the webpage//
-            var encryptedTicketId = Encrypt.GetSHA256(ticketId.ToString());
+            var encryptedTicketId = Encrypt.Protect(ticketId.ToString());
             ViewBag.TicketIdEncrypt = encryptedTicketId;
 
             return View(ticket);
@@ -94,18 +98,46 @@ namespace S.I.A.C.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeUser(11)]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string internalId, TicketViewModel ticketViewModel)
         {
-            try
+            var ticketId = Encrypt.Unprotect(internalId);
+            var result = _ticketCommandsService.EditTicket(ticketViewModel, ticketId);
+            if (result == false)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                var encryptedTicketId = Encrypt.Protect(ticketId.ToString());
+                ViewBag.TicketIdEncrypt = encryptedTicketId;
+                ViewBag.Error = "E R R O R al editar el ticket";
+                return View(ticketViewModel);
             }
-            catch
+            else
             {
-                return View();
+                TempData["Successful"] = "Ticket editado correctamente!";
+                return RedirectToAction("Index", "Home");
             }
         }
+
+        public ActionResult Update(string internalId, TicketViewModel ticketViewModel)
+        {
+            var ticketId = Encrypt.Unprotect(internalId);
+            var ticketHistory = _ticketQueriesService.GeTicketHistoryViewModel(int.Parse(ticketId));
+            
+            if (ticketHistory == null)
+            {
+                return RedirectToAction("UnauthorizedOperation", "Error");
+            }
+
+            ViewBag.priorities = _viewUtilityServices.GetListOfPriorities();
+            ViewBag.categories = _viewUtilityServices.GetListOfCategories();
+            ViewBag.technician = _viewUtilityServices.GetListOfTechnicians();
+            ViewBag.status = _viewUtilityServices.GetListOfStatus();
+            //encrypt the ticket id to the webpage//
+            var encryptedTicketId = Encrypt.Protect(ticketId.ToString());
+            
+            ViewBag.TicketIdEncrypt = encryptedTicketId;
+            ViewBag.CurrentTicket = _ticketQueriesService.GeTicketPrintableViewModel(int.Parse(ticketId));
+            return View(ticketHistory);
+        }
+
+        
     }
 }

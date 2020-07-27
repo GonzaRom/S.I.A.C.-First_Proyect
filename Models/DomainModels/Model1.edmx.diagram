@@ -15,7 +15,7 @@
         <EntityTypeShape EntityType="dbSIACModel.status" Width="1.5" PointX="3" PointY="16.125" IsExpanded="true" />
         <EntityTypeShape EntityType="dbSIACModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="dbSIACModel.ticket" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.ticketHistory" Width="1.5" PointX="7.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.ticketHistory" Width="1.5" PointX="8.125" PointY="3.375" IsExpanded="true" />
         <AssociationConnector Association="dbSIACModel.FK_ticket_category" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK_operations_module" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK_rolOperations_operations" ManuallyRouted="false" />

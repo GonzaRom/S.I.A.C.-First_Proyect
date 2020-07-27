@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace S.I.A.C.Models
 {
@@ -7,6 +8,13 @@ namespace S.I.A.C.Models
     /// </summary>
     public class LoginDataModel
     {
+        public LoginDataModel()
+        {
+            internalId = new Guid();
+        }
+
+        public Guid internalId { get; }
+
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Este campo es obligatorio.")]
         [RegularExpression(

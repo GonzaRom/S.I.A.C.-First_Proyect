@@ -1,6 +1,7 @@
 ﻿using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using System;
+using System.Linq;
 
 namespace S.I.A.C.Service
 {
@@ -37,6 +38,37 @@ namespace S.I.A.C.Service
             {
                 return null;
             }
+        }
+
+        public bool EditTicket(TicketViewModel baseTicket, string ticketId)
+        {
+            var id = int.Parse(ticketId);
+            _database =new dbSIACEntities();
+
+            using (_database)
+            {
+                var result = _database.ticket.SingleOrDefault(b => b.id == id);
+                if (result == null)
+                {
+                    _database.Dispose();
+                    return false;
+                }
+                else{
+                    result.idCategory = baseTicket.idCategory;
+                    result.idAssignedTechnician = baseTicket.idAssignedTechnician;
+                    result.idPriority = baseTicket.idPriority;
+                    result.idStatus = baseTicket.idStatus;
+                    result.description = baseTicket.description;
+                    _database.SaveChanges();
+                }
+            }
+            _database.Dispose();
+            return true;
+        }
+
+        public bool UpdateTicketStatus(TicketViewModel baseTicket, string ticketId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
