@@ -59,13 +59,16 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Crear" class="btn btn-default" />
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+                            Crear
+                        </button>
                     </div>
                 </div>
             </div>
         }
 
         <div>
-            @Html.ActionLink("<-Regresar", "Index", "Home")
+            @Html.ActionLink("  Regresar", "Index", "Home",null, new { @class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left" })
         </div>
     </div>

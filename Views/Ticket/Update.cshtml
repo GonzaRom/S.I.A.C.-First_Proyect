@@ -1,107 +1,56 @@
-﻿@using S.I.A.C.Models
-@model IEnumerable<S.I.A.C.Models.ViewModels.TicketHistoryViewModel>
+﻿@model S.I.A.C.Models.ViewModels.TicketHistoryViewModel
 
 @{
     ViewBag.Title = "Update";
-    TicketPrintableModel currentTicket = ViewBag.CurrentTicket;
+    List<SelectListItem> status = ViewBag.status;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div>
-    <table class="table table-responsive">
-        <tr>
-            <th>
-                @Html.DisplayName("Fecha de creacion")
-            </th>
-            <th>
-                @Html.DisplayName("Cliente:")
-            </th>
-            <th>
-                @Html.DisplayName("Direccion:")
-            </th>
-            <th>
-                @Html.DisplayName("Email:")
-            </th>
-            <th>
-                @Html.DisplayName("Tarea a realizar")
-            </th>
-            <th>
-                @Html.DisplayName("Estado")
-            </th>
-            <th>
-                @Html.DisplayName("Asignado a:")
-            </th>
-            <th>
-                @Html.DisplayName("Creador:")
-            </th>
-        </tr>
-        @{
-            var client = currentTicket.getFullName(currentTicket.client, currentTicket.clientLastname);
-            var tec = currentTicket.getFullName(currentTicket.assignedTechnician, currentTicket.assignedTechnicianLastname);
-            var creat = currentTicket.getFullName(currentTicket.creatorPeople, currentTicket.assignedTechnicianLastname);
-        }
-        <tr>
-        <td>
-            @currentTicket.CreationDateTime
-        </td>
-        <td>
-            @client
-        </td>
-        <td>
-            @currentTicket.address
-        </td>
-        <td>
-            @currentTicket.email
-        </td>
-        <td class="desc">
-            @currentTicket.description
-        </td>
-        <td>
-            @currentTicket.status
-        </td>
-        <td>
-            @tec
-        </td>
-        <td>
-            @creat
-        </td>
-    </table>
-</div>
-<table class="table table-responsive">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.note)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.idStatus)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.peopleFullName)
-        </th>
-    </tr>
+<h2>Actualizar:</h2>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.idStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.peopleFullName)
-            </td>
-        </tr>
-    }
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("internalId", (string)ViewBag.TicketIdEncrypt)
 
-</table>
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.note, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.note, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.note, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idStatus, "Estado:", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("idStatus", status, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.idStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
 <p>
-    @Html.ActionLink("Actualizar", "Update")
+    @Html.ActionLink("  Regresar", "Detail",new { internalId = (string)ViewBag.TicketIdEncrypt },
+        new
+        {
+            @class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"
+        })
 </p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

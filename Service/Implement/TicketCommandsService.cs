@@ -2,6 +2,7 @@
 using S.I.A.C.Models.DomainModels;
 using System;
 using System.Linq;
+using S.I.A.C.Models.ViewModels;
 
 namespace S.I.A.C.Service
 {
@@ -43,7 +44,7 @@ namespace S.I.A.C.Service
         public bool EditTicket(TicketViewModel baseTicket, string ticketId)
         {
             var id = int.Parse(ticketId);
-            _database =new dbSIACEntities();
+            _database = new dbSIACEntities();
 
             using (_database)
             {
@@ -53,7 +54,8 @@ namespace S.I.A.C.Service
                     _database.Dispose();
                     return false;
                 }
-                else{
+                else
+                {
                     result.idCategory = baseTicket.idCategory;
                     result.idAssignedTechnician = baseTicket.idAssignedTechnician;
                     result.idPriority = baseTicket.idPriority;
@@ -62,7 +64,34 @@ namespace S.I.A.C.Service
                     _database.SaveChanges();
                 }
             }
+
             _database.Dispose();
+            return true;
+        }
+
+        public bool UpdateTicket(TicketHistoryViewModel baseTicket, string ticketId)
+        {
+            _database = new dbSIACEntities();
+            ticketHistory updateTicket = new ticketHistory
+            {
+                date = DateTime.Now,
+                idPeople = baseTicket.idPeople,
+                idStatus = baseTicket.idStatus,
+                idTicket = Int32.Parse(ticketId),
+                note = baseTicket.note
+            };
+            try
+            {
+                using (_database)
+                {
+                    _database.ticketHistory.Add(updateTicket);
+                    _database.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
             return true;
         }
 

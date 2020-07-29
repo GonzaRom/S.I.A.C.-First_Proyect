@@ -10,12 +10,12 @@ namespace S.I.A.C.Controllers
             return View();
         }
 
-        [AuthorizeUser(2)]
+        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
             //Session["User"] = null;
-            return View();
+            return RedirectToAction("Search", "Search");
         }
 
         [AuthorizeUser(1)]

@@ -1,0 +1,129 @@
+﻿@using S.I.A.C.Models
+@model IEnumerable<S.I.A.C.Models.ViewModels.TicketHistoryViewModel>
+
+@{
+    ViewBag.Title = "Detail";
+    TicketPrintableModel currentTicket = ViewBag.CurrentTicket;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.AntiForgeryToken()
+
+<div class="text-success" align="left">
+    @ViewBag.Message
+    @TempData["Successful"]
+</div>
+<h3>Detalle del ticket:</h3>
+<div style="align-content: center">
+    <table class="resp">
+        <tr>
+            <th>
+                @Html.DisplayName("Fecha de creacion")
+            </th>
+            <th>
+                @Html.DisplayName("Cliente:")
+            </th>
+            <th>
+                @Html.DisplayName("Direccion:")
+            </th>
+            <th>
+                @Html.DisplayName("Email:")
+            </th>
+            <th>
+                @Html.DisplayName("Tarea a realizar")
+            </th>
+            <th>
+                @Html.DisplayName("Estado")
+            </th>
+            <th>
+                @Html.DisplayName("Asignado a:")
+            </th>
+            <th>
+                @Html.DisplayName("Creador:")
+            </th>
+        </tr>
+        @{
+            var client = currentTicket.getFullName(currentTicket.client, currentTicket.clientLastname);
+            var tec = currentTicket.getFullName(currentTicket.assignedTechnician, currentTicket.assignedTechnicianLastname);
+            var creat = currentTicket.getFullName(currentTicket.creatorPeople, currentTicket.assignedTechnicianLastname);
+        }
+        <tr>
+        <td>
+            @currentTicket.CreationDateTime
+        </td>
+        <td>
+            @client
+        </td>
+        <td>
+            @currentTicket.address
+        </td>
+        <td>
+            @currentTicket.email
+        </td>
+        <td class="desc">
+            @currentTicket.description
+        </td>
+        <td>
+            @currentTicket.status
+        </td>
+        <td>
+            @tec
+        </td>
+        <td>
+            @creat
+        </td>
+    </table>
+    <h3>Actualizaciones:</h3>
+    <p></p>
+    <table class="resp">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.peopleFullName)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.peopleFullName)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<p></p>
+<div class="row center-block t-1 b-1">
+    <div class="col-md-6" style="color: black">
+        @Html.ActionLink("  Actualizar", "Update", new { internalId = (string)ViewBag.TicketIdEncrypt }, new
+        {
+            @class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload"
+        })
+    </div>
+    <div class="col-md-6" style="color: black">
+        @Html.ActionLink("  Regresar", "CurrentTickets", new { internalId = (string)ViewBag.TicketIdEncrypt },
+            new
+            {
+                @class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"
+            })
+    </div>
+</div>
+<p></p>

@@ -35,16 +35,13 @@ namespace S.I.A.C.Service.Implement
                 };
                 _database.people.Add(newPeople);
                 _database.SaveChanges();
-            }
-
-            _database.Dispose();
-
-
+            
             if (peopleCount == _database.people.Count())
             {
                 return false;
             }
             else return true;
+            }
         }
     }
 }

@@ -116,28 +116,62 @@ namespace S.I.A.C.Controllers
             }
         }
 
-        public ActionResult Update(string internalId, TicketViewModel ticketViewModel)
+        [HttpGet]
+        [AuthorizeUser(11)]
+        public ActionResult Detail(string internalId)
         {
             var ticketId = Encrypt.Unprotect(internalId);
             var ticketHistory = _ticketQueriesService.GeTicketHistoryViewModel(int.Parse(ticketId));
-            
+
             if (ticketHistory == null)
             {
                 return RedirectToAction("UnauthorizedOperation", "Error");
             }
 
-            ViewBag.priorities = _viewUtilityServices.GetListOfPriorities();
-            ViewBag.categories = _viewUtilityServices.GetListOfCategories();
-            ViewBag.technician = _viewUtilityServices.GetListOfTechnicians();
-            ViewBag.status = _viewUtilityServices.GetListOfStatus();
             //encrypt the ticket id to the webpage//
             var encryptedTicketId = Encrypt.Protect(ticketId.ToString());
-            
+
             ViewBag.TicketIdEncrypt = encryptedTicketId;
             ViewBag.CurrentTicket = _ticketQueriesService.GeTicketPrintableViewModel(int.Parse(ticketId));
             return View(ticketHistory);
         }
 
-        
+        [HttpGet]
+        [AuthorizeUser(11)]
+        public ActionResult Update(string internalId)
+        {
+            var ticketId = Encrypt.Unprotect(internalId);
+            var ticketHistoryView = new TicketHistoryViewModel();
+            
+            ViewBag.status = _viewUtilityServices.GetListOfStatus();
+
+            var encryptedTicketId = Encrypt.Protect(ticketId.ToString());
+            ViewBag.TicketIdEncrypt = encryptedTicketId;
+
+            return View(ticketHistoryView);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(string internalId, TicketHistoryViewModel ticketHistoryViewModel)
+        {
+            var ticketId = Encrypt.Unprotect(internalId);
+            var currentPeople = (people) Session["User"];
+            ticketHistoryViewModel.idPeople = currentPeople.id;
+            
+            var result = _ticketCommandsService.UpdateTicket(ticketHistoryViewModel, ticketId);
+            if (result == false)
+            {
+                var encryptedTicketId = Encrypt.Protect(ticketId.ToString());
+                ViewBag.TicketIdEncrypt = encryptedTicketId;
+                ViewBag.Error = "E R R O R al actualizando el ticket";
+                return View(ticketHistoryViewModel);
+            }
+            else
+            {
+                TempData["Successful"] = "Ticket editado correctamente!";
+                return RedirectToAction("Index", "Home");
+            }
+        }
     }
 }
