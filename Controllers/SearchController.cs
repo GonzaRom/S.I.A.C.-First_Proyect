@@ -22,24 +22,31 @@ namespace S.I.A.C.Controllers
         // GET: Search
         public ActionResult Search()
         {
-            return View();
+            var searchModel = new SearchViewModel();
+            return View(searchModel);
+        }
+
+        [HttpPost]
+        public ActionResult Search(SearchViewModel searchViewModel)
+        {
+            var aSearch = searchViewModel.toSearch;
+
+            if (aSearch.IsNullOrWhiteSpace()) return RedirectToAction("Search", "Search");
+
+            return RedirectToAction("Found", "Search", new {toSearch = aSearch});
         }
 
         [HttpGet]
-        public ActionResult Found(SearchViewModel searchViewModel)
+        public ActionResult Found(string toSearch)
         {
-            
-
-            List<TicketPrintableModel> foundeTickets = _searchQueries.SearchTicket(searchViewModel.toSearch);
-
-            if (foundeTickets==null)
+            var foundeTickets = _searchQueries.SearchTicket(toSearch);
+            if (foundeTickets == null)
             {
                 ViewBag.Error = "E R R O R en la busqueda";
                 return RedirectToAction("Search", "Search");
             }
 
             return View(foundeTickets);
-
         }
     }
 }

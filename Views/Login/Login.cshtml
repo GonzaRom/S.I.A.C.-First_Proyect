@@ -4,41 +4,75 @@
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-<link href="~/Content/Style.css" rel="stylesheet">
-<link href="~/Content/main.css" rel="stylesheet"/>
+<link href="~/Content/StyleSheet2.css" rel="stylesheet"/>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".username").focus(function() {
+            $(".user-icon").css("left", "-48px");
+        });
+        $(".username").blur(function() {
+            $(".user-icon").css("left", "0px");
+        });
+        $(".password").focus(function() {
+            $(".pass-icon").css("left", "-48px");
+        });
+        $(".password").blur(function() {
+            $(".pass-icon").css("left", "0px");
+        });
+    });
+</script>
+<body>
 
-<div class="row-no-gutters">
+<!--WRAPPER-->
+<div id="wrapper">
 
-    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        @Html.Hidden("internalId", (string)ViewBag.LoginIdEncrypted)
-        <div class="container">
-            <div class="row">
-                <div class="col-md-offset-5 col-md-3">
-                    <div class="wrapper">
-                        <br />
-                        @Html.LabelFor(x => x.email)
-                        @Html.TextBoxFor(x => x.email, new { @class = "form-control", autofocus = "autofocus" })
-                        @Html.ValidationMessageFor(x => x.email, null, new { @class = "text-danger" })
-                        <br />
+    <!--SLIDE-IN ICONS-->
+    <div class="user-icon"></div>
+    <div class="pass-icon"></div>
+    <!--END SLIDE-IN ICONS-->
+    <div class="login-form">
 
-                        @Html.LabelFor(x => x.password)
-                        @Html.PasswordFor(x => x.password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.password, null, new { @class = "text-danger" })
-                        <br />
-
-                        <span class="group-btn">
-                            <input type="submit" value="Ingresar" class="btn btn-primary btn-md">
-                        </span>
-                    </div>
-                    <div class="text-danger" align="center">
-                        @ViewBag.Message
-                        @TempData["ErrorMessage"]
-                    </div>
-
-                </div>
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+        {
+            <div class="header">
+                <!--TITLE-->
+                <h2 class="text-center">S.I.A.C.</h2><!--END TITLE-->
+                <!--DESCRIPTION--><!--END DESCRIPTION-->
             </div>
-        </div>
-    }
+            @Html.AntiForgeryToken()
+
+            <div class="content">
+
+
+                <br/>
+                @Html.LabelFor(x => x.email)
+                @Html.TextBoxFor(x => x.email, new {@class = "form-control", autofocus = "autofocus"})
+                @Html.ValidationMessageFor(x => x.email, null, new {@class = "text-danger"})
+                <br/>
+
+                @Html.LabelFor(x => x.password)
+                @Html.PasswordFor(x => x.password, new {@class = "form-control"})
+                @Html.ValidationMessageFor(x => x.password, null, new {@class = "text-danger"})
+                <br/>
+                <p style="color: red; text-align: center">
+                </p>
+                <div class="footer" align="center">
+                    <span class="group-btn">
+                        <input type="submit" name="submit" value="Ingresar" class="button"/>
+                    </span>
+                </div>
+                <div class="text-danger" align="center">
+                    @ViewBag.Message
+                    @TempData["ErrorMessage"]
+                </div>
+                @Html.Hidden("internalId", (string) ViewBag.LoginIdEncrypted)
+            </div>
+        }
+    </div>
+</div>
+<!--END WRAPPER-->
+<!--GRADIENT-->
+<div class="gradient"></div><!--END GRADIENT-->
+
+</body>

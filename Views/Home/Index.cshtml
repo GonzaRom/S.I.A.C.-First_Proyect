@@ -1,31 +1,46 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Home Page";
 }
+
 <div class="text-success" align="left">
     @ViewBag.Message
     @TempData["Successful"]
 </div>
-
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+<div>
+    <h2>Bienvenido al sistema de tickets<strong> S.I.A.C.</strong></h2>
     <p>
-        <a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a>
+        Con el fin de agilizar las solicitudes de soporte y brindar un mejor servicio,
+        utilizamos un sistema de ticket de soporte. A cada solicitud se le asigna un número de ticket único que puede utilizar para verificar online el estado de su consulta.
     </p>
+    <br/>
+</div>
+<div class="row text-center">
+    <div class="col-md-6">
+        <h3>Abrir un nuevo Ticket</h3>
+        <br>
+        <div>Por favor, facilite el máximo detalle para que podamos darle la mejor asistencia. Para actualizar un Ticket enviado anteriormente, por favor acceda al sistema.</div>
+        @Html.ActionLink("Abrir nuevo Ticket", "Ticket", "Ticket", new { Model }, new { @class = "btn btn-success btn-md glyphicon glyphicon-cloud-upload" })
+    </div>
+    <div class="col-md-6">
+        <h3>Ver Estado de un Ticket</h3>
+        <br>
+        <div>Poseemos los archivos y la historia completa de todas sus solicitudes de soporte, presentes y pasadas, junto a sus respuestas.</div>
+    </div>
 </div>
 
-
 <!-- /Inicio Buscador -->
+<br>
 <div class="row center-block">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Found", "Search"))
     {
         <div class="form-group row center-block">
 
             <div class="col">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar en el sistema...">
+                    <input type="text" class="form-control" placeholder="Buscar en el sistema..." id="aBuscar">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">Buscar!</button>
+                        @Html.ActionLink("  Buscar!", "Found", "Search", new { htmlAttributes = new { @class = "form-control" } }, new {@class = "btn btn-success btn-md glyphicon glyphicon-cloud-upload"})
                     </span>
                 </div>
             </div><!-- /.col-lg-6 -->
@@ -33,33 +48,6 @@
     }
 </div>
 <!-- /Fin Buscador -->
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p>
-            <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a>
-        </p>
-    </div>
-
-
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p>
-            <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a>
-        </p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p>
-            <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a>
-        </p>
-    </div>
-</div>
+<hr/>
+<hr/>
+<hr/>

@@ -1,9 +1,8 @@
-﻿using S.I.A.C.Models;
-using System;
+﻿using Microsoft.Ajax.Utilities;
+using S.I.A.C.Models;
+using S.I.A.C.Models.DomainModels;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Ajax.Utilities;
-using S.I.A.C.Models.DomainModels;
 
 namespace S.I.A.C.Service.Implement
 {
@@ -13,27 +12,13 @@ namespace S.I.A.C.Service.Implement
 
         public List<TicketPrintableModel> SearchTicket(string stringToSearch)
         {
-            if (stringToSearch.IsNullOrWhiteSpace())
-            {
-                return null;
-            }
-
             _database = new dbSIACEntities();
-            var toSearch = stringToSearch.Trim();
-
-            List<TicketPrintableModel> foundTickets = new List<TicketPrintableModel>();
-
             using (_database)
             {
-                foundTickets = (from tick in _database.ticket
+                IQueryable<TicketPrintableModel> foundTickets = (from tick in _database.ticket
                     join creator in _database.people on tick.idCreatorPeople equals creator.id
                     join clientAddress in _database.people on tick.idClient equals clientAddress.id
                     join tecnician in _database.people on tick.idAssignedTechnician equals tecnician.id
-                    where (creator.name.Equals(toSearch, StringComparison.InvariantCultureIgnoreCase) ||
-                           clientAddress.address.Equals(toSearch, StringComparison.InvariantCultureIgnoreCase) ||
-                           tecnician.name.Equals(toSearch, StringComparison.InvariantCultureIgnoreCase) ||
-                           tecnician.lastname.Equals(toSearch, StringComparison.InvariantCultureIgnoreCase) ||
-                           creator.lastname.Equals(toSearch, StringComparison.InvariantCultureIgnoreCase))
                     select new TicketPrintableModel
                     {
                         idTicket = tick.id,
@@ -47,8 +32,23 @@ namespace S.I.A.C.Service.Implement
                         creatorPeopleLastname = creator.lastname,
                         description = tick.description,
                         email = clientAddress.email
-                    }).ToList();
-                return foundTickets;
+                    });
+                if (!stringToSearch.IsNullOrWhiteSpace())
+                {
+                    var toSearch = stringToSearch.Trim().ToLower();
+                    if (toSearch != null)
+                    {
+                        foundTickets = foundTickets.Where(currentTicket =>
+                            (currentTicket.assignedTechnician.ToLower().Contains(toSearch)) ||
+                            (currentTicket.assignedTechnicianLastname.ToLower().Contains(toSearch)) ||
+                            (currentTicket.client.ToLower().Contains(toSearch)) ||
+                            (currentTicket.clientLastname.ToLower().Contains(toSearch)) ||
+                            (currentTicket.address.ToLower().Contains(toSearch)) ||
+                            (currentTicket.description.ToLower().Contains(toSearch)));
+                    }
+                }
+
+                return foundTickets.ToList();
             }
         }
     }

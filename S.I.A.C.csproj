@@ -250,8 +250,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Eventstore.mdf" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\StyleSheet1.css" />
+    <Content Include="Content\StyleSheet2.css" />
     <Content Include="fonts\4769308501582800513.svg" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -280,6 +284,9 @@
     </Content>
     <Content Include="App_Data\eventstore.sqlite" />
     <Content Include="libman.json" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\SIACfase1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -318,9 +325,7 @@
     <Content Include="Views\Search\Search.cshtml" />
     <Content Include="Views\Search\Found.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handelrs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
