@@ -31,6 +31,7 @@ namespace S.I.A.C.Models.DomainModels
         public int idPriority { get; set; }
         public int idCategory { get; set; }
         public Nullable<int> idClient { get; set; }
+        public int idLocal { get; set; }
     
         public virtual category category { get; set; }
         public virtual people people { get; set; }

@@ -71,7 +71,7 @@
                 @Html.DisplayFor(modelItem => creat)
             </td>
             @{
-                var ticketId = Encrypt.Protect(item.idTicket.ToString());
+                var ticketId = Encrypt.Protect(item.idLocal.ToString());
             }
             <td>
                 @Html.ActionLink("Editar", "Edit", new { internalId = ticketId })

@@ -31,6 +31,7 @@ namespace S.I.A.C.Models.DomainModels
         public string address { get; set; }
         public Nullable<System.DateTime> creationDate { get; set; }
         public int idRol { get; set; }
+        public int isActive { get; set; }
     
         public virtual rol rol { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

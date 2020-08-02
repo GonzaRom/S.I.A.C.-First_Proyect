@@ -1,26 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Web.Mvc;
+using S.I.A.C.Service;
 
 namespace S.I.A.C.Models
 {
     public class TicketViewModel
     {
-        private const int ESTIMATEDFINISHDAYS = 7; //Por defecto se asigna solo 7 dias como fecha estimativa
-        private const int PENDIENTE = 1; //Se construye como pendiente
+        private const int EstimatedFinishDays = 7; //Por defecto se asigna solo 7 dias como fecha estimativa
+        private const int Pendiente = 1; //Se construye como pendiente
+        private readonly ViewUtilityServices _viewUtilityServices;
 
 
         public TicketViewModel()
         {
+            _viewUtilityServices = new ViewUtilityServices();
             creationDate = DateTime.Now;
-            estimatedFinishDate = DateTime.Now.AddDays(ESTIMATEDFINISHDAYS);
-            idStatus = PENDIENTE;
+            estimatedFinishDate = DateTime.Now.AddDays(EstimatedFinishDays);
+            idStatus = Pendiente;
             internalId = new Guid();
         }
 
         public Guid internalId { get; }
+        [Display(Name = "Ticket N°:")] public int idLocal { get; set; } //<----Buscar alernativa
 
         [Display(Name = "Descripción:")]
+        [DataType(DataType.MultilineText)]
         [Required]
         [MaxLength(900, ErrorMessage = "Maximo 900 caracteres")]
         public string description { get; set; }
@@ -35,19 +42,40 @@ namespace S.I.A.C.Models
         public DateTime estimatedFinishDate { get; set; }
 
         [Display(Name = "Prioridad:")] public int idPriority { get; set; }
-
         [Display(Name = "Categoria:")] public int idCategory { get; set; }
         [Display(Name = "Cliente:")] public int idClient { get; set; }
         [Display(Name = "Tecnico Asignado:")] public int? idAssignedTechnician { get; set; }
-        [Display(Name = "Estado:")]
-        public int idStatus { get; set; }
-       
+        [Display(Name = "Estado:")] public int idStatus { get; set; }
+
+        public List<SelectListItem> prioritiesList
+        {
+            get { return _viewUtilityServices.GetListOfPriorities(); }
+        }
+
+        public List<SelectListItem> categoriesList
+        {
+            get { return _viewUtilityServices.GetListOfCategories(); }
+        }
+
+        public List<SelectListItem> technicianList
+        {
+            get { return _viewUtilityServices.GetListOfTechnicians(); }
+        }
+
+        public List<SelectListItem> clientsList
+        {
+            get { return _viewUtilityServices.GetListOfClients(); }
+        }
+
+        public List<SelectListItem> rolsList
+        {
+            get { return _viewUtilityServices.GetListOfRols(); }
+        }
     }
 
     public class TicketPrintableModel
     {
-        ///
-        public int idTicket { get; set; } //<----Buscar alernativa
+        [Display(Name = "Ticket N°:")] public int idLocal { get; set; } //<----Buscar alernativa
 
         [Display(Name = "Fecha de carga:")] public DateTime CreationDateTime { get; set; }
 
@@ -79,6 +107,5 @@ namespace S.I.A.C.Models
             fullName.Append(lastName);
             return fullName.ToString();
         }
-
     }
 }

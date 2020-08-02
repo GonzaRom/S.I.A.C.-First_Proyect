@@ -1,11 +1,12 @@
-﻿
-@{
+﻿@model S.I.A.C.Models.ViewModels.SearchViewModel
+    @{
     ViewBag.Title = "Home Page";
 }
 
 <div class="text-success" align="left">
     @ViewBag.Message
     @TempData["Successful"]
+    <h3>@TempData["TicketNumber"]</h3>
 </div>
 <div>
     <h2>Bienvenido al sistema de tickets<strong> S.I.A.C.</strong></h2>
@@ -13,7 +14,7 @@
         Con el fin de agilizar las solicitudes de soporte y brindar un mejor servicio,
         utilizamos un sistema de ticket de soporte. A cada solicitud se le asigna un número de ticket único que puede utilizar para verificar online el estado de su consulta.
     </p>
-    <br/>
+    <br />
 </div>
 <div class="row text-center">
     <div class="col-md-6">
@@ -32,22 +33,26 @@
 <!-- /Inicio Buscador -->
 <br>
 <div class="row center-block">
-    @using (Html.BeginForm("Found", "Search"))
+    @using (Html.BeginForm("Search", "Search"))
     {
         <div class="form-group row center-block">
 
             <div class="col">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar en el sistema..." id="aBuscar">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
                     <span class="input-group-btn">
-                        @Html.ActionLink("  Buscar!", "Found", "Search", new { htmlAttributes = new { @class = "form-control" } }, new {@class = "btn btn-success btn-md glyphicon glyphicon-cloud-upload"})
+                        @Html.EditorFor(model => model.toSearch, new { htmlAttributes = new { @class = "form-control", placeholder = "Buscar en el sistema..." } })
+                        @Html.ValidationMessageFor(model => model.toSearch, "", new { @class = "text-danger" })
                     </span>
                 </div>
-            </div><!-- /.col-lg-6 -->
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Buscar!</button>
+                </span>
+            </div>
         </div>
     }
 </div>
 <!-- /Fin Buscador -->
-<hr/>
-<hr/>
-<hr/>
+<hr />
+<hr />
+<hr />

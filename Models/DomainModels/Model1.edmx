@@ -5,10 +5,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self"
-              xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
-              xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
-              xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="category">
           <Key>
             <PropertyRef Name="id" />
@@ -44,6 +41,7 @@
           <Property Name="address" Type="varchar" MaxLength="200" />
           <Property Name="creationDate" Type="datetime" />
           <Property Name="idRol" Type="int" Nullable="false" />
+          <Property Name="isActive" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="priority">
           <Key>
@@ -89,7 +87,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="idCreatorPeople" Type="int" Nullable="false" />
           <Property Name="idAssignedTechnician" Type="int" />
           <Property Name="description" Type="varchar(max)" Nullable="false" />
@@ -100,6 +98,7 @@
           <Property Name="idPriority" Type="int" Nullable="false" />
           <Property Name="idCategory" Type="int" Nullable="false" />
           <Property Name="idClient" Type="int" />
+          <Property Name="idLocal" Type="int" Nullable="false" StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="ticketHistory">
           <Key>
@@ -237,8 +236,7 @@
             <End Role="ticketHistory" EntitySet="ticketHistory" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbSIACModel" Alias="Self" annotation:UseStrongSpatialTypes="false"
@@ -292,6 +290,7 @@
           <NavigationProperty Name="ticket1" Relationship="Self.FK_ticket_people1" FromRole="people" ToRole="ticket" />
           <NavigationProperty Name="ticketHistory" Relationship="Self.FK_ticketHistory_people" FromRole="people"
                               ToRole="ticketHistory" />
+          <Property Name="isActive" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="priority">
           <Key>
@@ -368,6 +367,7 @@
           <NavigationProperty Name="ticketHistory" Relationship="Self.FK_ticketHistory_ticket" FromRole="ticket"
                               ToRole="ticketHistory" />
           <Property Name="idClient" Type="Int32" />
+          <Property Name="idLocal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="ticketHistory">
           <Key>
@@ -634,6 +634,7 @@
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="creationDate" ColumnName="creationDate" />
                 <ScalarProperty Name="idRol" ColumnName="idRol" />
+		<ScalarProperty Name="isActive" ColumnName="isActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -685,6 +686,7 @@
           <EntitySetMapping Name="ticket">
             <EntityTypeMapping TypeName="dbSIACModel.ticket">
               <MappingFragment StoreEntitySet="ticket">
+                <ScalarProperty Name="idLocal" ColumnName="idLocal" />
                 <ScalarProperty Name="idClient" ColumnName="idClient" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="idCreatorPeople" ColumnName="idCreatorPeople" />

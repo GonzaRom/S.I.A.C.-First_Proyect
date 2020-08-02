@@ -1,4 +1,5 @@
-﻿@using S.I.A.C.Models
+﻿@using S.I.A.C.Filters
+@using S.I.A.C.Models
 @using S.I.A.C.Service
 @model IEnumerable<S.I.A.C.Models.TicketPrintableModel>
 
@@ -6,8 +7,8 @@
     ViewBag.Title = "CurrentTickets";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@Html.Hidden("internalId", (string)ViewBag.TicketIdEncrypt)
-<h2>Pendientes @Model.Count()</h2>
+
+<h2>Pendientes: @Model.Count()</h2>
 
 <p>
     @Html.ActionLink("Crear Nuevo Ticket", "Ticket")
@@ -43,6 +44,7 @@
         <th></th>
     </tr>
     </thead>
+    @Html.Hidden("internalId", (string) ViewBag.TicketIdEncrypt)
     @foreach (var item in Model)
     {
         var client = item.getFullName(item.client, item.clientLastname);
@@ -74,13 +76,15 @@
                 @Html.DisplayFor(modelItem => creat)
             </td>
             @{
-                var ticketId = Encrypt.Protect(item.idTicket.ToString());
+                var ticketId = Encrypt.Protect(item.idLocal.ToString());
             }
             <td>
-                @Html.ActionLink("Editar", "Edit", new {internalId = ticketId})
-                @Html.ActionLink("Actualizar", "Detail", new {internalId = ticketId})
-                @Html.ActionLink("Detalle", "Detail", new {id= ticketId })
-                @Html.ActionLink("Borrar", "Delete", new {/* id=item.PrimaryKey */})
+                @if (AuthorizeViews.IsAuthonized(14))
+                {
+                    @Html.ActionLink("Editar", "Edit", new {internalId = ticketId})
+                    Html.ActionLink("Borrar", "Delete", new {/*internalId = ticketId*/});
+                }
+                @Html.ActionLink("Detalle / Actualizar", "Detail", new {internalId = ticketId})
             </td>
         </tr>
     }

@@ -10,20 +10,35 @@ namespace S.I.A.C.Service
     {
         private dbSIACEntities _database;
 
-        public string CreateTicket(TicketViewModel baseTicket, people sessionUser)
+        /// <summary>
+        /// Create a new ticket, if a client is the creator idClient is taken from the sessionUser info. Othewise from the ViewModel.
+        /// </summary>
+        /// <param name="baseTicket"></param>
+        /// <param name="sessionUser"></param>
+        /// <returns>True ticket created. False something went wrong</returns>
+        public (bool result, int idLocal) CreateTicket(TicketViewModel baseTicket, people sessionUser)
         {
+            var random = new Random();
+            baseTicket.idLocal = random.Next(1000, 99999); //Algun dia llegara a mas de esa cantidad de tickets?
+
             _database = new dbSIACEntities();
+            if (baseTicket.idClient == 0)
+            {
+                baseTicket.idClient = sessionUser.id;
+            }
 
             var ticket = new ticket
             {
+                idLocal = baseTicket.idLocal,
                 idStatus = baseTicket.idStatus,
                 idCreatorPeople = sessionUser.id,
                 creationDate = baseTicket.creationDate,
                 estimatedFinishDate = baseTicket.estimatedFinishDate,
                 idPriority = baseTicket.idPriority,
-                idAssignedTechnician = baseTicket.idAssignedTechnician,
                 idCategory = baseTicket.idCategory,
-                description = baseTicket.description
+                description = baseTicket.description,
+                idClient = baseTicket.idClient,
+                idAssignedTechnician = baseTicket.idAssignedTechnician
             };
             try
             {
@@ -32,12 +47,23 @@ namespace S.I.A.C.Service
                     _database.ticket.Add(ticket);
                     _database.SaveChanges();
                 }
-
-                return "Ticket creado exitosamente";
+                return (true, baseTicket.idLocal);
+                //TODO Hangfire { send email to admin/technical-supervisor}
             }
             catch (Exception ex)
             {
-                return null;
+                return (false, 0);
+            }
+        }
+
+        public int SearchTicketId(string ticketId)
+        {
+            _database = new dbSIACEntities();
+            using (_database)
+            {
+                var localTicketId = Int32.Parse(ticketId);
+                var entityTicketId = _database.ticket.FirstOrDefault(current => current.idLocal == localTicketId);
+                return entityTicketId?.id ?? 0; //demasiado comprimido?
             }
         }
 
@@ -48,7 +74,7 @@ namespace S.I.A.C.Service
 
             using (_database)
             {
-                var result = _database.ticket.SingleOrDefault(b => b.id == id);
+                var result = _database.ticket.SingleOrDefault(b => b.idLocal == id);
                 if (result == null)
                 {
                     _database.Dispose();
@@ -71,13 +97,14 @@ namespace S.I.A.C.Service
 
         public bool UpdateTicket(TicketHistoryViewModel baseTicket, string ticketId)
         {
+            var entityTicketId = SearchTicketId(ticketId);
             _database = new dbSIACEntities();
             ticketHistory updateTicket = new ticketHistory
             {
                 date = DateTime.Now,
                 idPeople = baseTicket.idPeople,
                 idStatus = baseTicket.idStatus,
-                idTicket = Int32.Parse(ticketId),
+                idTicket = entityTicketId,
                 note = baseTicket.note
             };
             try
@@ -92,6 +119,7 @@ namespace S.I.A.C.Service
             {
                 return false;
             }
+
             return true;
         }
 

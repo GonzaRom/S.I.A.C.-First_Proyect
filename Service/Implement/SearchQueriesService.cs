@@ -1,4 +1,5 @@
-﻿using Microsoft.Ajax.Utilities;
+﻿using System;
+using Microsoft.Ajax.Utilities;
 using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using System.Collections.Generic;
@@ -18,13 +19,13 @@ namespace S.I.A.C.Service.Implement
                 IQueryable<TicketPrintableModel> foundTickets = (from tick in _database.ticket
                     join creator in _database.people on tick.idCreatorPeople equals creator.id
                     join clientAddress in _database.people on tick.idClient equals clientAddress.id
-                    join tecnician in _database.people on tick.idAssignedTechnician equals tecnician.id
+                    join technician in _database.people on tick.idAssignedTechnician equals technician.id
                     select new TicketPrintableModel
                     {
-                        idTicket = tick.id,
+                        idLocal = tick.idLocal,
                         address = clientAddress.address,
-                        assignedTechnician = tecnician.name,
-                        assignedTechnicianLastname = tecnician.lastname,
+                        assignedTechnician = technician.name,
+                        assignedTechnicianLastname = technician.lastname,
                         client = clientAddress.name,
                         clientLastname = clientAddress.lastname,
                         CreationDateTime = tick.creationDate,
@@ -32,7 +33,7 @@ namespace S.I.A.C.Service.Implement
                         creatorPeopleLastname = creator.lastname,
                         description = tick.description,
                         email = clientAddress.email
-                    });
+                    }).OrderByDescending(x => x.CreationDateTime);
                 if (!stringToSearch.IsNullOrWhiteSpace())
                 {
                     var toSearch = stringToSearch.Trim().ToLower();
@@ -46,10 +47,46 @@ namespace S.I.A.C.Service.Implement
                             (currentTicket.address.ToLower().Contains(toSearch)) ||
                             (currentTicket.description.ToLower().Contains(toSearch)));
                     }
+
+                    return foundTickets.ToList();
                 }
 
-                return foundTickets.ToList();
+                return null;
             }
+        }
+
+        public List<TicketPrintableModel> SearchTicketByClient(int idClient)
+        {
+            if (idClient > 0)
+            {
+                _database = new dbSIACEntities();
+                using (_database)
+                {
+                    IQueryable<TicketPrintableModel> foundTickets =
+                        (from tick in _database.ticket
+                            where tick.idClient == idClient
+                            join creator in _database.people on tick.idCreatorPeople equals creator.id
+                            join clientAddress in _database.people on tick.idClient equals clientAddress.id
+                            join tecnician in _database.people on tick.idAssignedTechnician equals tecnician.id
+                            select new TicketPrintableModel
+                            {
+                                idLocal = tick.idLocal,
+                                address = clientAddress.address,
+                                assignedTechnician = tecnician.name,
+                                assignedTechnicianLastname = tecnician.lastname,
+                                client = clientAddress.name,
+                                clientLastname = clientAddress.lastname,
+                                CreationDateTime = tick.creationDate,
+                                creatorPeople = creator.name,
+                                creatorPeopleLastname = creator.lastname,
+                                description = tick.description,
+                                email = clientAddress.email
+                            }).OrderByDescending(x => x.CreationDateTime);
+                    return foundTickets.ToList();
+                }
+            }
+
+            return null;
         }
     }
 }

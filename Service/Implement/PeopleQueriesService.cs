@@ -1,10 +1,7 @@
 ﻿using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Web.Mvc;
 
 namespace S.I.A.C.Service
 {
@@ -22,15 +19,15 @@ namespace S.I.A.C.Service
         {
             _database = new dbSIACEntities();
             people activePerson = null;
+            var truePassword = Encrypt.GetSHA256(password.Trim());
             using (_database)
             {
                 var objPeople =
-                    _database.people.FirstOrDefault(e => e.email == email.Trim() && e.pass == password.Trim());
+                    _database.people.FirstOrDefault(e => e.email == email.Trim() && e.pass == truePassword);
 
                 activePerson = objPeople;
             }
 
-            _database.Dispose();
             return activePerson;
         }
 
@@ -42,6 +39,7 @@ namespace S.I.A.C.Service
             {
                 currentPeople = _database.people.FirstOrDefault(current => current.id == peopleId);
             }
+
             _database.Dispose();
             return currentPeople;
         }
@@ -65,6 +63,7 @@ namespace S.I.A.C.Service
                         }
                     ).ToList();
             }
+
             _database.Dispose();
             return listOfClients;
         }
@@ -86,19 +85,9 @@ namespace S.I.A.C.Service
                         }
                     ).ToList();
             }
+
             _database.Dispose();
             return listOfTechnicians;
-        }
-        public string GetFullName(int peopleId)
-        {
-            var fullName = new StringBuilder();
-            var curPeople = GetDetailsPeople(peopleId);
-           
-                fullName.Append(curPeople.name);
-                fullName.Append(" ");
-                fullName.Append(curPeople.lastname);
-
-                return fullName.ToString();
         }
     }
 }

@@ -7,8 +7,8 @@ namespace S.I.A.C.Service
     interface ITicketQueries
     {
         List<TicketPrintableModel> GetTicketsList();
-        TicketViewModel GeTicketViewModel(int? ticketId);
-        TicketPrintableModel GeTicketPrintableViewModel(int ticketId);
-        List<TicketHistoryViewModel> GeTicketHistoryViewModel(int? ticketId);
+        TicketViewModel GeTicketViewModel(int ticketIdLocal);
+        TicketPrintableModel GeTicketPrintableViewModel(int ticketIdLocal);
+        List<TicketHistoryViewModel> GeTicketHistoryViewModel(int ticketIdLocal);
     }
 }

@@ -11,6 +11,7 @@ namespace S.I.A.C.Service
     {
         private dbSIACEntities _database;
         private List<TicketPrintableModel> printableTickets = new List<TicketPrintableModel>();
+        private readonly TicketCommandsService _ticketCommandsService = new TicketCommandsService();
 
         public List<TicketPrintableModel> GetTicketsList()
         {
@@ -24,7 +25,7 @@ namespace S.I.A.C.Service
                     join tecnician in _database.people on tick.idAssignedTechnician equals tecnician.id
                     select new TicketPrintableModel
                     {
-                        idTicket = tick.id,
+                        idLocal = tick.idLocal,
                         address = clientAddress.address,
                         assignedTechnician = tecnician.name,
                         assignedTechnicianLastname = tecnician.lastname,
@@ -42,13 +43,13 @@ namespace S.I.A.C.Service
             return printableTickets;
         }
 
-        public TicketViewModel GeTicketViewModel(int? ticketId)
+        public TicketViewModel GeTicketViewModel(int ticketIdLocal)
         {
             _database = new dbSIACEntities();
             var ticketViewModel = new TicketViewModel();
             using (_database)
             {
-                var ticket = _database.ticket.Find(ticketId);
+                var ticket = _database.ticket.FirstOrDefault(currentTicket => currentTicket.idLocal == ticketIdLocal);
                 if (ticket == null)
                 {
                     return null;
@@ -68,7 +69,7 @@ namespace S.I.A.C.Service
             return ticketViewModel;
         }
 
-        public TicketPrintableModel GeTicketPrintableViewModel(int ticketId)
+        public TicketPrintableModel GeTicketPrintableViewModel(int ticketIdLocal)
         {
             _database = new dbSIACEntities();
             TicketPrintableModel currentTickets;
@@ -79,11 +80,10 @@ namespace S.I.A.C.Service
                     join creator in _database.people on tick.idCreatorPeople equals creator.id
                     join clientAddress in _database.people on tick.idClient equals clientAddress.id
                     join tecnician in _database.people on tick.idAssignedTechnician equals tecnician.id
-                    where tick.id == ticketId
+                    where tick.idLocal == ticketIdLocal
                     select new TicketPrintableModel
                     {
-                        
-                        idTicket = tick.id,
+                        idLocal = tick.idLocal,
                         address = clientAddress.address,
                         assignedTechnician = tecnician.name,
                         assignedTechnicianLastname = tecnician.lastname,
@@ -102,35 +102,32 @@ namespace S.I.A.C.Service
             return currentTickets;
         }
 
-        public List<TicketHistoryViewModel> GeTicketHistoryViewModel(int? ticketId)
+        public List<TicketHistoryViewModel> GeTicketHistoryViewModel(int ticketIdLocal)
         {
             _database = new dbSIACEntities();
-            if (ticketId != null)
+            using (_database)
             {
-                using (_database)
-                {
-                    var ticketHistoryList = (from tick in _database.ticketHistory
-                        join creator in _database.people on tick.idPeople equals creator.id
-                        where tick.idTicket == ticketId
-                        select new TicketHistoryViewModel()
-                        {
-                            idTicket = tick.id,
-                            date = tick.date,
-                            idPeople = tick.idPeople,
-                            idStatus = tick.idStatus,
-                            note = tick.note,
-                            peopleName = creator.name,
-                            peopleLastName = creator.lastname,
-                        }).ToList();
-                    foreach (var currentTicket in ticketHistoryList)
+                var ticketId = _ticketCommandsService.SearchTicketId(ticketIdLocal.ToString());
+                var ticketHistoryList = (from tick in _database.ticketHistory
+                    join creator in _database.people on tick.idPeople equals creator.id
+                    where tick.idTicket == ticketId
+                    select new TicketHistoryViewModel()
                     {
-                        currentTicket.SetFullName();
-                    }
+                        idTicket = tick.id,
+                        date = tick.date,
+                        idPeople = tick.idPeople,
+                        idStatus = tick.idStatus,
+                        note = tick.note,
+                        peopleName = creator.name,
+                        peopleLastName = creator.lastname
+                    }).ToList();
+                /* foreach (var currentTicket in ticketHistoryList)
+                 {
+                     currentTicket.SetFullName();
+                 }*/
 
-                    return ticketHistoryList;
-                }
+                return ticketHistoryList;
             }
-            else return null;
         }
     }
 }

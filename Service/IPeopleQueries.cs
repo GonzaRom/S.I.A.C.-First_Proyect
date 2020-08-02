@@ -10,6 +10,5 @@ namespace S.I.A.C.Service
         people GetDetailsPeople(int peopleId);
         List<PeopleViewModel> GetListClients();
         List<TechniciansViewModel> GetListTechnicians();
-        string GetFullName(int peopleId);
     }
 }

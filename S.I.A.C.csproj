@@ -172,6 +172,7 @@
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Filters\AuthorizeUser.cs" />
+    <Compile Include="Filters\AuthorizeViews.cs" />
     <Compile Include="Filters\SessionVerification.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

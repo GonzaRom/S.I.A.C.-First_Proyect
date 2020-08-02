@@ -2,6 +2,7 @@
 using S.I.A.C.Models.DomainModels;
 using System;
 using System.Linq;
+using S.I.A.C.Service;
 
 namespace S.I.A.C.Service.Implement
 {
@@ -30,17 +31,18 @@ namespace S.I.A.C.Service.Implement
                     name = registrationViewModel.name,
                     lastname = registrationViewModel.lastname,
                     email = registrationViewModel.email,
-                    pass = registrationViewModel.pass,
-                    idRol = registrationViewModel.idRol
+                    pass = Encrypt.GetSHA256(registrationViewModel.pass.ToString()),
+                    idRol = registrationViewModel.idRol,
+                    isActive = 1
                 };
                 _database.people.Add(newPeople);
                 _database.SaveChanges();
-            
-            if (peopleCount == _database.people.Count())
-            {
-                return false;
-            }
-            else return true;
+
+                if (peopleCount == _database.people.Count())
+                {
+                    return false;
+                }
+                else return true;
             }
         }
     }

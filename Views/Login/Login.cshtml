@@ -24,21 +24,20 @@
 </script>
 <body>
 
-<!--WRAPPER-->
+
 <div id="wrapper">
 
-    <!--SLIDE-IN ICONS-->
+   
     <div class="user-icon"></div>
     <div class="pass-icon"></div>
-    <!--END SLIDE-IN ICONS-->
+   
     <div class="login-form">
 
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
             <div class="header">
-                <!--TITLE-->
-                <h2 class="text-center">S.I.A.C.</h2><!--END TITLE-->
-                <!--DESCRIPTION--><!--END DESCRIPTION-->
+                <img src="~/Resource/logoSIAC.png" alt="Site Logo" style="position:center;width: 75%;"/>
+
             </div>
             @Html.AntiForgeryToken()
 
@@ -71,8 +70,7 @@
         }
     </div>
 </div>
-<!--END WRAPPER-->
-<!--GRADIENT-->
-<div class="gradient"></div><!--END GRADIENT-->
+
+<div class="gradient"></div>
 
 </body>

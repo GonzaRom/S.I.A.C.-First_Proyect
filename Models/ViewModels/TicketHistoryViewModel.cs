@@ -19,11 +19,17 @@ namespace S.I.A.C.Models.ViewModels
 
         [Display(Name = "Estado:")] public Nullable<int> idStatus { get; set; }
         [ScaffoldColumn(false)] public int idPeople { get; set; }
-        [Display(Name = "Modificado por:")] public string peopleFullName { get; set; }
+        [Display(Name = "Modificado por:")] public string peopleFullName
+        {
+            get
+            {
+                return peopleName + " " + peopleLastName;
+            }
+        }
         [ScaffoldColumn(false)] public string peopleName { get; set; }
         [ScaffoldColumn(false)] public string peopleLastName { get; set; }
 
-        public void SetFullName()
+        /*public void SetFullName()
         {
             var fullName = new StringBuilder();
             fullName.Append(peopleName);
@@ -31,6 +37,6 @@ namespace S.I.A.C.Models.ViewModels
             fullName.Append(peopleLastName);
 
             this.peopleFullName = fullName.ToString();
-        }
+        }*/
     }
 }

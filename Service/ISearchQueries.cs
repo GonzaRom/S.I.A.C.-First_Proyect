@@ -6,5 +6,6 @@ namespace S.I.A.C.Service
     interface ISearchQueries
     {
         List<TicketPrintableModel> SearchTicket(string stringToSearch);
+        List<TicketPrintableModel> SearchTicketByClient(int idClient);
     }
 }

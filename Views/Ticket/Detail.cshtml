@@ -17,6 +17,9 @@
     <table class="resp">
         <tr>
             <th>
+                @Html.DisplayName("Ticket N°")
+            </th>
+            <th>
                 @Html.DisplayName("Fecha de creacion")
             </th>
             <th>
@@ -47,6 +50,9 @@
             var creat = currentTicket.getFullName(currentTicket.creatorPeople, currentTicket.assignedTechnicianLastname);
         }
         <tr>
+        <td>
+            @currentTicket.idLocal
+        </td>
         <td>
             @currentTicket.CreationDateTime
         </td>
@@ -113,17 +119,10 @@
 <p></p>
 <div class="row center-block t-1 b-1">
     <div class="col-md-6" style="color: black">
-        @Html.ActionLink("  Actualizar", "Update", new { internalId = (string)ViewBag.TicketIdEncrypt }, new
-        {
-            @class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload"
-        })
+        @Html.ActionLink("  Actualizar", "Update", new {internalId = (string) ViewBag.TicketIdEncrypt}, new {@class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload"})
     </div>
     <div class="col-md-6" style="color: black">
-        @Html.ActionLink("  Regresar", "CurrentTickets", new { internalId = (string)ViewBag.TicketIdEncrypt },
-            new
-            {
-                @class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"
-            })
+        @Html.ActionLink("  Regresar", "CurrentTickets", new {internalId = (string) ViewBag.TicketIdEncrypt}, new {@class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"})
     </div>
 </div>
 <p></p>
