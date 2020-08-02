@@ -12,16 +12,16 @@ namespace S.I.A.C.Controllers
         public ActionResult Login()
         {
             var loginDataModel = new LoginDataModel();
-            var encryptedLoginId = Encrypt.GetSHA256(loginDataModel.internalId.ToString());
-            ViewBag.LoginIdEncrypted = encryptedLoginId;
+           // var encryptedLoginId = Encrypt.GetSHA256(loginDataModel.internalId.ToString());
+            //ViewBag.LoginIdEncrypted = encryptedLoginId;
             return View(loginDataModel);
         }
 
         [HttpPost]
         [HandleError]
-        public ActionResult Login(LoginDataModel loginDataModel,string internalId)
+        public ActionResult Login(LoginDataModel loginDataModel)
         {
-            if ((internalId != Encrypt.GetSHA256(loginDataModel.internalId.ToString())) || (!ModelState.IsValid))
+            if (!ModelState.IsValid)
             {
                 return View(loginDataModel);
             }

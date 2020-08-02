@@ -46,12 +46,12 @@
 
                 <br/>
                 @Html.LabelFor(x => x.email)
-                @Html.TextBoxFor(x => x.email, new {@class = "form-control", autofocus = "autofocus"})
+                @Html.TextBoxFor(x => x.email, new {@class = "form-control .username", autofocus = "autofocus"})
                 @Html.ValidationMessageFor(x => x.email, null, new {@class = "text-danger"})
                 <br/>
 
                 @Html.LabelFor(x => x.password)
-                @Html.PasswordFor(x => x.password, new {@class = "form-control"})
+                @Html.PasswordFor(x => x.password, new {@class = "form-control .password"})
                 @Html.ValidationMessageFor(x => x.password, null, new {@class = "text-danger"})
                 <br/>
                 <p style="color: red; text-align: center">

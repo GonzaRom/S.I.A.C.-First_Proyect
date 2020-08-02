@@ -87,7 +87,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idCreatorPeople" Type="int" Nullable="false" />
           <Property Name="idAssignedTechnician" Type="int" />
           <Property Name="description" Type="varchar(max)" Nullable="false" />
@@ -98,7 +98,7 @@
           <Property Name="idPriority" Type="int" Nullable="false" />
           <Property Name="idCategory" Type="int" Nullable="false" />
           <Property Name="idClient" Type="int" />
-          <Property Name="idLocal" Type="int" Nullable="false" StoreGeneratedPattern="None" />
+          <Property Name="idLocal" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ticketHistory">
           <Key>

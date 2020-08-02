@@ -128,7 +128,7 @@ namespace S.I.A.C.Controllers
         {
             var ticketId = Encrypt.Unprotect(internalId);
             var ticketHistoryView = new TicketHistoryViewModel();
-
+            ViewBag.status = _viewUtilityServices.GetListOfStatus();
             var encryptedTicketId = Encrypt.Protect(ticketId);
             ViewBag.TicketIdEncrypt = encryptedTicketId;
 
@@ -139,6 +139,7 @@ namespace S.I.A.C.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Update(string internalId, TicketHistoryViewModel ticketHistoryViewModel)
         {
+            ViewBag.status = _viewUtilityServices.GetListOfStatus();
             var ticketId = Encrypt.Unprotect(internalId);
             var currentPeople = (people) Session["User"];
             ticketHistoryViewModel.idPeople = currentPeople.id;
