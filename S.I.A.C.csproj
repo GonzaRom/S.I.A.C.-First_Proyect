@@ -326,6 +326,7 @@
     <Content Include="Views\Ticket\Update.cshtml" />
     <Content Include="Views\Search\Search.cshtml" />
     <Content Include="Views\Search\Found.cshtml" />
+    <Content Include="Views\Search\SearchID.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

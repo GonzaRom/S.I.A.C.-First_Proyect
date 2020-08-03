@@ -37,12 +37,10 @@
 </div>
 }
 
-<div class="col-md-6" style="color: black">
-    @Html.ActionLink("  Actualizar", "Found", new {Model}, new
-    {
-        @class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload"
-    })
+<div>
+    @Html.ActionLink("  Regresar", "Index","Home",null, new { @class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left" })
 </div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Ajax.Utilities;
+﻿using Microsoft.Ajax.Utilities;
 using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using System.Collections.Generic;
@@ -57,32 +56,65 @@ namespace S.I.A.C.Service.Implement
 
         public List<TicketPrintableModel> SearchTicketByClient(int idClient)
         {
-            if (idClient > 0)
+            if (idClient <= 0) return null;
+
+            _database = new dbSIACEntities();
+            using (_database)
             {
-                _database = new dbSIACEntities();
-                using (_database)
+                IQueryable<TicketPrintableModel> foundTickets =
+                    (from ticket in _database.ticket
+                        where ticket.idClient == idClient
+                        join creator in _database.people on ticket.idCreatorPeople equals creator.id
+                        join clientAddress in _database.people on ticket.idClient equals clientAddress.id
+                        join tecnician in _database.people on ticket.idAssignedTechnician equals tecnician.id
+                        select new TicketPrintableModel
+                        {
+                            idLocal = ticket.idLocal,
+                            address = clientAddress.address,
+                            assignedTechnician = tecnician.name,
+                            assignedTechnicianLastname = tecnician.lastname,
+                            client = clientAddress.name,
+                            clientLastname = clientAddress.lastname,
+                            CreationDateTime = ticket.creationDate,
+                            creatorPeople = creator.name,
+                            creatorPeopleLastname = creator.lastname,
+                            description = ticket.description,
+                            email = clientAddress.email
+                        }).OrderByDescending(x => x.CreationDateTime);
+                return foundTickets.ToList();
+            }
+        }
+
+        public TicketPrintableModel SearchTicketByNumber(int localIdTicket)
+        {
+            if (localIdTicket <= 0) return null;
+
+            _database = new dbSIACEntities();
+            using (_database)
+            {
+                if (_database.ticket.FirstOrDefault(currentTicket => currentTicket.idLocal == localIdTicket) !=
+                    null)
                 {
-                    IQueryable<TicketPrintableModel> foundTickets =
-                        (from tick in _database.ticket
-                            where tick.idClient == idClient
-                            join creator in _database.people on tick.idCreatorPeople equals creator.id
-                            join clientAddress in _database.people on tick.idClient equals clientAddress.id
-                            join tecnician in _database.people on tick.idAssignedTechnician equals tecnician.id
-                            select new TicketPrintableModel
-                            {
-                                idLocal = tick.idLocal,
-                                address = clientAddress.address,
-                                assignedTechnician = tecnician.name,
-                                assignedTechnicianLastname = tecnician.lastname,
-                                client = clientAddress.name,
-                                clientLastname = clientAddress.lastname,
-                                CreationDateTime = tick.creationDate,
-                                creatorPeople = creator.name,
-                                creatorPeopleLastname = creator.lastname,
-                                description = tick.description,
-                                email = clientAddress.email
-                            }).OrderByDescending(x => x.CreationDateTime);
-                    return foundTickets.ToList();
+                    var foundTickets = (from ticket in _database.ticket
+                        where ticket.idLocal == localIdTicket
+                        join creator in _database.people on ticket.idCreatorPeople equals creator.id
+                        join clientAddress in _database.people on ticket.idClient equals clientAddress.id
+                        join tecnician in _database.people on ticket.idAssignedTechnician equals tecnician.id
+                        select new TicketPrintableModel
+                        {
+                            idLocal = ticket.idLocal,
+                            address = clientAddress.address,
+                            assignedTechnician = tecnician.name,
+                            assignedTechnicianLastname = tecnician.lastname,
+                            client = clientAddress.name,
+                            clientLastname = clientAddress.lastname,
+                            CreationDateTime = ticket.creationDate,
+                            creatorPeople = creator.name,
+                            creatorPeopleLastname = creator.lastname,
+                            description = ticket.description,
+                            email = clientAddress.email
+                        }).FirstOrDefault();
+                    return foundTickets;
                 }
             }
 

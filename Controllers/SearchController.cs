@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
+using S.I.A.C.Filters;
 using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Models.ViewModels;
+using S.I.A.C.Service;
 using S.I.A.C.Service.Implement;
 
 namespace S.I.A.C.Controllers
@@ -27,6 +30,7 @@ namespace S.I.A.C.Controllers
         }
 
         [HttpPost]
+        [AuthorizeUser(11)]
         public ActionResult Search(SearchViewModel searchViewModel)
         {
             var aSearch = searchViewModel.toSearch;
@@ -47,6 +51,26 @@ namespace S.I.A.C.Controllers
             }
 
             return View(foundeTickets);
+        }
+
+        public ActionResult SearchID()
+        {
+            var searchModel = new SearchViewModel();
+            return View(searchModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SearchID(SearchViewModel searchViewModel)
+        {
+            var aSearch = searchViewModel.toSearch;
+            if (aSearch.IsNullOrWhiteSpace()) return RedirectToAction("Search", "Search");
+            var ticketFounded = _searchQueries.SearchTicketByNumber(Int32.Parse(aSearch));
+            if (ticketFounded == null) return RedirectToAction("Search", "Search");
+            searchViewModel.toSearch = Encrypt.Protect(ticketFounded.idLocal.ToString());
+
+            Session["toSearch"] = searchViewModel;
+            return RedirectToAction("Detail", "Ticket");
         }
     }
 }

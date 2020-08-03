@@ -4,6 +4,7 @@ using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Models.ViewModels;
 using S.I.A.C.Service;
+using S.I.A.C.Service.Implement;
 
 namespace S.I.A.C.Controllers
 {
@@ -12,12 +13,14 @@ namespace S.I.A.C.Controllers
         private readonly TicketCommandsService _ticketCommandsService;
         private readonly TicketQueriesService _ticketQueriesService;
         private readonly ViewUtilityServices _viewUtilityServices;
+        private readonly SearchQueriesService _searchQueriesService;
 
         public TicketController()
         {
             _ticketQueriesService = new TicketQueriesService();
             _viewUtilityServices = new ViewUtilityServices();
             _ticketCommandsService = new TicketCommandsService();
+            _searchQueriesService = new SearchQueriesService();
         }
 
         [HttpGet]
@@ -61,7 +64,8 @@ namespace S.I.A.C.Controllers
         [HttpGet]
         public ActionResult CurrentTickets()
         {
-            var activeTickets = _ticketQueriesService.GetTicketsList();
+            var currentPeople = (people) Session["User"];
+            var activeTickets = _ticketQueriesService.GetTicketsList(currentPeople);
 
             return View(activeTickets);
         }
@@ -109,16 +113,20 @@ namespace S.I.A.C.Controllers
         [AuthorizeUser(11)]
         public ActionResult Detail(string internalId)
         {
+            var toSearch = (SearchViewModel) Session["toSearch"];
+            if (toSearch == null) return RedirectToAction("UnauthorizedOperation", "Error");
+            if (internalId == null) internalId = toSearch.toSearch;
+
             var ticketId = Encrypt.Unprotect(internalId);
+            var currentTicket = _searchQueriesService.SearchTicketByNumber(int.Parse(ticketId));
+
+            if (currentTicket == null) return RedirectToAction("UnauthorizedOperation", "Error");
+
             var ticketHistory = _ticketQueriesService.GeTicketHistoryViewModel(int.Parse(ticketId));
-
-            if (ticketHistory == null) return RedirectToAction("UnauthorizedOperation", "Error");
-
-            //encrypt the ticket id to the webpage//
+            ViewBag.CurrentTicket = currentTicket;
             var encryptedTicketId = Encrypt.Protect(ticketId);
-
             ViewBag.TicketIdEncrypt = encryptedTicketId;
-            ViewBag.CurrentTicket = _ticketQueriesService.GeTicketPrintableViewModel(int.Parse(ticketId));
+
             return View(ticketHistory);
         }
 

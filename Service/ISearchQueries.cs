@@ -7,5 +7,6 @@ namespace S.I.A.C.Service
     {
         List<TicketPrintableModel> SearchTicket(string stringToSearch);
         List<TicketPrintableModel> SearchTicketByClient(int idClient);
+        TicketPrintableModel SearchTicketByNumber(int localIdTicket);
     }
 }
