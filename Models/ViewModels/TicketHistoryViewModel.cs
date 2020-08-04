@@ -1,7 +1,5 @@
-﻿using S.I.A.C.Models.DomainModels;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace S.I.A.C.Models.ViewModels
 {
@@ -10,22 +8,18 @@ namespace S.I.A.C.Models.ViewModels
         [ScaffoldColumn(false)] public int idTicket { get; set; }
 
         [Display(Name = "Fecha Modificacion:")]
-        public System.DateTime date { get; set; }
+        public DateTime date { get; set; }
 
         [Display(Name = "Descripción:")]
         [Required]
         [MaxLength(900, ErrorMessage = "Maximo 900 caracteres")]
         public string note { get; set; }
 
-        [Display(Name = "Estado:")] public Nullable<int> idStatus { get; set; }
+        [Display(Name = "Estado:")] public int idStatus { get; set; }
         [ScaffoldColumn(false)] public int idPeople { get; set; }
-        [Display(Name = "Modificado por:")] public string peopleFullName
-        {
-            get
-            {
-                return peopleName + " " + peopleLastName;
-            }
-        }
+
+        [Display(Name = "Modificado por:")] public string peopleFullName => peopleName + " " + peopleLastName;
+
         [ScaffoldColumn(false)] public string peopleName { get; set; }
         [ScaffoldColumn(false)] public string peopleLastName { get; set; }
 

@@ -1,5 +1,5 @@
-﻿using S.I.A.C.Filters;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using S.I.A.C.Filters;
 
 namespace S.I.A.C.Controllers
 {
@@ -8,14 +8,6 @@ namespace S.I.A.C.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-
-        
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-            //Session["User"] = null;
-            return RedirectToAction("Search", "Search");
         }
 
         [AuthorizeUser(1)]

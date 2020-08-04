@@ -18,7 +18,7 @@ namespace S.I.A.C.Models.DomainModels
         public int idTicket { get; set; }
         public System.DateTime date { get; set; }
         public string note { get; set; }
-        public Nullable<int> idStatus { get; set; }
+        public int idStatus { get; set; }
         public int idPeople { get; set; }
     
         public virtual people people { get; set; }

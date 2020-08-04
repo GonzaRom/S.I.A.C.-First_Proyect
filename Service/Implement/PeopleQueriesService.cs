@@ -1,7 +1,7 @@
-﻿using S.I.A.C.Models;
-using S.I.A.C.Models.DomainModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using S.I.A.C.Models;
+using S.I.A.C.Models.DomainModels;
 
 namespace S.I.A.C.Service
 {
@@ -10,7 +10,7 @@ namespace S.I.A.C.Service
         private dbSIACEntities _database;
 
         /// <summary>
-        /// Get a user by email and password in the database.
+        ///     Get a user by email and password in the database.
         /// </summary>
         /// <param name="email">Email</param>
         /// <param name="password">Password</param>
@@ -54,7 +54,7 @@ namespace S.I.A.C.Service
             {
                 listOfClients = (from people in _database.people
                         where people.idRol == clientsIdRol
-                        select new PeopleViewModel()
+                        select new PeopleViewModel
                         {
                             keyClient = people.id,
                             nameClient = people.name,

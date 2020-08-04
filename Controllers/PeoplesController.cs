@@ -1,8 +1,7 @@
-﻿using S.I.A.C.Filters;
+﻿using System.Web.Mvc;
+using S.I.A.C.Filters;
 using S.I.A.C.Models;
 using S.I.A.C.Service;
-using System;
-using System.Web.Mvc;
 using S.I.A.C.Service.Implement;
 
 namespace S.I.A.C.Controllers
@@ -14,7 +13,7 @@ namespace S.I.A.C.Controllers
         private readonly ViewUtilityServices _viewUtilityServices;
 
         /// <summary>
-        /// Pseudo injection.
+        ///     Pseudo injection.
         /// </summary>
         public PeoplesController()
         {
@@ -22,7 +21,7 @@ namespace S.I.A.C.Controllers
             _viewUtilityServices = new ViewUtilityServices();
         }
 
-       
+
         //START CREATE**//
         [AuthorizeUser(1)]
         public ActionResult Create()
@@ -39,10 +38,7 @@ namespace S.I.A.C.Controllers
         {
             var isNewPeople = false;
 
-            if (ModelState.IsValid)
-            {
-                isNewPeople = _peopleCommandsService.CreatePeople(registrationViewModel);
-            }
+            if (ModelState.IsValid) isNewPeople = _peopleCommandsService.CreatePeople(registrationViewModel);
 
             if (isNewPeople)
             {
@@ -50,15 +46,13 @@ namespace S.I.A.C.Controllers
                 TempData["Successful"] = msg;
                 return RedirectToAction("Index", "Home");
             }
-            else
-            {
-                ViewBag.Error = "Falla al crear usuario.";
-                return View(registrationViewModel);
-            }
+
+            ViewBag.Error = "Falla al crear usuario.";
+            return View(registrationViewModel);
         }
         //**FINISH CREATE//
 
-       
+
         // GET: Peoples/Delete/5
         public ActionResult Delete(int id)
         {

@@ -10,10 +10,10 @@ namespace S.I.A.C.Controllers
 {
     public class TicketController : Controller
     {
+        private readonly SearchQueriesService _searchQueriesService;
         private readonly TicketCommandsService _ticketCommandsService;
         private readonly TicketQueriesService _ticketQueriesService;
         private readonly ViewUtilityServices _viewUtilityServices;
-        private readonly SearchQueriesService _searchQueriesService;
 
         public TicketController()
         {
@@ -32,7 +32,7 @@ namespace S.I.A.C.Controllers
             ViewBag.clients = _viewUtilityServices.GetListOfClients();
 
             var baseTicket = new TicketViewModel();
-            var encryptedTicketId = Encrypt.GetSHA256(baseTicket.internalId.ToString());
+            var encryptedTicketId = Encrypt.GetSHA256(baseTicket.ticketIdLocal.ToString());
             ViewBag.TicketIdEncrypt = encryptedTicketId;
 
             return View(baseTicket);
@@ -42,9 +42,9 @@ namespace S.I.A.C.Controllers
         [HandleError]
         [ValidateAntiForgeryToken]
         [AuthorizeUser(9)]
-        public ActionResult Ticket(TicketViewModel baseTicket, string internalId)
+        public ActionResult Ticket(TicketViewModel baseTicket, string ticketIdLocal)
         {
-            if (internalId != Encrypt.GetSHA256(baseTicket.internalId.ToString()) || !ModelState.IsValid)
+            if (ticketIdLocal != Encrypt.GetSHA256(baseTicket.ticketIdLocal.ToString()) || !ModelState.IsValid)
                 return View(baseTicket);
 
             var (result, idLocal) = _ticketCommandsService.CreateTicket(baseTicket, (people) Session["User"]);
@@ -65,7 +65,7 @@ namespace S.I.A.C.Controllers
         public ActionResult CurrentTickets()
         {
             var currentPeople = (people) Session["User"];
-            var activeTickets = _ticketQueriesService.GetTicketsList(currentPeople);
+            var activeTickets = _ticketQueriesService.GetActiveTicketsList(currentPeople);
 
             return View(activeTickets);
         }
@@ -73,9 +73,9 @@ namespace S.I.A.C.Controllers
         [HttpGet]
         [HandleError]
         [AuthorizeUser(11)]
-        public ActionResult Edit(string internalId)
+        public ActionResult Edit(string ticketIdLocal)
         {
-            var ticketId = Encrypt.Unprotect(internalId);
+            var ticketId = Encrypt.Unprotect(ticketIdLocal);
             var ticket = _ticketQueriesService.GeTicketViewModel(int.Parse(ticketId));
 
             if (ticket == null) return RedirectToAction("UnauthorizedOperation", "Error");
@@ -92,10 +92,10 @@ namespace S.I.A.C.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeUser(11)]
-        public ActionResult Edit(string internalId, TicketViewModel ticketViewModel)
+        public ActionResult Edit(string ticketIdLocal, TicketViewModel ticketViewModel)
         {
             ViewBag.status = _viewUtilityServices.GetListOfStatus();
-            var ticketId = Encrypt.Unprotect(internalId);
+            var ticketId = Encrypt.Unprotect(ticketIdLocal);
             var result = _ticketCommandsService.EditTicket(ticketViewModel, ticketId);
             if (result == false)
             {
@@ -111,13 +111,13 @@ namespace S.I.A.C.Controllers
 
         [HttpGet]
         [AuthorizeUser(11)]
-        public ActionResult Detail(string internalId)
+        public ActionResult Detail(string ticketIdLocal)
         {
             var toSearch = (SearchViewModel) Session["toSearch"];
-            if (toSearch == null) return RedirectToAction("UnauthorizedOperation", "Error");
-            if (internalId == null) internalId = toSearch.toSearch;
+            if (toSearch == null && ticketIdLocal == null) return RedirectToAction("UnauthorizedOperation", "Error");
+            if (ticketIdLocal == null) ticketIdLocal = toSearch.toSearch;
 
-            var ticketId = Encrypt.Unprotect(internalId);
+            var ticketId = Encrypt.Unprotect(ticketIdLocal);
             var currentTicket = _searchQueriesService.SearchTicketByNumber(int.Parse(ticketId));
 
             if (currentTicket == null) return RedirectToAction("UnauthorizedOperation", "Error");
@@ -132,9 +132,9 @@ namespace S.I.A.C.Controllers
 
         [HttpGet]
         [AuthorizeUser(11)]
-        public ActionResult Update(string internalId)
+        public ActionResult Update(string ticketIdLocal)
         {
-            var ticketId = Encrypt.Unprotect(internalId);
+            var ticketId = Encrypt.Unprotect(ticketIdLocal);
             var ticketHistoryView = new TicketHistoryViewModel();
             ViewBag.status = _viewUtilityServices.GetListOfStatus();
             var encryptedTicketId = Encrypt.Protect(ticketId);
@@ -145,10 +145,10 @@ namespace S.I.A.C.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(string internalId, TicketHistoryViewModel ticketHistoryViewModel)
+        public ActionResult Update(string ticketIdLocal, TicketHistoryViewModel ticketHistoryViewModel)
         {
             ViewBag.status = _viewUtilityServices.GetListOfStatus();
-            var ticketId = Encrypt.Unprotect(internalId);
+            var ticketId = Encrypt.Unprotect(ticketIdLocal);
             var currentPeople = (people) Session["User"];
             ticketHistoryViewModel.idPeople = currentPeople.id;
 

@@ -6,20 +6,17 @@ using System.Web.Security;
 namespace S.I.A.C.Service
 {
     /// <summary>
-    /// To apply in the next wipe out.
+    ///     To apply in the next wipe out.
     /// </summary>
     public class Encrypt
     {
         public static string GetSHA256(string str)
         {
-            SHA256 sha256 = SHA256Managed.Create();
-            ASCIIEncoding encoding = new ASCIIEncoding();
-            StringBuilder sb = new StringBuilder();
-            byte[] stream = sha256.ComputeHash(encoding.GetBytes(str));
-            foreach (var t in stream)
-            {
-                sb.AppendFormat("{0:x2}", t);
-            }
+            var sha256 = SHA256.Create();
+            var encoding = new ASCIIEncoding();
+            var sb = new StringBuilder();
+            var stream = sha256.ComputeHash(encoding.GetBytes(str));
+            foreach (var t in stream) sb.AppendFormat("{0:x2}", t);
 
             return sb.ToString();
         }

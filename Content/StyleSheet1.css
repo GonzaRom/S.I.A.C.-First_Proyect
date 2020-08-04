@@ -1,16 +1,16 @@
 ﻿* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 .contenedor {
     background: #F2F2F2;
-    width: 100%;
-    margin: auto;
     /* Flexbox */
     display: flex;
     flex-flow: column wrap;
+    margin: auto;
+    width: 100%;
 }
 
 body {
@@ -19,15 +19,15 @@ body {
 }
 
 header {
+    align-items: center;
     background: #0D7BA6;
-    width: 100%;
-    padding: 20px;
     /* Flexbox */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    width: 100%;
 }
 
 header .logo {
@@ -36,47 +36,45 @@ header .logo {
 }
 
 header .logo img {
-    width: 50px;
     vertical-align: top;
+    width: 50px;
 }
 
 header .logo navbar-brand, a {
     color: #fff;
-    text-decoration: none;
     line-height: 50px;
+    text-decoration: none;
 }
 
 header nav {
-    width: 50%;
+    align-items: center;
     /* Flexbox */
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    width: 50%;
 }
 
-    header nav a {
-        background: #084259;
-        color: #fff;
-        text-align: center;
-        text-decoration: none;
-        padding: 10px;
-        /* Flexbox */
-        flex-grow: 1;
-    }
+header nav a {
+    background: #084259;
+    color: #fff;
+    /* Flexbox */
+    flex-grow: 1;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+}
 
-        header nav a:hover {
-            background: #82C0D9;
-        }
+header nav a:hover { background: #82C0D9; }
 
 
 footer {
     background: #0D7BA6;
-    width: 100%;
-    padding: 20px;
     /* Flexbox */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    padding: 20px;
+    width: 100%;
 }
 
 footer .links {
@@ -86,8 +84,8 @@ footer .links {
 }
 
 footer .links a {
-    flex-grow: 1;
     color: #fff;
+    flex-grow: 1;
     padding: 10px;
     text-align: center;
     text-decoration: none;
@@ -99,9 +97,9 @@ footer .social { background: #e67e22; }
 
 footer .social a {
     color: #fff;
-    text-decoration: none;
-    padding: 10px;
     display: inline-block;
+    padding: 10px;
+    text-decoration: none;
 }
 
 @media screen and (max-width: 800px) {
@@ -116,51 +114,54 @@ footer .social a {
 
     header nav { width: 100%; }
 }
+
 table {
-    width: 90%;
-    font-family: 'Roboto', sans-serif;
-    color: #222222;
     background: #F2F2F2;
-    margin-bottom: 1.25em;
-    margin: auto;
     border: solid 1px #779CA6;
-    border-style: ridge;
     border-collapse: collapse;
     border-spacing: 0;
+    border-style: ridge;
+    color: #222222;
+    font-family: 'Roboto', sans-serif;
+    margin: auto;
+    margin-bottom: 1.25em;
+    width: 90%;
 }
+
 table a {
     color: #222222;
-    font-weight: bold;
     font-size-adjust: initial;
+    font-weight: bold;
 }
+
 p a {
+    align-items: center;
     border: solid 4px #78a633;
     color: #222222;
-    align-items: center;
-    font-weight: bold;
     font-size-adjust: initial;
+    font-weight: bold;
 }
-    table tr th,
-    table tr td {
-        padding: 0.5625em 0.625em;
-        font-size: 1em;
-        color: #222222;
-        font-weight: bold;
-        border: 1px solid #3B3F40;
-    }
 
-    table tr.even,
-    table tr.alt,
-    table tr:nth-of-type(even) {
-        background: #4988b3;
-    }
-.resp thead tr th{
+table tr th,
+table tr td {
+    border: 1px solid #3B3F40;
+    color: #222222;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0.5625em 0.625em;
+}
+
+table tr.even,
+table tr.alt,
+table tr:nth-of-type(even) { background: #4988b3; }
+
+.resp thead tr th {
     background-color: #78A633;
     text-align: center;
 }
-table tr {
-    background-color: #D1E0FF;
-}
+
+table tr { background-color: #D1E0FF; }
+
 @media only screen and (max-width: 768px) {
     table.resp,
     .resp thead,
@@ -168,77 +169,53 @@ table tr {
     .resp tr,
     .resp th,
     .resp td,
-    .resp caption {
-        display: block;
-    }
+    .resp caption { display: block; }
 
-    table.resp {
-        border: none
-    }
+    table.resp { border: none }
 
-    .resp thead tr {
-        display: none;
-    }
+    .resp thead tr { display: none; }
 
     .resp tbody tr {
-        margin: 1em 0;
         border: 1px solid #667073;
+        margin: 1em 0;
     }
 
     .resp td {
         border: none;
         border-bottom: 1px solid #667073;
-        position: relative;
         padding-left: 45%;
+        position: relative;
         text-align: left;
     }
 
-    .resp tr td:last-child {
-        border-bottom: 1px double #667073;
-    }
+    .resp tr td:last-child { border-bottom: 1px double #667073; }
 
-    .resp tr:last-child td:last-child {
-        border: none;
-    }
+    .resp tr:last-child td:last-child { border: none; }
 
     .resp td:before {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align: left;
         font-weight: bold;
+        left: 6px;
+        padding-right: 10px;
+        position: absolute;
+        text-align: left;
+        top: 6px;
+        white-space: nowrap;
+        width: 45%;
     }
 
-    td:nth-of-type(1):before {
-        content: "Fecha de carga:";
-    }
+    td:nth-of-type(1):before { content: "Fecha de carga:"; }
 
-    td:nth-of-type(2):before {
-        content: "Cliente";
-    }
+    td:nth-of-type(2):before { content: "Cliente"; }
 
-    td:nth-of-type(3):before {
-        content: "Direccion:";
-    }
+    td:nth-of-type(3):before { content: "Direccion:"; }
 
-    td:nth-of-type(4):before {
-        content: "Email:";
-    }
+    td:nth-of-type(4):before { content: "Email:"; }
 
-    td:nth-of-type(5):before {
-        content: "Tarea a realizar";
-    }
+    td:nth-of-type(5):before { content: "Tarea a realizar"; }
 
-    td:nth-of-type(6):before {
-        content: "Estado";
-    }
-    td:nth-of-type(7):before {
-        content: "Asignado a:";
-    }
-    td:nth-of-type(8):before {
-        content: "Creado por:";
-    }
+    td:nth-of-type(6):before { content: "Estado"; }
+
+    td:nth-of-type(7):before { content: "Asignado a:"; }
+
+    td:nth-of-type(8):before { content: "Creado por:"; }
 }

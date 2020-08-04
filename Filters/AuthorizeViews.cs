@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using S.I.A.C.Models.DomainModels;
 
 namespace S.I.A.C.Filters
 {
     /// <summary>
-    /// Filter what buttons or list can see a user depending on a rol and operation.    /// </summary>
+    ///     Filter what buttons or list can see a user depending on a rol and operation.    ///
+    /// </summary>
     public class AuthorizeViews
     {
         private static dbSIACEntities _database;

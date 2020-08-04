@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using S.I.A.C.Filters;
-using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Models.ViewModels;
 using S.I.A.C.Service;
@@ -65,7 +62,7 @@ namespace S.I.A.C.Controllers
         {
             var aSearch = searchViewModel.toSearch;
             if (aSearch.IsNullOrWhiteSpace()) return RedirectToAction("Search", "Search");
-            var ticketFounded = _searchQueries.SearchTicketByNumber(Int32.Parse(aSearch));
+            var ticketFounded = _searchQueries.SearchTicketByNumber(int.Parse(aSearch));
             if (ticketFounded == null) return RedirectToAction("Search", "Search");
             searchViewModel.toSearch = Encrypt.Protect(ticketFounded.idLocal.ToString());
 

@@ -1,8 +1,8 @@
-﻿using Microsoft.Ajax.Utilities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Ajax.Utilities;
 using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace S.I.A.C.Service.Implement
 {
@@ -37,15 +37,13 @@ namespace S.I.A.C.Service.Implement
                 {
                     var toSearch = stringToSearch.Trim().ToLower();
                     if (toSearch != null)
-                    {
                         foundTickets = foundTickets.Where(currentTicket =>
-                            (currentTicket.assignedTechnician.ToLower().Contains(toSearch)) ||
-                            (currentTicket.assignedTechnicianLastname.ToLower().Contains(toSearch)) ||
-                            (currentTicket.client.ToLower().Contains(toSearch)) ||
-                            (currentTicket.clientLastname.ToLower().Contains(toSearch)) ||
-                            (currentTicket.address.ToLower().Contains(toSearch)) ||
-                            (currentTicket.description.ToLower().Contains(toSearch)));
-                    }
+                            currentTicket.assignedTechnician.ToLower().Contains(toSearch) ||
+                            currentTicket.assignedTechnicianLastname.ToLower().Contains(toSearch) ||
+                            currentTicket.client.ToLower().Contains(toSearch) ||
+                            currentTicket.clientLastname.ToLower().Contains(toSearch) ||
+                            currentTicket.address.ToLower().Contains(toSearch) ||
+                            currentTicket.description.ToLower().Contains(toSearch));
 
                     return foundTickets.ToList();
                 }
@@ -54,7 +52,7 @@ namespace S.I.A.C.Service.Implement
             }
         }
 
-        public List<TicketPrintableModel> SearchTicketByClient(int idClient)
+        public List<TicketPrintableModel> SearchActiveTicketByClient(int idClient)
         {
             if (idClient <= 0) return null;
 
@@ -64,7 +62,9 @@ namespace S.I.A.C.Service.Implement
                 IQueryable<TicketPrintableModel> foundTickets =
                     (from ticket in _database.ticket
                         where ticket.idClient == idClient
-                        join creator in _database.people on ticket.idCreatorPeople equals creator.id
+                        where ticket.idStatus != (int)EStatus.Finalizado
+                        where ticket.idStatus != (int)EStatus.Cancelado
+                     join creator in _database.people on ticket.idCreatorPeople equals creator.id
                         join clientAddress in _database.people on ticket.idClient equals clientAddress.id
                         join tecnician in _database.people on ticket.idAssignedTechnician equals tecnician.id
                         select new TicketPrintableModel
@@ -85,18 +85,18 @@ namespace S.I.A.C.Service.Implement
             }
         }
 
-        public TicketPrintableModel SearchTicketByNumber(int localIdTicket)
+        public TicketPrintableModel SearchTicketByNumber(int ticketIdLocal)
         {
-            if (localIdTicket <= 0) return null;
+            if (ticketIdLocal <= 0) return null;
 
             _database = new dbSIACEntities();
             using (_database)
             {
-                if (_database.ticket.FirstOrDefault(currentTicket => currentTicket.idLocal == localIdTicket) !=
+                if (_database.ticket.FirstOrDefault(currentTicket => currentTicket.idLocal == ticketIdLocal) !=
                     null)
                 {
                     var foundTickets = (from ticket in _database.ticket
-                        where ticket.idLocal == localIdTicket
+                        where ticket.idLocal == ticketIdLocal
                         join creator in _database.people on ticket.idCreatorPeople equals creator.id
                         join clientAddress in _database.people on ticket.idClient equals clientAddress.id
                         join tecnician in _database.people on ticket.idAssignedTechnician equals tecnician.id
@@ -119,6 +119,17 @@ namespace S.I.A.C.Service.Implement
             }
 
             return null;
+        }
+
+        public int SearchTicketId(string ticketIdLocal)
+        {
+            _database = new dbSIACEntities();
+            using (_database)
+            {
+                var localTicketId = int.Parse(ticketIdLocal);
+                var entityTicketId = _database.ticket.FirstOrDefault(current => current.idLocal == localTicketId);
+                return entityTicketId?.id != null ? entityTicketId.id : 0; //demasiado comprimido?
+            }
         }
     }
 }

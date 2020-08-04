@@ -1,6 +1,5 @@
-﻿@using S.I.A.C.Service
-@model S.I.A.C.Models.ViewModels.SearchViewModel
-    @{
+﻿@model S.I.A.C.Models.ViewModels.SearchViewModel
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -15,20 +14,20 @@
         Con el fin de agilizar las solicitudes de soporte y brindar un mejor servicio,
         utilizamos un sistema de ticket de soporte. A cada solicitud se le asigna un número de ticket único que puede utilizar para verificar online el estado de su consulta.
     </p>
-    <br />
+    <br/>
 </div>
 <div class="row text-center">
     <div class="col-md-6">
         <h3>Abrir un nuevo Ticket</h3>
         <br>
         <div>Por favor, facilite el máximo detalle para que podamos darle la mejor asistencia. Para actualizar un Ticket enviado anteriormente, por favor acceda al sistema.</div>
-        @Html.ActionLink("  NUEVO TICKET", "Ticket", "Ticket", new { Model }, new { @class = "btn btn-success btn-md glyphicon glyphicon-cloud-upload" })
+        @Html.ActionLink("  NUEVO TICKET", "Ticket", "Ticket", new {Model}, new {@class = "btn btn-success btn-md glyphicon glyphicon-cloud-upload"})
     </div>
     <div class="col-md-6">
         <h3>Ver Estado de un Ticket</h3>
         <br>
         <div>Poseemos los archivos y la historia completa de todas sus solicitudes de soporte, presentes y pasadas, junto a sus respuestas.</div>
-        @Html.ActionLink("  BUSCAR TICKET", "SearchID", "Search", new { Model }, new { @class = "btn btn-primary btn-md glyphicon glyphicon-search" })
+        @Html.ActionLink("  BUSCAR TICKET", "SearchID", "Search", new {Model}, new {@class = "btn btn-primary btn-md glyphicon glyphicon-search"})
     </div>
 </div>
 
@@ -40,11 +39,11 @@
         <div class="form-group row center-block">
 
             <div class="col">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
                 <div class="form-group">
                     <span class="input-group-btn">
-                        @Html.EditorFor(model => model.toSearch, new { htmlAttributes = new { @class = "form-control", placeholder = "Buscar en el sistema..." } })
-                        @Html.ValidationMessageFor(model => model.toSearch, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.toSearch, new {htmlAttributes = new {@class = "form-control", placeholder = "Buscar en el sistema..."}})
+                        @Html.ValidationMessageFor(model => model.toSearch, "", new {@class = "text-danger"})
                     </span>
                 </div>
                 <span class="input-group-btn">
@@ -55,6 +54,6 @@
     }
 </div>
 <!-- /Fin Buscador -->
-<hr />
-<hr />
-<hr />
+<hr/>
+<hr/>
+<hr/>

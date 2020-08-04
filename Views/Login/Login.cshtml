@@ -27,16 +27,16 @@
 
 <div id="wrapper">
 
-   
+
     <div class="user-icon"></div>
     <div class="pass-icon"></div>
-   
+
     <div class="login-form">
 
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
             <div class="header">
-                <img src="~/Resource/logoSIAC.png" alt="Site Logo" style="position:center;width: 75%;"/>
+                <img src="~/Resource/logoSIAC.png" alt="Site Logo" style="position: center; width: 100%;"/>
 
             </div>
             @Html.AntiForgeryToken()
@@ -65,7 +65,7 @@
                     @ViewBag.Message
                     @TempData["ErrorMessage"]
                 </div>
-                @Html.Hidden("internalId", (string) ViewBag.LoginIdEncrypted)
+                @Html.Hidden("ticketIdLocal", (string) ViewBag.LoginIdEncrypted)
             </div>
         }
     </div>

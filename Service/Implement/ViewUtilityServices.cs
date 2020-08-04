@@ -1,8 +1,8 @@
-﻿using S.I.A.C.Models;
-using S.I.A.C.Models.DomainModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using S.I.A.C.Models;
+using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Models.ViewModels;
 
 namespace S.I.A.C.Service
@@ -124,7 +124,7 @@ namespace S.I.A.C.Service
             using (_database)
             {
                 listOfStatus = (from status in _database.status
-                        select new StatusViewModel()
+                        select new StatusViewModel
                         {
                             keyStatus = status.id,
                             valueStatus = status.name

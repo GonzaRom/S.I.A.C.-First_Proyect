@@ -1,8 +1,8 @@
-﻿using S.I.A.C.Models.DomainModels;
-using System;
+﻿using System;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using S.I.A.C.Models.DomainModels;
 
 namespace S.I.A.C.Filters
 {
@@ -11,13 +11,13 @@ namespace S.I.A.C.Filters
     [AttributeUsage(AttributeTargets.Method)]
     public class AuthorizeUser : AuthorizeAttribute
     {
-        private dbSIACEntities _database;
         private readonly int _idOperation;
+        private dbSIACEntities _database;
         private people _people;
 
         public AuthorizeUser(int idOperation = 0)
         {
-            this._idOperation = idOperation;
+            _idOperation = idOperation;
         }
 
         public override void OnAuthorization(AuthorizationContext filterContext)
@@ -29,7 +29,7 @@ namespace S.I.A.C.Filters
                 var userOperations =
                     _database.rolOperations.Where(m => m.idRol == _people.idRol && m.idOperations == _idOperation);
 
-                if (userOperations.ToList().Count < 1)
+                if (userOperations == null || userOperations.ToList().Count < 1)
                 {
                     var operation = _database.operations.Find(_idOperation);
                     var idModule = operation.idModule;
@@ -42,7 +42,7 @@ namespace S.I.A.C.Filters
             }
         }
 
-       
+
         public string getOperationName(int idOperation)
         {
             var ope = from op in _database.operations

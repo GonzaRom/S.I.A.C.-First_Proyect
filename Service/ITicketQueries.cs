@@ -1,13 +1,13 @@
-﻿using S.I.A.C.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Models.ViewModels;
 
 namespace S.I.A.C.Service
 {
-    interface ITicketQueries
+    internal interface ITicketQueries
     {
-        List<TicketPrintableModel> GetTicketsList(people currentPeople);
+        List<TicketPrintableModel> GetActiveTicketsList(people currentPeople);
         TicketViewModel GeTicketViewModel(int ticketIdLocal);
         List<TicketHistoryViewModel> GeTicketHistoryViewModel(int ticketIdLocal);
     }

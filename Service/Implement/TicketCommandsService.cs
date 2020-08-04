@@ -1,17 +1,22 @@
-﻿using S.I.A.C.Models;
-using S.I.A.C.Models.DomainModels;
-using System;
+﻿using System;
 using System.Linq;
+using Antlr.Runtime;
+using S.I.A.C.Models;
+using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Models.ViewModels;
+using S.I.A.C.Service.Implement;
+using Xamarin.Forms;
 
 namespace S.I.A.C.Service
 {
     public class TicketCommandsService : ITicketCommands
     {
+        private readonly SearchQueriesService _searchQueriesService = new SearchQueriesService();
         private dbSIACEntities _database;
 
         /// <summary>
-        /// Create a new ticket, if a client is the creator idClient is taken from the sessionUser info. Othewise from the ViewModel.
+        ///     Create a new ticket, if a client is the creator idClient is taken from the sessionUser info. Othewise from the
+        ///     ViewModel.
         /// </summary>
         /// <param name="baseTicket"></param>
         /// <param name="sessionUser"></param>
@@ -22,10 +27,7 @@ namespace S.I.A.C.Service
             baseTicket.idLocal = random.Next(1000, 99999); //Algun dia llegara a mas de esa cantidad de tickets?
 
             _database = new dbSIACEntities();
-            if (baseTicket.idClient == 0)
-            {
-                baseTicket.idClient = sessionUser.id;
-            }
+            if (baseTicket.idClient == 0) baseTicket.idClient = sessionUser.id;
 
             var ticket = new ticket
             {
@@ -47,59 +49,49 @@ namespace S.I.A.C.Service
                     _database.ticket.Add(ticket);
                     _database.SaveChanges();
                 }
+
                 return (true, baseTicket.idLocal);
                 //TODO Hangfire { send email to admin/technical-supervisor}
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return (false, 0);
             }
         }
 
-        public int SearchTicketId(string ticketId)
-        {
-            _database = new dbSIACEntities();
-            using (_database)
-            {
-                var localTicketId = Int32.Parse(ticketId);
-                var entityTicketId = _database.ticket.FirstOrDefault(current => current.idLocal == localTicketId);
-                return entityTicketId?.id ?? 0; //demasiado comprimido?
-            }
-        }
 
         public bool EditTicket(TicketViewModel baseTicket, string ticketId)
         {
-            var id = int.Parse(ticketId);
+            if (!int.TryParse(ticketId, out var currentTicketId)) return false;
+            
             _database = new dbSIACEntities();
-
             using (_database)
             {
-                var result = _database.ticket.SingleOrDefault(b => b.idLocal == id);
+                var result = _database.ticket.FirstOrDefault(b => b.idLocal == currentTicketId);
                 if (result == null)
                 {
                     _database.Dispose();
                     return false;
                 }
-                else
-                {
-                    result.idCategory = baseTicket.idCategory;
-                    result.idAssignedTechnician = baseTicket.idAssignedTechnician;
-                    result.idPriority = baseTicket.idPriority;
-                    result.idStatus = baseTicket.idStatus;
-                    result.description = baseTicket.description;
-                    _database.SaveChanges();
-                }
+
+                result.idCategory = baseTicket.idCategory;
+                result.idAssignedTechnician = baseTicket.idAssignedTechnician;
+                result.idPriority = baseTicket.idPriority;
+                result.idStatus = baseTicket.idStatus;
+                result.description = baseTicket.description;
+                _database.SaveChanges();
             }
 
-            _database.Dispose();
             return true;
         }
 
-        public bool UpdateTicket(TicketHistoryViewModel baseTicket, string ticketId)
+        public bool UpdateTicket(TicketHistoryViewModel baseTicket, string ticketIdLocal)
         {
-            var entityTicketId = SearchTicketId(ticketId);
+            var entityTicketId = _searchQueriesService.SearchTicketId(ticketIdLocal);
+            if (!UpdateTicketStatus(baseTicket.idStatus, entityTicketId)) return false;
+
             _database = new dbSIACEntities();
-            ticketHistory updateTicket = new ticketHistory
+            var updateTicket = new ticketHistory
             {
                 date = DateTime.Now,
                 idPeople = baseTicket.idPeople,
@@ -115,7 +107,7 @@ namespace S.I.A.C.Service
                     _database.SaveChanges();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -123,9 +115,27 @@ namespace S.I.A.C.Service
             return true;
         }
 
-        public bool UpdateTicketStatus(TicketViewModel baseTicket, string ticketId)
+        public bool UpdateTicketStatus(int idStatus, int ticketId)
         {
-            throw new NotImplementedException();
+            _database = new dbSIACEntities();
+            using (_database)
+            {
+                var ticketDefault = _database.ticket.FirstOrDefault(ticket => ticket.id == ticketId);
+                if (ticketDefault == null) return false;
+
+                ticketDefault.idStatus = idStatus;
+                try
+                {
+                    _database.ticket.Add(ticketDefault);
+                    _database.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+
+                return true;
+            }
         }
     }
 }

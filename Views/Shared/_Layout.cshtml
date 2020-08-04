@@ -1,5 +1,4 @@
 ﻿@using S.I.A.C.Filters
-@using S.I.A.C.Models
 @using S.I.A.C.Models.DomainModels
 <!DOCTYPE html>
 <html>
@@ -24,14 +23,14 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand"href="@Url.Action("Index", "Home")">
-                <img src="~/Resource/logoSIAC.png" alt="Site Logo" />
+                <img src="~/Resource/logoSIAC.png" alt="Site Logo"/>
             </a>
             @{
                 var user = (people) Session["User"];
                 if (user != null)
                 {
                     var name = user.name;
-                    @Html.Label("name", "Bienvenido: " + name, new {@class="h2"})
+                    @Html.Label("name", "Bienvenido: " + name, new {@class = "h2"})
                 }
             }
         </div>

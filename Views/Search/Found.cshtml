@@ -1,5 +1,4 @@
-﻿@using S.I.A.C.Models
-@using S.I.A.C.Service
+﻿@using S.I.A.C.Service
 @model IEnumerable<S.I.A.C.Models.TicketPrintableModel>
 
 
@@ -12,33 +11,33 @@
 
 <table class="resp">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.client)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.assignedTechnician)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.creatorPeople)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CreationDateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.client)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.assignedTechnician)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.creatorPeople)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     @foreach (var item in Model)
     {
@@ -74,9 +73,9 @@
                 var ticketId = Encrypt.Protect(item.idLocal.ToString());
             }
             <td>
-                @Html.ActionLink("Editar", "Edit", new { internalId = ticketId })
-                @Html.ActionLink("Actualizar", "Detail", new { internalId = ticketId })
-                @Html.ActionLink("Detalle", "Detail", new { id = ticketId })
+                @Html.ActionLink("Editar", "Edit", new {internalId = ticketId})
+                @Html.ActionLink("Actualizar", "Detail", new {internalId = ticketId})
+                @Html.ActionLink("Detalle", "Detail", new {id = ticketId})
                 @Html.ActionLink("Borrar", "Delete", new {/* id=item.PrimaryKey */})
             </td>
         </tr>

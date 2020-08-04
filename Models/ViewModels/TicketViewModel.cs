@@ -20,10 +20,10 @@ namespace S.I.A.C.Models
             creationDate = DateTime.Now;
             estimatedFinishDate = DateTime.Now.AddDays(EstimatedFinishDays);
             idStatus = Pendiente;
-            internalId = new Guid();
+            ticketIdLocal = new Guid();
         }
 
-        public Guid internalId { get; }
+        public Guid ticketIdLocal { get; }
         [Display(Name = "Ticket N°:")] public int idLocal { get; set; } //<----Buscar alernativa
 
         [Display(Name = "Descripción:")]
@@ -47,30 +47,15 @@ namespace S.I.A.C.Models
         [Display(Name = "Tecnico Asignado:")] public int? idAssignedTechnician { get; set; }
         [Display(Name = "Estado:")] public int idStatus { get; set; }
 
-        public List<SelectListItem> prioritiesList
-        {
-            get { return _viewUtilityServices.GetListOfPriorities(); }
-        }
+        public List<SelectListItem> prioritiesList => _viewUtilityServices.GetListOfPriorities();
 
-        public List<SelectListItem> categoriesList
-        {
-            get { return _viewUtilityServices.GetListOfCategories(); }
-        }
+        public List<SelectListItem> categoriesList => _viewUtilityServices.GetListOfCategories();
 
-        public List<SelectListItem> technicianList
-        {
-            get { return _viewUtilityServices.GetListOfTechnicians(); }
-        }
+        public List<SelectListItem> technicianList => _viewUtilityServices.GetListOfTechnicians();
 
-        public List<SelectListItem> clientsList
-        {
-            get { return _viewUtilityServices.GetListOfClients(); }
-        }
+        public List<SelectListItem> clientsList => _viewUtilityServices.GetListOfClients();
 
-        public List<SelectListItem> rolsList
-        {
-            get { return _viewUtilityServices.GetListOfRols(); }
-        }
+        public List<SelectListItem> rolsList => _viewUtilityServices.GetListOfRols();
     }
 
     public class TicketPrintableModel

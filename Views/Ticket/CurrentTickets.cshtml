@@ -1,5 +1,4 @@
 ﻿@using S.I.A.C.Filters
-@using S.I.A.C.Models
 @using S.I.A.C.Service
 @model IEnumerable<S.I.A.C.Models.TicketPrintableModel>
 
@@ -44,7 +43,7 @@
         <th></th>
     </tr>
     </thead>
-    @Html.Hidden("internalId", (string) ViewBag.TicketIdEncrypt)
+    @Html.Hidden("ticketIdLocal", (string) ViewBag.TicketIdEncrypt)
     @foreach (var item in Model)
     {
         var client = item.getFullName(item.client, item.clientLastname);
@@ -82,7 +81,7 @@
                 @if (AuthorizeViews.IsAuthonized(14))
                 {
                     @Html.ActionLink("Editar", "Edit", new {internalId = ticketId})
-                    Html.ActionLink("Borrar", "Delete", new {/*internalId = ticketId*/});
+                    Html.ActionLink("Borrar", "Delete", new {/*ticketIdLocal = ticketId*/});
                 }
                 @Html.ActionLink("Detalle / Actualizar", "Detail", new {internalId = ticketId})
             </td>

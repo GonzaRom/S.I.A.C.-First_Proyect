@@ -2,7 +2,7 @@
 
 namespace S.I.A.C.Service
 {
-    interface IPeopleCommands
+    internal interface IPeopleCommands
     {
         bool CreatePeople(RegistrationViewModel registrationViewModel);
     }
