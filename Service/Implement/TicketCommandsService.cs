@@ -3,6 +3,7 @@ using System.Linq;
 using Antlr.Runtime;
 using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
+using S.I.A.C.Models.MailerModels;
 using S.I.A.C.Models.ViewModels;
 using S.I.A.C.Service.Implement;
 using Xamarin.Forms;
@@ -51,7 +52,6 @@ namespace S.I.A.C.Service
                 }
 
                 return (true, baseTicket.idLocal);
-                //TODO Hangfire { send email to admin/technical-supervisor}
             }
             catch (Exception)
             {
@@ -63,7 +63,7 @@ namespace S.I.A.C.Service
         public bool EditTicket(TicketViewModel baseTicket, string ticketId)
         {
             if (!int.TryParse(ticketId, out var currentTicketId)) return false;
-            
+
             _database = new dbSIACEntities();
             using (_database)
             {

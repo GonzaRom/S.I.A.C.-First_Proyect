@@ -1,10 +1,11 @@
-﻿using System.Web.Mvc;
-using S.I.A.C.Filters;
+﻿using S.I.A.C.Filters;
 using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
 using S.I.A.C.Models.ViewModels;
 using S.I.A.C.Service;
 using S.I.A.C.Service.Implement;
+using System.Web.Mvc;
+using S.I.A.C.Models.MailerModels;
 
 namespace S.I.A.C.Controllers
 {
@@ -44,6 +45,8 @@ namespace S.I.A.C.Controllers
         [AuthorizeUser(9)]
         public ActionResult Ticket(TicketViewModel baseTicket, string ticketIdLocal)
         {
+            if (!ModelState.IsValid) return View(baseTicket);
+
             if (ticketIdLocal != Encrypt.GetSHA256(baseTicket.ticketIdLocal.ToString()) || !ModelState.IsValid)
                 return View(baseTicket);
 
@@ -54,6 +57,15 @@ namespace S.I.A.C.Controllers
                 ViewBag.Error = "E R R O R al crear el ticket";
                 return View(baseTicket);
             }
+            var email = new NewTicketEmail
+            {
+                to = "rom.gonzalo88@gmail.com",
+                userName = baseTicket.idClient.ToString(),
+                comment = baseTicket.description
+
+            };
+
+            email.Send();
 
             TempData["Successful"] = "Ticket creado Exitosamente!";
             TempData["TicketNumber"] = "Ticket Numero: " + idLocal;
@@ -94,6 +106,8 @@ namespace S.I.A.C.Controllers
         [AuthorizeUser(11)]
         public ActionResult Edit(string ticketIdLocal, TicketViewModel ticketViewModel)
         {
+            if (!ModelState.IsValid) return View(ticketViewModel);
+
             ViewBag.status = _viewUtilityServices.GetListOfStatus();
             var ticketId = Encrypt.Unprotect(ticketIdLocal);
             var result = _ticketCommandsService.EditTicket(ticketViewModel, ticketId);
@@ -145,8 +159,11 @@ namespace S.I.A.C.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeUser(11)]
         public ActionResult Update(string ticketIdLocal, TicketHistoryViewModel ticketHistoryViewModel)
         {
+            if (!ModelState.IsValid) return View(ticketHistoryViewModel);
+
             ViewBag.status = _viewUtilityServices.GetListOfStatus();
             var ticketId = Encrypt.Unprotect(ticketIdLocal);
             var currentPeople = (people) Session["User"];

@@ -30,10 +30,6 @@ header {
     width: 100%;
 }
 
-header .logo {
-    color: #fff;
-    font-size: 30px;
-}
 
 header .logo img {
     vertical-align: top;
