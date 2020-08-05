@@ -83,7 +83,7 @@
                     @Html.ActionLink("Editar", "Edit", new {internalId = ticketId})
                     Html.ActionLink("Borrar", "Delete", new {/*ticketIdLocal = ticketId*/});
                 }
-                @Html.ActionLink("Detalle / Actualizar", "Detail", new {internalId = ticketId})
+                @Html.ActionLink("Detalle / Actualizar", "Detail", TempData["ticketIdLocal"] = ticketId)
             </td>
         </tr>
     }

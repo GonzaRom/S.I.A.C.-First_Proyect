@@ -57,10 +57,13 @@ namespace S.I.A.C.Controllers
                 ViewBag.Error = "E R R O R al crear el ticket";
                 return View(baseTicket);
             }
+
+            var currentUser = (people) Session["User"];
+            
             var email = new NewTicketEmail
             {
-                to = "rom.gonzalo88@gmail.com",
-                userName = baseTicket.idClient.ToString(),
+                to = "siac.encargado@gmail.com", //almacenar en constante o tomar datos de lista de encargados
+                userName = currentUser.id + currentUser.name + currentUser.lastname,
                 comment = baseTicket.description
 
             };
@@ -125,8 +128,9 @@ namespace S.I.A.C.Controllers
 
         [HttpGet]
         [AuthorizeUser(11)]
-        public ActionResult Detail(string ticketIdLocal)
+        public ActionResult Detail()
         {
+            var ticketIdLocal=(string) TempData["ticketIdLocal"];
             var toSearch = (SearchViewModel) Session["toSearch"];
             if (toSearch == null && ticketIdLocal == null) return RedirectToAction("UnauthorizedOperation", "Error");
             if (ticketIdLocal == null) ticketIdLocal = toSearch.toSearch;

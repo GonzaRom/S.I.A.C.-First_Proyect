@@ -31,16 +31,18 @@ header {
 }
 
 
-header .logo img {
-    vertical-align: top;
-    width: 50px;
-}
+    header .logo img {
+        vertical-align: top;
+        width: 140px;
+        align-items: start;
+    }
 
-header .logo navbar-brand, a {
-    color: #fff;
-    line-height: 50px;
-    text-decoration: none;
-}
+    header .logo navbar-brand, a {
+        color: #fff;
+        line-height: 50px;
+        text-decoration: none;
+        align-items: baseline;
+    }
 
 header nav {
     align-items: center;
