@@ -1,4 +1,6 @@
-﻿@using S.I.A.C.Service
+﻿@using S.I.A.C.Filters
+@using S.I.A.C.Models
+@using S.I.A.C.Service
 @model IEnumerable<S.I.A.C.Models.TicketPrintableModel>
 
 
@@ -8,7 +10,7 @@
 }
 
 <h2>Encontrados @Model.Count()</h2>
-
+@Html.AntiForgeryToken()
 <table class="resp">
     <thead>
     <tr>
@@ -39,6 +41,7 @@
         <th></th>
     </tr>
     </thead>
+    @Html.Hidden("ticketIdLocal", (string) ViewBag.TicketIdEncrypt)
     @foreach (var item in Model)
     {
         var client = item.getFullName(item.client, item.clientLastname);
@@ -61,7 +64,7 @@
                 @Html.DisplayFor(modelItem => item.description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.status)
+                @Enum.GetName(typeof(EStatus), item.status)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => tec)
@@ -73,12 +76,20 @@
                 var ticketId = Encrypt.Protect(item.idLocal.ToString());
             }
             <td>
-                @Html.ActionLink("Editar", "Edit", new {internalId = ticketId})
-                @Html.ActionLink("Actualizar", "Detail", new {internalId = ticketId})
-                @Html.ActionLink("Detalle", "Detail", new {id = ticketId})
-                @Html.ActionLink("Borrar", "Delete", new {/* id=item.PrimaryKey */})
+                @if (AuthorizeViews.IsAuthonized(14))
+                {
+                    @Html.ActionLink("Editar", "Edit", "Ticket", new {ticketIdLocal = ticketId}, null)
+                    ;
+                    @Html.ActionLink("Borrar", "Delete", "Ticket", new {ticketIdLocal = ticketId}, null)
+                    ;
+                }
+                @Html.ActionLink("Detalle / Actualizar", "Detail", "Ticket", new {ticketIdLocal = ticketId}, null)
             </td>
         </tr>
     }
+    <br/>
 
 </table>
+<div>
+    @Html.ActionLink("  Regresar", "Index", "Home", null, new {@class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"})
+</div>

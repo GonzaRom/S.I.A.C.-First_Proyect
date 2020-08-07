@@ -5,7 +5,6 @@ using S.I.A.C.Models.ViewModels;
 using S.I.A.C.Service;
 using S.I.A.C.Service.Implement;
 using System.Web.Mvc;
-using S.I.A.C.Models.MailerModels;
 
 namespace S.I.A.C.Controllers
 {
@@ -15,6 +14,7 @@ namespace S.I.A.C.Controllers
         private readonly TicketCommandsService _ticketCommandsService;
         private readonly TicketQueriesService _ticketQueriesService;
         private readonly ViewUtilityServices _viewUtilityServices;
+        private readonly MailerService _mailerService;
 
         public TicketController()
         {
@@ -22,6 +22,7 @@ namespace S.I.A.C.Controllers
             _viewUtilityServices = new ViewUtilityServices();
             _ticketCommandsService = new TicketCommandsService();
             _searchQueriesService = new SearchQueriesService();
+            _mailerService = new MailerService();
         }
 
         [HttpGet]
@@ -58,17 +59,7 @@ namespace S.I.A.C.Controllers
                 return View(baseTicket);
             }
 
-            var currentUser = (people) Session["User"];
-            
-            var email = new NewTicketEmail
-            {
-                to = "siac.encargado@gmail.com", //almacenar en constante o tomar datos de lista de encargados
-                userName = currentUser.id + currentUser.name + currentUser.lastname,
-                comment = baseTicket.description
-
-            };
-
-            email.Send();
+            _mailerService.NotifyNewTicket((people) Session["User"], baseTicket.description);
 
             TempData["Successful"] = "Ticket creado Exitosamente!";
             TempData["TicketNumber"] = "Ticket Numero: " + idLocal;
@@ -90,6 +81,7 @@ namespace S.I.A.C.Controllers
         [AuthorizeUser(11)]
         public ActionResult Edit(string ticketIdLocal)
         {
+            // var ticketIdLocal = (string) TempData["ticketIdLocal"];
             var ticketId = Encrypt.Unprotect(ticketIdLocal);
             var ticket = _ticketQueriesService.GeTicketViewModel(int.Parse(ticketId));
 
@@ -128,10 +120,10 @@ namespace S.I.A.C.Controllers
 
         [HttpGet]
         [AuthorizeUser(11)]
-        public ActionResult Detail()
+        public ActionResult Detail(string ticketIdLocal)
         {
-            var ticketIdLocal=(string) TempData["ticketIdLocal"];
             var toSearch = (SearchViewModel) Session["toSearch"];
+
             if (toSearch == null && ticketIdLocal == null) return RedirectToAction("UnauthorizedOperation", "Error");
             if (ticketIdLocal == null) ticketIdLocal = toSearch.toSearch;
 
@@ -150,9 +142,10 @@ namespace S.I.A.C.Controllers
 
         [HttpGet]
         [AuthorizeUser(11)]
-        public ActionResult Update(string ticketIdLocal)
+        public ActionResult Update()
         {
-            var ticketId = Encrypt.Unprotect(ticketIdLocal);
+            var internalId = (string) TempData["internalId"];
+            var ticketId = Encrypt.Unprotect(internalId);
             var ticketHistoryView = new TicketHistoryViewModel();
             ViewBag.status = _viewUtilityServices.GetListOfStatus();
             var encryptedTicketId = Encrypt.Protect(ticketId);
@@ -182,7 +175,49 @@ namespace S.I.A.C.Controllers
                 return View(ticketHistoryViewModel);
             }
 
+            _mailerService.NotifyUpdatedTicket(ticketHistoryViewModel, ticketId);
             TempData["Successful"] = "Ticket editado correctamente!";
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        [HandleError]
+        public ActionResult Delete(string ticketIdLocal)
+        {
+            //var ticketIdLocal = (string)TempData["ticketIdLocal"];
+            var ticketId = Encrypt.Unprotect(ticketIdLocal);
+            var currentTicket = _searchQueriesService.SearchTicketByNumber(int.Parse(ticketId));
+            var encryptedTicketId = Encrypt.Protect(ticketId);
+            ViewBag.TicketIdEncrypt = encryptedTicketId;
+
+            return View(currentTicket);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeUser(12)]
+        public ActionResult Delete(string ticketIdLocal, TicketPrintableModel ticketPrintableModel)
+        {
+            if (!ModelState.IsValid) return View(ticketPrintableModel);
+
+            var localTicketId = Encrypt.Unprotect(ticketIdLocal);
+            if (!int.TryParse(localTicketId, out int ticketId)) return View(ticketPrintableModel);
+
+            var result = _ticketCommandsService.UpdateTicketStatus((int) EStatus.Cancelado,
+                _searchQueriesService.SearchTicketId(localTicketId));
+            if (result == false)
+            {
+                var encryptedTicketId = Encrypt.Protect(ticketId.ToString());
+                ViewBag.TicketIdEncrypt = encryptedTicketId;
+                ViewBag.Error = "E R R O R al actualizando el ticket";
+                return View(ticketPrintableModel);
+            }
+
+            ticketPrintableModel = _searchQueriesService.SearchTicketByNumber(ticketId);
+            var currentPeople = (people) Session["User"];
+            _mailerService.NotifyDeletedTicket(ticketPrintableModel, ticketId, currentPeople);
+            TempData["Successful"] = "Ticket Eliminado correctamente!";
+
             return RedirectToAction("Index", "Home");
         }
     }

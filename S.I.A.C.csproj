@@ -203,7 +203,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enum\ERols.cs" />
     <Compile Include="Models\Enum\EStatus.cs" />
+    <Compile Include="Models\MailerModels\DeletedTicketEmail.cs" />
+    <Compile Include="Models\MailerModels\UpdateTicketEmail.cs" />
     <Compile Include="Models\MailerModels\NewTicketEmail.cs" />
     <Compile Include="Models\ViewModels\PeopleViewModel.cs" />
     <Compile Include="Models\ViewModels\CategoriesViewModel.cs" />
@@ -258,6 +261,7 @@
     </Compile>
     <Compile Include="Models\ViewModels\SearchViewModel.cs" />
     <Compile Include="Models\ViewModels\StatusViewModel.cs" />
+    <Compile Include="Models\ViewModels\AdminsViewModel.cs" />
     <Compile Include="Models\ViewModels\TicketHistoryViewModel.cs" />
     <Compile Include="Models\ViewModels\TicketViewModel.cs" />
     <Compile Include="Models\DomainModels\ticketHistory.cs">
@@ -265,6 +269,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Encrypt.cs" />
+    <Compile Include="Service\IMailer.cs" />
+    <Compile Include="Service\Implement\MailerService.cs" />
     <Compile Include="Service\Implement\PeopleCommandsService.cs" />
     <Compile Include="Service\Implement\SearchQueriesService.cs" />
     <Compile Include="Service\IPeopleCommands.cs" />
@@ -355,11 +361,12 @@
     <Content Include="Views\Search\SearchID.cshtml" />
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Emails\NewTicket.cshtml" />
+    <Content Include="Views\Emails\UpdateTicket.cshtml" />
+    <Content Include="Views\Ticket\Delete.cshtml" />
+    <Content Include="Views\Emails\DeletedTicket.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.min.css.map" />

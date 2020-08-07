@@ -74,7 +74,7 @@ namespace S.I.A.C.Models
 
         [Display(Name = "Tarea a realizar")] public string description { get; set; }
 
-        [Display(Name = "Estado")] public string status { get; set; }
+        [Display(Name = "Estado")] public int status { get; set; }
 
         [Display(Name = "Asignado a:")] public string assignedTechnician { get; set; }
 

@@ -1,4 +1,5 @@
-﻿@using S.I.A.C.Models
+﻿@using System.Diagnostics.Eventing.Reader
+@using S.I.A.C.Models
 @model IEnumerable<S.I.A.C.Models.ViewModels.TicketHistoryViewModel>
 
 @{
@@ -71,7 +72,7 @@
         @currentTicket.description
     </td>
     <td>
-        @currentTicket.status
+        @Enum.GetName(typeof(EStatus), currentTicket.status)
     </td>
     <td>
         @tec
@@ -109,7 +110,7 @@
                 @Html.DisplayFor(modelItem => item.note)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.idStatus)
+                @Enum.GetName(typeof(EStatus), item.idStatus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.peopleFullName)
@@ -121,11 +122,19 @@
 
 <p></p>
 <div class="row center-block t-1 b-1">
-    <div class="col-md-6" style="color: black">
-        @Html.ActionLink("  Actualizar", "Update", new {internalId = (string) ViewBag.TicketIdEncrypt}, new {@class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload"})
+    <div class="col-md-6">
+        @if (currentTicket.status == 4 || currentTicket.status == 5)
+        {
+            @Html.ActionLink("  Actualizar", "Update", TempData["internalId"] = (string) ViewBag.TicketIdEncrypt, new {@class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload", disabled = "disabled"})
+        }
+        else
+        {
+            @Html.ActionLink("  Actualizar", "Update", TempData["internalId"] = (string) ViewBag.TicketIdEncrypt, new {@class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload"})
+        }
+
     </div>
-    <div class="col-md-6" style="color: black">
-        @Html.ActionLink("  Regresar", "CurrentTickets", new {internalId = (string) ViewBag.TicketIdEncrypt}, new {@class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"})
+    <div class="col-md-6">
+        @Html.ActionLink("  Regresar", "Index", "Home", null, new {@class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"})
     </div>
 </div>
 <p></p>

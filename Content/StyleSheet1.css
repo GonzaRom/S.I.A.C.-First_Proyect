@@ -5,7 +5,7 @@
 }
 
 .contenedor {
-    background: #F2F2F2;
+    background: #f5f5f5;
     /* Flexbox */
     display: flex;
     flex-flow: column wrap;
@@ -20,53 +20,55 @@ body {
 
 header {
     align-items: center;
-    background: #0D7BA6;
+    background: #1f5f8b;
     /* Flexbox */
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 20px;
     width: 100%;
 }
+.h3 {
+    color: #f5f5f5;
+}
+.logo {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: baseline;
+}
 
+header .logo img { width: 140px; }
 
-    header .logo img {
-        vertical-align: top;
-        width: 140px;
-        align-items: start;
-    }
-
-    header .logo navbar-brand, a {
-        color: #fff;
-        line-height: 50px;
-        text-decoration: none;
-        align-items: baseline;
-    }
+header .logo navbar-brand, a {
+    color: #fff;
+    line-height: 50px;
+    text-decoration: none;
+}
 
 header nav {
-    align-items: center;
     /* Flexbox */
     display: flex;
     flex-wrap: wrap;
     width: 50%;
 }
 
-header nav a {
-    background: #084259;
-    color: #fff;
-    /* Flexbox */
-    flex-grow: 1;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-}
+    header nav a {
+        background: #4d606e;
+        color: #fff;
+        /* Flexbox */
+        flex-grow: 1;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+    }
 
-header nav a:hover { background: #82C0D9; }
+header nav a:hover { background: #d3d4d8; }
 
 
 footer {
-    background: #0D7BA6;
+    background: #1f5f8b;
     /* Flexbox */
     display: flex;
     flex-wrap: wrap;
@@ -142,7 +144,7 @@ p a {
 
 table tr th,
 table tr td {
-    border: 1px solid #3B3F40;
+    border: 3px solid lavender;
     color: #222222;
     font-size: 1em;
     font-weight: bold;

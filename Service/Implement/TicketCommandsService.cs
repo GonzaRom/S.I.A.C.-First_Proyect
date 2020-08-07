@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using Antlr.Runtime;
 using S.I.A.C.Models;
@@ -117,6 +118,8 @@ namespace S.I.A.C.Service
 
         public bool UpdateTicketStatus(int idStatus, int ticketId)
         {
+            if (ticketId <= 0) return false;
+
             _database = new dbSIACEntities();
             using (_database)
             {
@@ -124,9 +127,10 @@ namespace S.I.A.C.Service
                 if (ticketDefault == null) return false;
 
                 ticketDefault.idStatus = idStatus;
+                ticketDefault.editionDate = DateTime.Now;
                 try
                 {
-                    _database.ticket.Add(ticketDefault);
+                    _database.ticket.AddOrUpdate(ticketDefault);
                     _database.SaveChanges();
                 }
                 catch (Exception)

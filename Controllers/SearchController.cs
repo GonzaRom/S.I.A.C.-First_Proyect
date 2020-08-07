@@ -10,12 +10,10 @@ namespace S.I.A.C.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly dbSIACEntities _database;
         private readonly SearchQueriesService _searchQueries;
 
         public SearchController()
         {
-            _database = new dbSIACEntities();
             _searchQueries = new SearchQueriesService();
         }
 
@@ -32,7 +30,7 @@ namespace S.I.A.C.Controllers
         {
             var aSearch = searchViewModel.toSearch;
 
-            if (aSearch.IsNullOrWhiteSpace()) return RedirectToAction("Search", "Search");
+            if (aSearch.IsNullOrWhiteSpace()) return RedirectToAction("Search", "Search", new SearchViewModel());
 
             return RedirectToAction("Found", "Search", new {toSearch = aSearch});
         }
@@ -40,14 +38,15 @@ namespace S.I.A.C.Controllers
         [HttpGet]
         public ActionResult Found(string toSearch)
         {
-            var foundeTickets = _searchQueries.SearchTicket(toSearch);
-            if (foundeTickets == null)
+            var currentUser = (people) Session["User"];
+            var foundTickets = _searchQueries.SearchTicket(toSearch, currentUser.idRol, currentUser.id);
+            if (foundTickets == null)
             {
                 ViewBag.Error = "E R R O R en la busqueda";
-                return RedirectToAction("Search", "Search");
+                return RedirectToAction("Search", "Search", new SearchViewModel());
             }
 
-            return View(foundeTickets);
+            return View(foundTickets);
         }
 
         public ActionResult SearchID()
@@ -60,10 +59,16 @@ namespace S.I.A.C.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SearchID(SearchViewModel searchViewModel)
         {
-            var aSearch = searchViewModel.toSearch;
-            if (aSearch.IsNullOrWhiteSpace()) return RedirectToAction("Search", "Search");
-            var ticketFounded = _searchQueries.SearchTicketByNumber(int.Parse(aSearch));
-            if (ticketFounded == null) return RedirectToAction("Search", "Search");
+            var aSearch = searchViewModel.toSearch.Trim();
+
+            if (aSearch.IsNullOrWhiteSpace()) return RedirectToAction("SearchID", "Search", new SearchViewModel());
+            if (!int.TryParse(aSearch, out int idToSearch))
+                return RedirectToAction("Search", "Search", new SearchViewModel());
+
+            var currentUser = (people) Session["User"];
+            var ticketFounded = _searchQueries.SearchTicketByIdAndUser(idToSearch, currentUser.idRol, currentUser.id);
+
+            if (ticketFounded == null) return RedirectToAction("SearchID", "Search", new SearchViewModel());
             searchViewModel.toSearch = Encrypt.Protect(ticketFounded.idLocal.ToString());
 
             Session["toSearch"] = searchViewModel;

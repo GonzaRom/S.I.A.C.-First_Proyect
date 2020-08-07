@@ -31,17 +31,24 @@ namespace S.I.A.C.Service
             return activePerson;
         }
 
-        public people GetDetailsPeople(int peopleId)
+        public PeopleViewModel GetDetailsPeople(int peopleId)
         {
             _database = new dbSIACEntities();
-            people currentPeople;
+            PeopleViewModel searchPeople = null;
             using (_database)
             {
-                currentPeople = _database.people.FirstOrDefault(current => current.id == peopleId);
+                var currentPeople = _database.people.FirstOrDefault(current => current.id == peopleId);
+                searchPeople = new PeopleViewModel
+                {
+                    addressClient = currentPeople.address,
+                    keyClient = currentPeople.id,
+                    lastNameClient = currentPeople.lastname,
+                    nameClient = currentPeople.name
+                };
             }
 
-            _database.Dispose();
-            return currentPeople;
+
+            return searchPeople;
         }
 
         public List<PeopleViewModel> GetListClients()
@@ -88,6 +95,28 @@ namespace S.I.A.C.Service
 
             _database.Dispose();
             return listOfTechnicians;
+        }
+
+        public List<AdminsViewModel> GetListAdmins()
+        {
+            _database = new dbSIACEntities();
+            var AdminIdRol = 1;
+
+            List<AdminsViewModel> listOfAdmins = null;
+            using (_database)
+            {
+                listOfAdmins = (from admins in _database.people
+                        where admins.idRol == AdminIdRol
+                        select new AdminsViewModel()
+                        {
+                            keyAdmin = admins.id,
+                            emailAdmin = admins.email
+                        }
+                    ).ToList();
+            }
+
+            _database.Dispose();
+            return listOfAdmins;
         }
     }
 }

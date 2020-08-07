@@ -12,7 +12,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.Hidden("ticketIdLocal", (string) ViewBag.TicketIdEncrypt)
+    
     <div class="form-horizontal">
         <h2>Editar:</h2>
         <hr/>
@@ -56,7 +56,7 @@
                 @Html.ValidationMessageFor(model => model.idStatus, "", new {@class = "text-danger"})
             </div>
         </div>
-
+        @Html.Hidden("ticketIdLocal", (string) ViewBag.TicketIdEncrypt)
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <button type="submit" class="btn btn-success btn-lg">
@@ -69,7 +69,7 @@
 }
 
 <div>
-    @Html.ActionLink("  Regresar", "CurrentTickets", "Ticket", new {@class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"})
+    @Html.ActionLink("  Regresar", "Index", "Home", null, new { @class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left" })
 </div>
 
 @section Scripts {

@@ -2,15 +2,6 @@
 SELECTION STYLING
 *******************/
 
-::selection {
-    background: #f676b2; /* Safari */
-    color: #fff;
-}
-
-::-moz-selection {
-    background: #f676b2; /* Firefox */
-    color: #fff;
-}
 
 * {
     border: 0;

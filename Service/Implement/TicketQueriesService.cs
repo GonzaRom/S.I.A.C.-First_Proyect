@@ -1,27 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using S.I.A.C.Models;
 using S.I.A.C.Models.DomainModels;
+using S.I.A.C.Models.Enum;
 using S.I.A.C.Models.ViewModels;
-using S.I.A.C.Service.Implement;
 
-namespace S.I.A.C.Service
+namespace S.I.A.C.Service.Implement
 {
     public class TicketQueriesService : ITicketQueries
     {
         private readonly SearchQueriesService _searchQueriesService = new SearchQueriesService();
         private dbSIACEntities _database;
-        private List<TicketPrintableModel> printableTickets = new List<TicketPrintableModel>();
+        private List<TicketPrintableModel> _printableTickets = new List<TicketPrintableModel>();
 
         public List<TicketPrintableModel> GetActiveTicketsList(people currentPeople)
         {
-            if (currentPeople.idRol == 3)
-                return printableTickets = _searchQueriesService.SearchActiveTicketByClient(currentPeople.id);
+            if (currentPeople.idRol !=(int) ERols.TechnicianLead)
+                return _printableTickets = _searchQueriesService.SearchActiveTicketByClient(currentPeople.id,currentPeople.idRol);
 
             _database = new dbSIACEntities();
             using (_database)
             {
-                printableTickets = (from ticket in _database.ticket
+                _printableTickets = (from ticket in _database.ticket
                     where ticket.idStatus != (int) EStatus.Finalizado
                     where ticket.idStatus != (int) EStatus.Cancelado
                     join creator in _database.people on ticket.idCreatorPeople equals creator.id
@@ -39,11 +40,12 @@ namespace S.I.A.C.Service
                         creatorPeople = creator.name,
                         creatorPeopleLastname = creator.lastname,
                         description = ticket.description,
-                        email = clientAddress.email
+                        email = clientAddress.email,
+                        status =ticket.idStatus
                     }).ToList();
             }
 
-            return printableTickets;
+            return _printableTickets;
         }
 
         public TicketViewModel GeTicketViewModel(int ticketIdLocal)
@@ -54,7 +56,7 @@ namespace S.I.A.C.Service
             {
                 var ticket = _database.ticket.FirstOrDefault(currentTicket => currentTicket.idLocal == ticketIdLocal);
                 if (ticket == null) return null;
-
+                if (ticket.idClient != null) ticketViewModel.idClient = (int) ticket.idClient;
                 ticketViewModel.idAssignedTechnician = ticket.idAssignedTechnician;
                 ticketViewModel.creationDate = ticket.creationDate;
                 ticketViewModel.estimatedFinishDate = ticket.estimatedFinishDate;
@@ -87,6 +89,7 @@ namespace S.I.A.C.Service
                         note = ticket.note,
                         peopleName = creator.name,
                         peopleLastName = creator.lastname
+                        
                     }).ToList();
 
                 return ticketHistoryList;

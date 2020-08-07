@@ -6,31 +6,12 @@
 
 <link href="~/Content/StyleSheet2.css" rel="stylesheet"/>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(".username").focus(function() {
-            $(".user-icon").css("left", "-48px");
-        });
-        $(".username").blur(function() {
-            $(".user-icon").css("left", "0px");
-        });
-        $(".password").focus(function() {
-            $(".pass-icon").css("left", "-48px");
-        });
-        $(".password").blur(function() {
-            $(".pass-icon").css("left", "0px");
-        });
-    });
-</script>
+
 <body>
 
 
 <div id="wrapper">
-
-
-    <div class="user-icon"></div>
-    <div class="pass-icon"></div>
-
+    
     <div class="login-form">
 
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))

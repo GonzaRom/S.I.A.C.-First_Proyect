@@ -7,8 +7,9 @@ namespace S.I.A.C.Service
     internal interface IPeopleQueries
     {
         people SearchPeople(string email, string password);
-        people GetDetailsPeople(int peopleId);
+        PeopleViewModel GetDetailsPeople(int peopleId);
         List<PeopleViewModel> GetListClients();
         List<TechniciansViewModel> GetListTechnicians();
+        List<AdminsViewModel> GetListAdmins();
     }
 }
