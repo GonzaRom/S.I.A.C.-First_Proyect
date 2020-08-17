@@ -1,0 +1,57 @@
+﻿@model S.I.A.C.Models.LoginDataModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<link href="~/Content/StyleSheet2.css" rel="stylesheet"/>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+<body>
+
+
+<div id="wrapper">
+
+    <div class="login-form">
+
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+        {
+            <div class="header">
+                <img src="~/Resource/logoSIAC.png" alt="Site Logo" style="position: center; width: 100%;"/>
+
+            </div>
+            @Html.AntiForgeryToken()
+
+            <div class="content">
+
+
+                <br/>
+                @Html.LabelFor(x => x.email)
+                @Html.TextBoxFor(x => x.email, new {@class = "form-control .username", autofocus = "autofocus"})
+                @Html.ValidationMessageFor(x => x.email, null, new {@class = "text-danger"})
+                <br/>
+
+                @Html.LabelFor(x => x.password)
+                @Html.PasswordFor(x => x.password, new {@class = "form-control .password"})
+                @Html.ValidationMessageFor(x => x.password, null, new {@class = "text-danger"})
+                <br/>
+                <p style="color: red; text-align: center">
+                </p>
+                <div class="footer" align="center">
+                    <span class="group-btn">
+                        <input type="submit" name="submit" value="Ingresar" class="button"/>
+                    </span>
+                </div>
+                <div class="text-danger" align="center">
+                    @ViewBag.Message
+                    @TempData["ErrorMessage"]
+                </div>
+                @Html.Hidden("ticketIdLocal", (string) ViewBag.LoginIdEncrypted)
+            </div>
+        }
+    </div>
+</div>
+
+<div class="gradient"></div>
+
+</body>

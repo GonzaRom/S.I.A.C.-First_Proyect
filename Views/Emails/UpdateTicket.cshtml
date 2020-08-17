@@ -1,0 +1,26 @@
+﻿@model S.I.A.C.Models.MailerModels.UpdateTicketEmail
+@{
+    Layout = null;
+}
+
+To: @Model.to
+Cc: @Model.cc
+From: mailer@example.com
+Subject: Ticket Actualizado
+
+Se realizo una actulizacion sobre el ticket:
+#@Model.idTicket
+
+Creado por: @Model.userName
+Descripcion original: @Model.baseComment
+
+La actualizacion fue realizada por:
+@Model.technicianName
+
+Descripcion:
+@Model.updateComment
+
+Por mas informacion ingrese al sistema.
+
+Saludos cordiales.
+S.I.A.C.

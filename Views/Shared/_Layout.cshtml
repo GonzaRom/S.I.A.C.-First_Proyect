@@ -1,0 +1,61 @@
+﻿@using S.I.A.C.Filters
+@using S.I.A.C.Models.DomainModels
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - S.I.A.C.</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+
+</head>
+<body>
+<div class="contenedor">
+    <header>
+        <div class="logo">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                </button>
+                <a class="d-flex flex-row" href="@Url.Action("Index", "Home")">
+                    <img src="~/Resource/logoSIACv2.png" alt="Site Logo"/>
+
+                    @{
+                        var user = (people) Session["User"];
+                        if (user != null)
+                        {
+                            var name = user.name;
+                            @Html.Label("name", "Bienvenido: " + name, new {@class = "h3 navbar-text navbar-right"})
+                        }
+                    }
+                </a>
+            </div>
+        </div>
+        <nav>
+            @Html.ActionLink("Inicio", "Index", "Home")
+            @Html.ActionLink("Nuevo Ticket", "Ticket", "Ticket")
+            @Html.ActionLink("Tickets", "CurrentTickets", "Ticket")
+            @if (AuthorizeViews.IsAuthonized(1))
+            {
+                @Html.ActionLink("Nuevo Usuario", "Create", "Peoples")
+            }
+            @Html.ActionLink("Cerrar sesión", "SingOut", "Home")
+        </nav>
+    </header>
+
+
+    @RenderBody()
+    <footer>
+        <p>&copy; @DateTime.Now.Year - S.I.A.C.</p>
+    </footer>
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", false)
+</body>
+</html>
