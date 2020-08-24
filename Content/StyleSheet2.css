@@ -11,7 +11,8 @@ SELECTION STYLING
 
 body {
     -webkit-font-smoothing: antialiased;
-    background: url(bg.png) repeat;
+    background: url(../Resource/back_3.jpg) ;
+    background-size: cover;
     font-family: 'FontAwesome', "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
     text-align: left;
@@ -25,7 +26,6 @@ body {
     margin-top: -200px;
     position: absolute;
     top: 50%;
-    /* Center wrapper perfectly */
     width: 300px;
 }
 
@@ -57,8 +57,8 @@ LOGIN FORM
 .login-form {
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    background: #f3f3f3;
-    border: 1px solid #fff;
+    background: rgba(255,255,255, 0.6);
+    border: 1px solid #d4dedf54;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     margin: 0 auto;
@@ -75,7 +75,6 @@ HEADER
 
 .login-form .header h1 {
     color: #414848;
-    font-family: 'FontAwesome' font-weight:300;
     font-size: 28px;
     line-height: 34px;
     margin-bottom: 10px;
@@ -110,6 +109,7 @@ CONTENT
     padding: 15px 25px;
     text-shadow: 1px 1px 0 rgba(256, 256, 256, 1.0);
     width: 188px;
+
 }
 
 /* Second input field */

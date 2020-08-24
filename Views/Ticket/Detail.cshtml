@@ -120,20 +120,17 @@
 </table>
 
 <p></p>
-<div class="row center-block t-1 b-1">
-    <div class="col-md-6">
+<div class="btn-group-lg row d-flex justify-content-center">
+   
         @if (currentTicket.status == 4 || currentTicket.status == 5)
         {
-            @Html.ActionLink("  Actualizar", "Update", TempData["internalId"] = (string) ViewBag.TicketIdEncrypt, new {@class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload", disabled = "disabled"})
+            @Html.ActionLink("  Actualizar", "Update", TempData["internalId"] = (string) ViewBag.TicketIdEncrypt, new {@class = "btn btn-success btn-lg", disabled = "disabled"})
         }
         else
         {
-            @Html.ActionLink("  Actualizar", "Update", TempData["internalId"] = (string) ViewBag.TicketIdEncrypt, new {@class = "btn btn-success btn-lg glyphicon glyphicon-cloud-upload"})
+            @Html.ActionLink("  Actualizar", "Update", TempData["internalId"] = (string) ViewBag.TicketIdEncrypt, new {@class = "btn btn-success btn-lg"})
         }
 
+        @Html.ActionLink("  Regresar", "Index", "Home", null, new {@class = "btn btn-danger btn-lg"})
     </div>
-    <div class="col-md-6">
-        @Html.ActionLink("  Regresar", "Index", "Home", null, new {@class = "btn btn-danger btn-lg glyphicon glyphicon-arrow-left"})
-    </div>
-</div>
 <p></p>

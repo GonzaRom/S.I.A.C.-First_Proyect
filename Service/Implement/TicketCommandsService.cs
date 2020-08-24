@@ -27,7 +27,8 @@ namespace S.I.A.C.Service
 
             _database = new dbSIACEntities();
             if (baseTicket.idClient == 0) baseTicket.idClient = sessionUser.id;
-
+            if (baseTicket.idAssignedTechnician == null) baseTicket.idAssignedTechnician = 1;
+            
             var ticket = new ticket
             {
                 idLocal = baseTicket.idLocal,

@@ -289,10 +289,8 @@
     <Content Include="Content\main.css" />
     <Content Include="Content\StyleSheet1.css" />
     <Content Include="Content\StyleSheet2.css" />
-    <Content Include="fonts\4769308501582800513.svg" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Models\DomainModels\Model1.Context.tt">
@@ -306,6 +304,13 @@
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Compile Include="Models\ViewModels\TechniciansViewModel.cs" />
+    <Content Include="Resource\back_3.jpg" />
+    <Content Include="Resource\capture-20200729-093228.png" />
+    <Content Include="Resource\capture-20200729-093623.png" />
+    <Content Include="Resource\capture-20200729-094848.png" />
+    <Content Include="Resource\favicon.png" />
+    <Content Include="Resource\logoSIAC.png" />
+    <Content Include="Resource\logoSIACv2.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\DomainModels\Model1.edmx">
@@ -364,8 +369,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.min.css.map" />
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
