@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Home Page";
 }
-
 <div class="text-success" align="left">
     @ViewBag.Message
     @TempData["Successful"]
@@ -10,12 +9,12 @@
 </div>
 <div class="col" style="display: flex; flex-direction: column; flex-wrap: nowrap; padding: 0px 90px 0px 90px;">
     <div>
-        <h2>Bienvenido al sistema de tickets<strong> S.I.A.C.</strong></h2>
+        <h2>Bienvenido al sistema de tickets<strong> S.I.A.C.</strong></h2><br/>
         <p>
             Con el fin de agilizar las solicitudes de soporte y brindar un mejor servicio,
             utilizamos un sistema de ticket de soporte. A cada solicitud se le asigna un número de ticket único que puede utilizar para verificar online el estado de su consulta.
         </p>
-        <br/>
+
     </div>
     <hr/>
     <div class="row text-center">
@@ -29,30 +28,66 @@
             <h3>Ver Estado de un Ticket</h3>
             <br>
             <div>Poseemos los archivos y la historia completa de todas sus solicitudes de soporte, presentes y pasadas, junto a sus respuestas.</div>
-            @Html.ActionLink("  BUSCAR TICKET", "SearchID", "Search", new {Model}, new {@class = "btn btn-primary btn-md" })
+            @Html.ActionLink("  BUSCAR TICKET", "SearchID", "Search", new {Model}, new {@class = "btn btn-primary btn-md"})
         </div>
     </div>
 </div>
 <hr/>
 <!-- /Inicio Buscador -->
 <br>
+
 <div class="row center-block">
     <div class="col">
+
         @using (Html.BeginForm("Search", "Search"))
         {
-            <div class=" d-flex justify-content-center input-group">
-                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
-                @Html.ValidationMessageFor(model => model.toSearch, "", new {@class = "text-danger"})
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.ValidationMessageFor(model => model.toSearch, "", new {@class = "text-danger"})
+            <div class="input-group input-group-lg">
                 @Html.EditorFor(model => model.toSearch, new {htmlAttributes = new {@class = "form-control", placeholder = "Buscar en el sistema..."}})
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary btn-sm" type="submit">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary btn-sm" type="submit">
                         <i class="material-icons">search</i>
                     </button>
-                </div>
+                </span>
             </div>
         }
     </div>
 </div>
-<p></p>
 
+
+<p></p>
 <!-- /Fin Buscador -->
+
+<!-- Function trigger modal -->
+<script>$(function() { $('#exampleModal').modal() });</script>
+<!-- Modal -->
+<div class="modal" id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="material-icons">close</i>
+                </button>
+                <h3 class="modal-title text-success" id="exampleModalLabel">
+                    <strong>¿Nuevo por aquí?</strong>
+                </h3>
+            </div>
+            <div class="modal-body">
+                <p class="lead text-justify">
+                    <strong class="text-success"> Bienvenido!</strong> con el fin de lograr probar toda la funcionalidad te invito a que crees una cuenta con tu email, para así poder recibir
+                    las notificaciones.<br/>
+                    También realiza "Actualizaciones" o "Eliminaciones" de los tickets, así podrás recibir las notificaciones!
+                    <br/>
+                    <em class="small">
+                        psss no te preocupes que las contraseñas están encriptadas en el servidor.
+                    </em><br/>
+                    <strong class="text-primary">¡GRACIAS POR USAR EL SISTEMA!</strong>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-lg" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
